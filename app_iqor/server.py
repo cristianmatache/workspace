@@ -1,3 +1,4 @@
+# pylint:disable=all  # Astroid still fails with maximum recursion depth
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from getpass import getuser

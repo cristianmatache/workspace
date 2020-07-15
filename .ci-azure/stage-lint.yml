@@ -1,0 +1,34 @@
+stages:
+- stage: lint
+  displayName: 'Lint'
+
+  jobs:
+  - job: 'flake8'
+
+    steps:
+    - checkout: self
+      submodules: true
+      clean: true
+
+    - script: flake8 . --config=.flake8
+      displayName: 'Run flake8'
+
+  - job: 'pylint'
+
+    steps:
+    - checkout: self
+      submodules: true
+      clean: true
+
+    - script: pylint .
+      displayName: 'Run pylint'
+
+  - job: 'bandit'
+
+    steps:
+    - checkout: self
+      submodules: true
+      clean: true
+
+    - script: bandit -r .
+      displayName: 'Run bandit'

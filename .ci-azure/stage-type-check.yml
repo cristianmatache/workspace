@@ -1,0 +1,14 @@
+stages:
+- stage: TypeCheck
+  displayName: 'Type Check'
+
+  jobs:
+  - job: 'mypy'
+
+    steps:
+    - checkout: self
+      submodules: true
+      clean: true
+
+    - script: mypy .
+      displayName: 'Run mypy'

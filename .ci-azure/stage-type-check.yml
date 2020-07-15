@@ -8,5 +8,5 @@ stages:
         - task: UsePythonVersion@0
           inputs:
             versionSpec: '3.8'
-        - script: mypy .
+        - script: python -m mypy .
           displayName: 'Run mypy'

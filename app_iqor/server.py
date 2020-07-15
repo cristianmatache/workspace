@@ -164,7 +164,7 @@ def tenant_home(tenant_id: str) -> Any:
     """ tenant home page
     """
     with q_connection() as q:
-        all_flats = q(f'0!getFlatsInfo[]', pandas=True)
+        all_flats = q('0!getFlatsInfo[]', pandas=True)
         tenant_name = q(f'getTenantInfo[{tenant_id};`tenantName]', pandas=False).decode("utf-8")
 
     all_flats = convert_byte_strings(all_flats, columns=('postcode', 'flatName', 'flatImage'))

@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
   branches:
     include:
@@ -13,8 +8,24 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - template: stage-deps.yml
-  - template: stage-type-check.yml
-  - template: stage-lint.yml
+  - stage: pip_install
+    displayName: 'pip install deps'
 
+    jobs:
+      - job: 'python'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.8'
 
+          - script: pip install -r dev_requirements.txt
+            displayName: 'Install python dependencies'
+
+          - script: python -m flake8 . --config=.flake8
+            displayName: 'Run flake8'
+
+          - script: python -m pylint .
+            displayName: 'Run pylint'
+
+          - script: python -m bandit -r .
+            displayName: 'Run bandit'

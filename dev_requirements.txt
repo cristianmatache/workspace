@@ -10,3 +10,4 @@ flask_assets
 werkzeug
 pandas
 qpython
+colorama

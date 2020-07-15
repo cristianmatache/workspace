@@ -3,10 +3,10 @@ stages:
   displayName: 'Type Check'
 
   jobs:
-  - job: 'mypy'
-    steps:
-      - task: UsePythonVersion@0
+    - job: 'mypy'
+      steps:
+        - task: UsePythonVersion@0
           inputs:
             versionSpec: '${{ variables.py_version) }}'
-      - script: mypy .
-        displayName: 'Run mypy'
+        - script: mypy .
+          displayName: 'Run mypy'

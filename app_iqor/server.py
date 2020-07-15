@@ -109,7 +109,7 @@ def landlord_flat_details(flat_id: str) -> Any:
     with q_connection() as q:
 
         def q_convert(query: str) -> List[Tuple[Any, ...]]:
-            res = convert_byte_strings(q(query))
+            res = convert_byte_strings(q(query, pandas=True))
             res['viewingDate'] = res['viewingDate'].apply(lambda date: date.strftime('%Y.%m.%d'))
             return df_to_list_of_tuples(res)
 
@@ -139,21 +139,21 @@ def landlord_flat_details(flat_id: str) -> Any:
 def decline_tenant(flat_id: str, tenant_id: str) -> Response:
     with q_connection() as q:
         q(f'declineTenant[{flat_id};{tenant_id}]')
-    return redirect(f'flat-details/{flat_id}')
+    return redirect(f'/flat-details/{flat_id}')
 
 
 @app.route('/confirm-viewing-landlord/<flat_id>/<tenant_id>/<date>')
 def confirm_viewing(flat_id: str, tenant_id: str, date: str) -> Response:
     with q_connection() as q:
         q(f'amendViewing[{flat_id};{tenant_id};{date};`confirm]')
-    return redirect(f'flat-details/{flat_id}')
+    return redirect(f'/flat-details/{flat_id}')
 
 
 @app.route('/cancel-viewing-landlord/<flat_id>/<tenant_id>/<date>')
 def cancel_viewing_landlord(flat_id: str, tenant_id: str, date: str) -> Response:
     with q_connection() as q:
         q(f'amendViewing[{flat_id};{tenant_id};{date};`cancel]')
-    return redirect(f'flat-details/{flat_id}/')
+    return redirect(f'/flat-details/{flat_id}/')
 
 
 # ------------------------------------------------------- TENANT ------------------------------------------------------
@@ -180,7 +180,7 @@ def tenant_viewings(tenant_id: str) -> Any:
         tenant_name = q(f'getTenantInfo[{tenant_id};`tenantName]', pandas=False).decode("utf-8")
 
         def q_convert(query: str) -> List[Tuple[Any, ...]]:
-            res = convert_byte_strings(q(query))
+            res = convert_byte_strings(q(query, pandas=True))
             res['viewingDate'] = res['viewingDate'].apply(lambda date: date.strftime('%Y.%m.%d'))
             return df_to_list_of_tuples(res)
 
@@ -221,18 +221,18 @@ def schedule_viewing(flat_id: str, tenant_id: str, date: str) -> Response:
     with q_connection() as q:
         print('SCHEDULING')
         q(f'scheduleViewing[{flat_id};{tenant_id};{date}]')
-    return redirect(f'tenant-viewings/{tenant_id}/')
+    return redirect(f'/tenant-viewings/{tenant_id}/')
 
 
 @app.route('/cancel-viewing-tenant/<flat_id>/<tenant_id>/<date>')
 def cancel_viewing_tenant(flat_id: str, tenant_id: str, date: str) -> Response:
     with q_connection() as q:
         q(f'amendViewing[{flat_id};{tenant_id};{date};`cancel]')
-    return redirect(f'tenant-viewings/{tenant_id}/')
+    return redirect(f'/tenant-viewings/{tenant_id}/')
 
 
 if __name__ == '__main__':
     with q_connection() as q_:
         q_(f'system "l {KDB_FILE_PATH}"')
     print(f'Loaded {KDB_FILE_PATH}')
-    app.run(FLASK_SERVER.host, FLASK_SERVER.port, debug=True)
+    app.run(FLASK_SERVER.host, FLASK_SERVER.port, debug=False)

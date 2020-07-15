@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ tenant_name }}'s viewing scheduler</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat:400,600,700'>
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css'>
+
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+    <link href="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+</head>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<body>
+    <input id="datepicker" type="text">
+
+    <button onclick="getDate()">Click</button>
+    <script>
+        var datepicker = new ej.calendars.DatePicker({ width: "255px" });
+        datepicker.appendTo('#datepicker');
+    </script>
+</body>
+
+<script>
+    function getDate() {
+        var bla = $('#datepicker').val();
+        console.log(bla);
+    }
+</script>
+
+</html>

@@ -21,14 +21,14 @@ stages:
           - script: pip install -r dev_requirements.txt
             displayName: 'Install python dependencies'
 
-          - script: python -m flake8 . --config=.flake8
+          - script: flake8 . --config=.ini-files/flake8
             displayName: 'Run flake8'
 
-          - script: python -m mypy app_iqor/ lib_py_utils/py_utils/
+          - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
             displayName: 'Run mypy'
 
-          - script: python -m bandit -r .
+          - script: python -m bandit -r . --configfile .ini-files/.bandit
             displayName: 'Run bandit'
 
-          - script: python -m pylint app_iqor/ lib_py_utils/py_utils/
+          - script: python -m pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
             displayName: 'Run pylint'

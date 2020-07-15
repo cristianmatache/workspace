@@ -7,7 +7,7 @@ stages:
       steps:
         - task: UsePythonVersion@0
           inputs:
-            versionSpec: '${{ variables.py_version }}'
+            versionSpec: ${{ variables.py_version }}
         - script: flake8 . --config=.flake8
           displayName: 'Run flake8'
   
@@ -15,7 +15,7 @@ stages:
       steps:
         - task: UsePythonVersion@0
           inputs:
-            versionSpec: '${{ variables.py_version }}'
+            versionSpec: ${{ variables.py_version }}
         - script: pylint .
           displayName: 'Run pylint'
   
@@ -23,6 +23,6 @@ stages:
       steps:
         - task: UsePythonVersion@0
           inputs:
-            versionSpec: '${{ variables.py_version }}'
+            versionSpec: ${{ variables.py_version }}
         - script: bandit -r .
           displayName: 'Run bandit'

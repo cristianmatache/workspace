@@ -13,9 +13,10 @@ pool:
   vmImage: 'ubuntu-latest'
 
 
-variables:
+parameters:
   - name: py_version
-    value: '3.8'
+    values:
+      - '3.8'
 
 stages:
   - template: stage-deps.yml

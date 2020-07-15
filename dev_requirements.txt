@@ -1,5 +1,10 @@
-flake8
+# type checker
 mypy
+# linters
+flake8
+pylint
+bandit
+# from all projects altogether
 flask
 flask_assets
 werkzeug

@@ -30,5 +30,5 @@ stages:
           - script: python -m bandit -r .
             displayName: 'Run bandit'
 
-          - script: python -m pylint .
-            displayName: 'Run pylint'
+#          - script: python -m pylint
+#            displayName: 'Run pylint'

@@ -7,6 +7,6 @@ stages:
       steps:
         - task: UsePythonVersion@0
           inputs:
-            versionSpec: '${{ variables.py_version) }}'
+            versionSpec: '${{ variables.py_version }}'
         - script: pip install -r dev_requirements.txt  -U --upgrade-strategy eager
           displayName: 'Install python dependencies'

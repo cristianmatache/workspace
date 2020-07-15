@@ -1,9 +1,9 @@
 stages:
-- stage: pip
+- stage: pip_install
   displayName: 'pip install deps'
 
   jobs:
-  - job: 'pip install'
+  - job: 'pip_install'
 
     steps:
     - script: pip install -r dev_requirements.txt  -U --upgrade-strategy eager

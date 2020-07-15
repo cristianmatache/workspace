@@ -1,0 +1,7 @@
+flake8
+mypy
+flask
+flask_assets
+werkzeug
+pandas
+qpython

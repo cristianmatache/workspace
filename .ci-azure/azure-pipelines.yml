@@ -27,8 +27,8 @@ stages:
           - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
             displayName: 'Run mypy'
 
-          - script: python -m bandit -r . --configfile .ini-files/.bandit
+          - script: bandit -r . --configfile .ini-files/.bandit.yml
             displayName: 'Run bandit'
 
-          - script: python -m pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
+          - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
             displayName: 'Run pylint'

@@ -5,8 +5,5 @@ stages:
   jobs:
     - job: 'pip_install'
       steps:
-        - task: UsePythonVersion@0
-          inputs:
-            versionSpec: '3.8'
-        - script: pip install -r dev_requirements.txt  -U --upgrade-strategy eager
+        - script: pip install -r dev_requirements.txt
           displayName: 'Install python dependencies'

@@ -21,7 +21,7 @@ stages:
           - script: pip install -r dev_requirements.txt
             displayName: 'Install python dependencies'
 
-          - script: flake8 . --config=.ini-files/flake8
+          - script: flake8 . --config=.ini-files/.flake8
             displayName: 'Run flake8'
 
           - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini

@@ -1,5 +1,5 @@
 stages:
-- stage: PipInstallDeps
+- stage: pip
   displayName: 'pip install deps'
 
   jobs:

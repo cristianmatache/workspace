@@ -4,9 +4,9 @@ from getpass import getuser
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Generator
 
-import pandas as pd
 from flask import Flask, redirect, render_template
 from flask_assets import Environment, Bundle
+from pandas import DataFrame
 from qpython.qconnection import QConnection
 from werkzeug.wrappers import Response
 
@@ -57,11 +57,11 @@ def q_connection() -> Generator[QConnection, None, None]:
 
 
 # ------------------------------------------------------- UTILS -------------------------------------------------------
-def df_to_list_of_tuples(df: pd.DataFrame) -> List[Tuple[Any, ...]]:
+def df_to_list_of_tuples(df: DataFrame) -> List[Tuple[Any, ...]]:
     return [tuple(row) for row in df.values]
 
 
-def convert_byte_strings(df: pd.DataFrame, *, columns: Tuple[str, ...] = COLUMNS_TO_CONVERT) -> pd.DataFrame:
+def convert_byte_strings(df: DataFrame, *, columns: Tuple[str, ...] = COLUMNS_TO_CONVERT) -> DataFrame:
     for column in columns:
         df[column] = df[column].str.decode('utf-8')
     return df

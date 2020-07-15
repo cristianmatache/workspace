@@ -24,11 +24,11 @@ stages:
           - script: python -m flake8 . --config=.flake8
             displayName: 'Run flake8'
 
-          - script: python -m mypy .
+          - script: python -m mypy app_iqor/
             displayName: 'Run mypy'
 
           - script: python -m bandit -r .
             displayName: 'Run bandit'
 
-#          - script: python -m pylint
-#            displayName: 'Run pylint'
+          - script: python -m pylint app_iqor/
+            displayName: 'Run pylint'

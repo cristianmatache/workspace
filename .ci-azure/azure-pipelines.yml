@@ -12,11 +12,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-
-parameters:
-  - name: py_version
-    default: '3.8'
-
 stages:
   - template: stage-deps.yml
   - template: stage-type-check.yml

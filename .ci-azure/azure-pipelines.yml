@@ -15,8 +15,7 @@ pool:
 
 parameters:
   - name: py_version
-    values:
-      - '3.8'
+    default: '3.8'
 
 stages:
   - template: stage-deps.yml

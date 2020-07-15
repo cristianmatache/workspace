@@ -4,11 +4,9 @@ stages:
 
   jobs:
   - job: 'mypy'
-
     steps:
-    - checkout: self
-      submodules: true
-      clean: true
-
-    - script: mypy .
-      displayName: 'Run mypy'
+      - task: UsePythonVersion@0
+          inputs:
+            versionSpec: ${{ variables.py_version) }}
+      - script: mypy .
+        displayName: 'Run mypy'

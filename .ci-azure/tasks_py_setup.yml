@@ -1,10 +1,11 @@
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(PY_VERSION)'
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(PY_VERSION)'
 
-- task: Cache@2
-  displayName: Use cached pip dependencies
-  inputs:
-    key: dev_requirements.txt
-    path: $(PY_ENV_PATH)
-    cacheHitVar: PIP_DEPS_CACHE_RESTORED
+  - task: Cache@2
+    displayName: Use cached pip dependencies
+    inputs:
+      key: dev_requirements.txt
+      path: $(PY_ENV_PATH)
+      cacheHitVar: PIP_DEPS_CACHE_RESTORED

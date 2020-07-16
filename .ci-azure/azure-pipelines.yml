@@ -43,7 +43,7 @@ stages:
 
           - script: |
               echo "PATH is:"
-              # echo $PATH
+              echo $PATH
               echo "PYTHONPATH is:"
               # echo $PYTHONPATH
               which mypy

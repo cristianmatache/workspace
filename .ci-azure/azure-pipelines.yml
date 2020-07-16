@@ -21,7 +21,7 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '$(PY_VERSION)'
-          - bash: |
+          - script: |
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP
               eval $PIP
@@ -32,9 +32,9 @@ stages:
               echo "Set PYTHONPATH to:"
               echo $PYTHONPATH
 
-              SET_PATH="export PATH=$(PY_ENV_PATH)/bin:$PATH"
-              echo $PATH
-              which pip
-              which python
-              which mypy
+              echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
             displayName: pip install
+          - script: |
+              echo "PATH is"
+              echo $PATH
+

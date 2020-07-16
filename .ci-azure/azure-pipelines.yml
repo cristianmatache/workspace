@@ -37,4 +37,5 @@ stages:
           - script: |
               echo "PATH is"
               echo $PATH
+              which mypy
 

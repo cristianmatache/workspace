@@ -16,48 +16,18 @@ stages:
   - stage: install_deps
     displayName: 'install deps'
 
-    jobs:
-      - job: python_deps
-        steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '$(PY_VERSION)'
-
-          - task: Cache@2
-            displayName: Use cached pip dependencies
-            inputs:
-              key: dev_requirements.txt
-              path: $(PY_ENV_PATH)
-              cacheHitVar: PIP_DEPS_CACHE_RESTORED
-
-          - script: |
-              PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
-              echo $PIP
-              eval $PIP
-            displayName: pip install
-            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
-
-
   - stage: lint
     displayName: 'lint'
     jobs:
-      - job: lint
+      - job: lint_py
         steps:
           - template: use_py_deps.yml
           - script: |
-              echo "PATH is:"
-              echo $PATH
-              echo "PYTHONPATH is:"
-              echo $PYTHONPATH
               which mypy
               which flake8
               which bandit
               which pylint
-              LS_PYTHONPATH="ls $PYTHONPATH"
-              echo $LS_PYTHONPATH
-              eval $LS_PYTHONPATH
-              echo "-----------"
-            displayName: Sanity check
+            displayName: Sanity check py linters
 
           - script: flake8 . --config=.ini-files/.flake8
             displayName: 'Run flake8'

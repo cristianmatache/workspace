@@ -21,3 +21,13 @@ steps:
       echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
       echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
     displayName: Set PATH, PYTHONPATH
+
+  - script: |
+      echo "PATH is:"
+      echo $PATH
+      echo "PYTHONPATH is:"
+      echo $PYTHONPATH
+      LS_PYTHONPATH="ls $PYTHONPATH"
+      echo $LS_PYTHONPATH
+      eval $LS_PYTHONPATH
+    displayName: Sanity check

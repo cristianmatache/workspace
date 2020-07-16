@@ -18,6 +18,9 @@ stages:
     jobs:
       - job: 'python'
         steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(PY_VERSION)'
           - script: |
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP

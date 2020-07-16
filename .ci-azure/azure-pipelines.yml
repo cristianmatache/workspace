@@ -25,13 +25,22 @@ stages:
           - task: Cache@2
             displayName: Use cached Anaconda environment
             inputs:
-              key: conda | dev_requirements.txt | 2
+              key: conda | dev_requirements.txt | 3
               path: $(CONDA_HOME)
               cacheHitVar: CONDA_CACHE_RESTORED
 
           - script: |
               conda create -n $(CONDA_ENV) python=$(PY_VERSION) -y
-              conda activate $(CONDA_ENV)
+          
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                eval "$(conda shell.bash hook)"
+                conda activate $(CONDA_ENV)
+            displayName: Activated $(CONDA_ENV)
+
+          - script: |
               which pip
               which python
               python --version
@@ -40,6 +49,7 @@ stages:
             condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
           - script: |
+              which mypy
               source activate $(CONDA_ENV)
               which mypy
             displayName: Run unit tests

@@ -25,10 +25,14 @@ stages:
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP
               eval $PIP
+  
               SET_PYTHONPATH="export PYTHONPATH=$(PY_ENV_PATH)"
               echo $SET_PYTHONPATH
               eval $SET_PYTHONPATH
-              echo '##vso[task.setvariable variable=path]$(PATH):$(PY_ENV_PATH)/bin'
+              echo "Set PYTHONPATH to:"
+              echo $PYTHONPATH
+
+              SET_PATH="export PATH=$(PY_ENV_PATH)/bin:$PATH'
               echo $PATH
               which pip
               which python

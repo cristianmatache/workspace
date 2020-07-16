@@ -11,15 +11,6 @@ steps:
       cacheHitVar: PIP_DEPS_CACHE_RESTORED
 
   - script: |
-      PIP="pip install --upgrade -r dev_requirements.txt --target $(PY_ENV_PATH)"
-      echo $PIP
-      eval $PIP
-      echo "REINSTALL_DEPS in the PIP script"
-      echo $REINSTALL_DEPS
-    displayName: pip install
-    condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
-
-  - script: |
       echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
       echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
     displayName: Set PATH, PYTHONPATH

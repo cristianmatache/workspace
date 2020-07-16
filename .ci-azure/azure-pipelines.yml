@@ -18,14 +18,23 @@ stages:
     jobs:
       - job: install_python_deps
         steps:
-          - template: use_py_deps.yml
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(PY_VERSION)'
+
+          - task: Cache@2
+            displayName: Use cached pip dependencies
+            inputs:
+              key: dev_requirements.txt
+              path: $(PY_ENV_PATH)
+              cacheHitVar: PIP_DEPS_CACHE_RESTORED
+
           - script: |
-              echo "REINSTALL_DEPS before install_deps"
-              echo $REINSTALL_DEPS
-              echo "##vso[task.setvariable variable=REINSTALL_DEPS]false"
-              echo "REINSTALL_DEPS after install_deps"
-              echo $REINSTALL_DEPS
-            displayName: 'flip REINSTALL_DEPS'
+              PIP="pip install --upgrade -r dev_requirements.txt --target $(PY_ENV_PATH)"
+              echo $PIP
+              eval $PIP
+            displayName: pip install
+            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
 
   - stage: lint
     displayName: 'lint'

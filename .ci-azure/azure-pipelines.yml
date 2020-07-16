@@ -22,7 +22,7 @@ stages:
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP
               eval $PIP
-              SET_PYTHONPATH="export PYTHONPATH=$(PY_ENV_PATH):$PYTHONPATH"
+              SET_PYTHONPATH="export PYTHONPATH=$(PY_ENV_PATH)"
               echo $SET_PYTHONPATH
               eval $SET_PYTHONPATH
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
@@ -30,4 +30,4 @@ stages:
               which pip
               which python
               which mypy
-            displayName: Add to PATH "$(PY_ENV_PATH)/bin"
+            displayName: pip install

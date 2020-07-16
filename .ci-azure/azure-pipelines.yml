@@ -32,7 +32,7 @@ stages:
               echo "Set PYTHONPATH to:"
               echo $PYTHONPATH
 
-              SET_PATH="export PATH=$(PY_ENV_PATH)/bin:$PATH'
+              SET_PATH="export PATH=$(PY_ENV_PATH)/bin:$PATH"
               echo $PATH
               which pip
               which python

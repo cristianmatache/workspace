@@ -30,4 +30,4 @@ stages:
               which pip
               which python
               which mypy
-            displayName: Add to PATH: $(PY_ENV_PATH)/bin
+            displayName: Add to PATH "$(PY_ENV_PATH)/bin"

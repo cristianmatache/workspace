@@ -12,11 +12,11 @@ variables:
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
 
 stages:
-  - stage: pip_install
-    displayName: 'pip install deps'
+  - stage: install_deps
+    displayName: 'install deps'
 
     jobs:
-      - job: 'python'
+      - job: python_deps
         steps:
           - task: UsePythonVersion@0
             inputs:
@@ -36,22 +36,30 @@ stages:
             displayName: pip install
             condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
+
+  - stage: lint
+    displayName: 'lint'
+    jobs:
+      - job:
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(PY_VERSION)'
           - script: |
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
               echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
-            displayName: Prepend to PATH, PYTHONPATH
+            displayName: PATH, PYTHONPATH
 
           - script: |
               echo "PATH is:"
               echo $PATH
-              echo "ls $(PY_ENV_PATH)/bin"
               echo "PYTHONPATH is:"
               echo $PYTHONPATH
               which mypy
               which flake8
               which bandit
               which pylint
-            displayName: Check env vars are set
+            displayName: Sanity check
 
           - script: flake8 . --config=.ini-files/.flake8
             displayName: 'Run flake8'

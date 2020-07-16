@@ -1,1 +1,3 @@
-make -C ../.. pre-commit
+#!/usr/bin/env bash
+pwd
+make -j2 pre-commit

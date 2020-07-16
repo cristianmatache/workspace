@@ -10,11 +10,16 @@ pool:
 variables:
   PY_VERSION: 3.8
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
-  REINSTALL_DEPS: 'false'
+  REINSTALL_DEPS: 'true'
 
 stages:
   - stage: install_deps
     displayName: 'install deps'
+    jobs:
+      - job: install_python_deps
+        steps:
+          - template: use_py_deps.yml
+          - script: echo '##vso[task.setvariable variable=REINSTALL_DEPS]false'
 
   - stage: lint
     displayName: 'lint'

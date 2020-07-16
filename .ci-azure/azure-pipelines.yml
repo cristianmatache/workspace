@@ -19,7 +19,13 @@ stages:
       - job: install_python_deps
         steps:
           - template: use_py_deps.yml
-          - script: echo '##vso[task.setvariable variable=REINSTALL_DEPS]false'
+          - script: |
+              echo "REINSTALL_DEPS before install_deps"
+              echo $REINSTALL_DEPS
+          - script: echo "##vso[task.setvariable variable=REINSTALL_DEPS]false"
+          - script: |
+              echo "REINSTALL_DEPS after install_deps"
+              echo $REINSTALL_DEPS
 
   - stage: lint
     displayName: 'lint'

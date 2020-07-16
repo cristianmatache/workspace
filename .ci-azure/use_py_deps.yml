@@ -11,7 +11,7 @@ steps:
       cacheHitVar: PIP_DEPS_CACHE_RESTORED
 
   - script: |
-      PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)"
+      PIP="pip install --upgrade -r dev_requirements.txt --target $(PY_ENV_PATH)"
       echo $PIP
       eval $PIP
     displayName: pip install

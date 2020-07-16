@@ -39,14 +39,14 @@ stages:
               which pylint
             displayName: Sanity check py linters
 
-          - script: flake8 . --config=.ini-files/.flake8
+          - script: make flake8
             displayName: 'Run flake8'
 
-          - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
+          - script: make mypy
             displayName: 'Run mypy'
 
-          - script: bandit -r . --configfile .ini-files/.bandit.yml
+          - script: make bandit
             displayName: 'Run bandit'
 
-          - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
+          - script: make pylint
             displayName: 'Run pylint'

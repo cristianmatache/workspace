@@ -1,0 +1,7 @@
+name: ws
+dependencies:
+  - python>=3.8
+  - miniconda
+  - pip
+  - pip:
+    - -r file:dev_requirements.txt

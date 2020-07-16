@@ -44,8 +44,10 @@ stages:
           - script: |
               echo "PATH is:"
               echo $PATH
+              echo "ls $(PY_ENV_PATH)/bin"
+              ls $(PY_ENV_PATH)/bin
               echo "PYTHONPATH is:"
-              # echo $PYTHONPATH
+              echo $PYTHONPATH
               which mypy
               which flake8
               which bandit

@@ -22,10 +22,10 @@ stages:
           - script: |
               echo "REINSTALL_DEPS before install_deps"
               echo $REINSTALL_DEPS
-          - script: echo "##vso[task.setvariable variable=REINSTALL_DEPS]false"
-          - script: |
+              echo "##vso[task.setvariable variable=REINSTALL_DEPS]false"
               echo "REINSTALL_DEPS after install_deps"
               echo $REINSTALL_DEPS
+            displayName: 'flip REINSTALL_DEPS'
 
   - stage: lint
     displayName: 'lint'

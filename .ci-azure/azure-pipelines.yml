@@ -37,17 +37,14 @@ stages:
             condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
           - script: |
-              SET_PYTHONPATH="export PYTHONPATH=$(PY_ENV_PATH)"
-              echo $SET_PYTHONPATH
-              eval $SET_PYTHONPATH
-
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
+              echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
             displayName: Prepend PATH, PYTHONPATH
 
           - script: |
-              echo "PATH is"
+              echo "PATH is:"
               echo $PATH
-              echo "Set PYTHONPATH to:"
+              echo "PYTHONPATH to:"
               echo $PYTHONPATH
               which mypy
               which flake8

@@ -39,7 +39,7 @@ stages:
           - script: |
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
               echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
-            displayName: Prepend PATH, PYTHONPATH
+            displayName: Prepend to PATH, PYTHONPATH
 
           - script: |
               echo "PATH is:"

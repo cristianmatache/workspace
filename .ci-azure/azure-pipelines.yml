@@ -18,6 +18,10 @@ stages:
             inputs:
               versionSpec: '3.8'
 
+          - script: which python
+          - script: which pip
+          - script: which conda
+
           - script: pip install -r dev_requirements.txt
             displayName: 'Install python dependencies'
 

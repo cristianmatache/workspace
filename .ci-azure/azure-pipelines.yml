@@ -10,6 +10,7 @@ pool:
 variables:
   CONDA_ENV: ws
   CONDA_HOME: /usr/share/miniconda/envs/$(CONDA_ENV)/
+  PY_VERSION: 3.8
 
 stages:
   - stage: pip_install
@@ -33,13 +34,11 @@ stages:
               cacheHitVar: CONDA_CACHE_RESTORED
 
           - script: |
-              which conda
-              which python
+              conda create -n $(CONDA_ENV) python=$(PY_VERSION) -y
+              conda activate $(CONDA_ENV)
               which pip
-              echo "Creating"
-              conda create -n $(CONDA_ENV) python=3.8 -y
               which python
-              which pip
+              python --version
               pip install -r dev_requirements.txt
             displayName: Create Anaconda environment (if not restored from cache)
             condition: eq(variables.CONDA_CACHE_RESTORED, 'false')

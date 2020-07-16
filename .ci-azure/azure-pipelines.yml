@@ -43,9 +43,9 @@ stages:
 
           - script: |
               echo "PATH is:"
-              echo $PATH
-              echo "PYTHONPATH to:"
-              echo $PYTHONPATH
+              # echo $PATH
+              echo "PYTHONPATH is:"
+              # echo $PYTHONPATH
               which mypy
               which flake8
               which bandit

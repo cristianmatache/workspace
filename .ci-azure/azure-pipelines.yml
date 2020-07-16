@@ -45,14 +45,12 @@ stages:
               echo "PATH is:"
               echo $PATH
               echo "ls $(PY_ENV_PATH)/bin"
-              ls $(PY_ENV_PATH)/bin
               echo "PYTHONPATH is:"
               echo $PYTHONPATH
               which mypy
               which flake8
               which bandit
               which pylint
-              echo "------"
             displayName: Check env vars are set
 
           - script: flake8 . --config=.ini-files/.flake8

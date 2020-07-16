@@ -51,7 +51,7 @@ stages:
 
           - script: |
               which mypy
-              source activate $(CONDA_ENV)
+              echo $(CONDA_ENV)
               which mypy
             displayName: Run unit tests
 

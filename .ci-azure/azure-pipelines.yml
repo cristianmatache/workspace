@@ -7,6 +7,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  CONDA_ENV: ws
+  CONDA_HOME: /usr/share/miniconda/envs/$(CONDA_ENV)/
+
 stages:
   - stage: pip_install
     displayName: 'pip install deps'
@@ -22,17 +26,44 @@ stages:
           - script: which pip
           - script: which conda
 
-          - script: pip install -r dev_requirements.txt
-            displayName: 'Install python dependencies'
+          - script: echo "##vso[task.prependpath]$CONDA/bin"
+            displayName: Add conda to PATH
 
-          - script: flake8 . --config=.ini-files/.flake8
-            displayName: 'Run flake8'
+          - task: Cache@2
+            displayName: Use cached Anaconda environment
+            inputs:
+              key: conda | requirements.txt
+              path: $(CONDA_HOME)
+              cacheHitVar: CONDA_CACHE_RESTORED
 
-          - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
-            displayName: 'Run mypy'
+          - script: |
+              which conda
+              which python
+              which pip
+              echo "Creating"
+              conda create -n $(CONDA_ENV) python=3.8
+              which python
+              which pip
+              pip install -r dev_requirements.txt
+            displayName: Create Anaconda environment (if not restored from cache)
+            condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
-          - script: bandit -r . --configfile .ini-files/.bandit.yml
-            displayName: 'Run bandit'
+          - script: |
+              source activate $(CONDA_ENV)
+              which mypy
+            displayName: Run unit tests
 
-          - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
-            displayName: 'Run pylint'
+          # - script: pip install -r dev_requirements.txt
+          #   displayName: 'Install python dependencies'
+
+          # - script: flake8 . --config=.ini-files/.flake8
+          #   displayName: 'Run flake8'
+
+          # - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
+          #   displayName: 'Run mypy'
+
+          # - script: bandit -r . --configfile .ini-files/.bandit.yml
+          #   displayName: 'Run bandit'
+
+          # - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
+          #   displayName: 'Run pylint'

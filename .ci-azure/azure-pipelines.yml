@@ -21,7 +21,7 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '$(PY_VERSION)'
-          - script: |
+          - bash: |
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP
               eval $PIP

@@ -35,7 +35,7 @@ stages:
               echo $PIP
               eval $PIP
             displayName: pip install
-            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true')
+            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
 
 
   - stage: lint
@@ -59,7 +59,7 @@ stages:
               echo $PIP
               eval $PIP
             displayName: pip install
-            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true')
+            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
           
           - script: |
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"

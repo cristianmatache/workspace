@@ -50,6 +50,7 @@ stages:
               which flake8
               which bandit
               which pylint
+              echo "------"
             displayName: Check env vars are set
 
           - script: flake8 . --config=.ini-files/.flake8

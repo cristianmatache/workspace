@@ -41,31 +41,9 @@ stages:
   - stage: lint
     displayName: 'lint'
     jobs:
-      - job:
+      - job: lint
         steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '$(PY_VERSION)'
-
-          - task: Cache@2
-            displayName: Use cached pip dependencies
-            inputs:
-              key: dev_requirements.txt
-              path: $(PY_ENV_PATH)
-              cacheHitVar: PIP_DEPS_CACHE_RESTORED
-
-          - script: |
-              PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
-              echo $PIP
-              eval $PIP
-            displayName: pip install
-            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
-          
-          - script: |
-              echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
-              echo "##vso[task.setvariable variable=PYTHONPATH;]$(PY_ENV_PATH)"
-            displayName: Set PATH, PYTHONPATH
-
+          - template: use_py_deps.yml
           - script: |
               echo "PATH is:"
               echo $PATH

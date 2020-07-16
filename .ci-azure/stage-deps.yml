@@ -1,9 +1,0 @@
-stages:
-- stage: pip_install
-  displayName: 'pip install deps'
-
-  jobs:
-    - job: 'pip_install'
-      steps:
-        - script: pip install -r dev_requirements.txt
-          displayName: 'Install python dependencies'

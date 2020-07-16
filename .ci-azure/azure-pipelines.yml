@@ -7,6 +7,11 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  CONDA_ENV: ws
+  CONDA_HOME: /usr/share/miniconda/envs/$(CONDA_ENV)/
+  PY_VERSION: 3.8
+
 stages:
   - stage: pip_install
     displayName: 'pip install deps'
@@ -14,21 +19,38 @@ stages:
     jobs:
       - job: 'python'
         steps:
-          - task: UsePythonVersion@0
+          - script: echo "##vso[task.prependpath]$CONDA/bin"
+            displayName: Add conda to PATH
+
+          - task: Cache@2
+            displayName: Use cached Anaconda environment
             inputs:
-              versionSpec: '3.8'
+              key: conda | dev_requirements.txt | 3
+              path: $(CONDA_HOME)
+              cacheHitVar: CONDA_CACHE_RESTORED
 
-          - script: pip install -r dev_requirements.txt
-            displayName: 'Install python dependencies'
+          - script: |
+              conda create -n $(CONDA_ENV) python=$(PY_VERSION) -y
+          
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                eval "$(conda shell.bash hook)"
+                conda activate $(CONDA_ENV)
+            displayName: Activated $(CONDA_ENV)
 
-          - script: flake8 . --config=.ini-files/.flake8
-            displayName: 'Run flake8'
+          - script: |
+              which pip
+              which python
+              python --version
+              # pip install -r dev_requirements.txt
+              pip install mypy
+            displayName: Create Anaconda environment (if not restored from cache)
+            condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
 
-          - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
-            displayName: 'Run mypy'
-
-          - script: bandit -r . --configfile .ini-files/.bandit.yml
-            displayName: 'Run bandit'
-
-          - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
-            displayName: 'Run pylint'
+          - script: |
+              which mypy
+              echo $(CONDA_ENV)
+              which mypy
+            displayName: Run unit tests

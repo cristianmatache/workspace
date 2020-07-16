@@ -22,17 +22,13 @@ stages:
             inputs:
               versionSpec: '3.8'
 
-          - script: which python
-          - script: which pip
-          - script: which conda
-
           - script: echo "##vso[task.prependpath]$CONDA/bin"
             displayName: Add conda to PATH
 
           - task: Cache@2
             displayName: Use cached Anaconda environment
             inputs:
-              key: conda | requirements.txt
+              key: conda | dev_requirements.txt
               path: $(CONDA_HOME)
               cacheHitVar: CONDA_CACHE_RESTORED
 

@@ -18,17 +18,7 @@ stages:
     jobs:
       - job: install_python_deps
         steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: '$(PY_VERSION)'
-
-          - task: Cache@2
-            displayName: Use cached pip dependencies
-            inputs:
-              key: dev_requirements.txt
-              path: $(PY_ENV_PATH)
-              cacheHitVar: PIP_DEPS_CACHE_RESTORED
-
+          - template: tasks_py_setup.yml
           - script: |
               PIP="pip install --upgrade -r dev_requirements.txt --target $(PY_ENV_PATH)"
               echo $PIP

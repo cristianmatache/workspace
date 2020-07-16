@@ -21,21 +21,48 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '$(PY_VERSION)'
+
+          - task: Cache@2
+            displayName: Use cached pip dependencies
+            inputs:
+              key: dev_requirements.txt
+              path: $(PY_ENV_PATH)
+              cacheHitVar: PIP_DEPS_CACHE_RESTORED
+
           - script: |
               PIP="pip install -r dev_requirements.txt --target $(PY_ENV_PATH)" 
               echo $PIP
               eval $PIP
-  
+            displayName: pip install
+            condition: eq(variables.CONDA_CACHE_RESTORED, 'false')
+
+          - script: |
               SET_PYTHONPATH="export PYTHONPATH=$(PY_ENV_PATH)"
               echo $SET_PYTHONPATH
               eval $SET_PYTHONPATH
-              echo "Set PYTHONPATH to:"
-              echo $PYTHONPATH
 
               echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"
-            displayName: pip install
+            displayName: Prepend PATH, PYTHONPATH
+
           - script: |
               echo "PATH is"
               echo $PATH
+              echo "Set PYTHONPATH to:"
+              echo $PYTHONPATH
               which mypy
+              which flake8
+              which bandit
+              which pylint
+            displayName: Check env vars are set
 
+          - script: flake8 . --config=.ini-files/.flake8
+            displayName: 'Run flake8'
+
+          - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
+            displayName: 'Run mypy'
+
+          - script: bandit -r . --configfile .ini-files/.bandit.yml
+            displayName: 'Run bandit'
+
+          - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
+            displayName: 'Run pylint'

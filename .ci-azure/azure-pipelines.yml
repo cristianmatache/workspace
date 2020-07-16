@@ -54,18 +54,3 @@ stages:
               echo $(CONDA_ENV)
               which mypy
             displayName: Run unit tests
-
-          # - script: pip install -r dev_requirements.txt
-          #   displayName: 'Install python dependencies'
-
-          # - script: flake8 . --config=.ini-files/.flake8
-          #   displayName: 'Run flake8'
-
-          # - script: mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
-          #   displayName: 'Run mypy'
-
-          # - script: bandit -r . --configfile .ini-files/.bandit.yml
-          #   displayName: 'Run bandit'
-
-          # - script: pylint app_iqor/ lib_py_utils/py_utils/  --rcfile=.ini-files/.pylintrc
-          #   displayName: 'Run pylint'

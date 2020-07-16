@@ -37,7 +37,7 @@ stages:
               which python
               which pip
               echo "Creating"
-              conda create -n $(CONDA_ENV) python=3.8
+              conda create -n $(CONDA_ENV) python=3.8 -y
               which python
               which pip
               pip install -r dev_requirements.txt

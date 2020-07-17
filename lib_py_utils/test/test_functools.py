@@ -1,5 +1,5 @@
 # TODO: do proper testing with yml and # E:
-from typing import TypeVar, Type, Sequence
+from typing import TypeVar, Type, Sequence, cast
 
 from typing_extensions import Literal
 
@@ -28,15 +28,14 @@ class TestClass:
 
     part1 = partialmethod(my_method, arg1=1)
     part2 = partialmethod(my_method, arg2=Child1)
-    part3 = partialmethod(my_method, arg3=1)
+    part3 = partialmethod(my_method, arg3=cast(Literal[1], 1))
     part4 = partialmethod(my_method, arg4=[Child2()])
-    part4_ = partialmethod(my_method, arg4=Child1())  # type: ignore # ERRORS
-    part14 = partialmethod(my_method, arg1=1, arg4=[Child2()])
-    part13 = partialmethod(my_method, arg1=1, arg3=2)
+    part4_ = partialmethod(my_method, arg4=Child1())  # type: ignore # ERRORS rightly
+    part14 = partialmethod(my_method, arg1=cast(Literal[1], 1), arg4=[Child2()])
+    part13 = partialmethod(my_method, arg1=1, arg3=cast(Literal[2], 2))
 
 
 cls_full = TestClass.my_method
-cls_part = TestClass.part1
 TEST_CLASS = TestClass()
 full = TEST_CLASS.my_method
 part1 = TEST_CLASS.part1
@@ -49,4 +48,3 @@ part13 = TEST_CLASS.part13
 
 res1 = part1(arg2=Child2, arg3=2, arg4=[Child2()])
 res2 = part2(arg1=10, arg3=1, arg4=[Child2()])
-reveal_locals()

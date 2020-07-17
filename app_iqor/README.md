@@ -9,6 +9,7 @@ What
 ----
 Small hackathon project developed at HackZurich 2019.
 It aims to make the renting system in Switzerland more efficient, which is notorious for large queues.
+See: https://devpost.com/software/iqor
 
 Why
 ---
@@ -29,8 +30,8 @@ How it works
 
 How it is implemented
 ---------------------
-Backend: Lightweight Python-Flask wrapper over a powerful Q/KDB backend.
-Frontend: HTML, CSS, Jinja
+- Backend: Lightweight Python-Flask wrapper over a powerful Q/KDB backend.
+- Frontend: HTML, CSS, Jinja
 
 Team
 ----

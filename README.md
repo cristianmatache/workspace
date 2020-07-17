@@ -7,12 +7,13 @@ A monorepo containing some of my small projects. See individual README.md files 
 ![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
 
 # Contents:
-- **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) => Python+Q/KDB
+- **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) →  Python+Q/KDB
 - **dotfiles:** my take-everywhere rc-files
-- **lib_py_utils:** a few interesting general purpose Python utility functions
+- **lib_bzl_utils:** useful macros for Bazel →  Starlark
+- **lib_py_utils:** a few interesting general purpose utility functions → Python
 - **tutorials_q:**
-  - weekly_q: see https://dpkwhan.github.io/weeklyq/
-  
+  - weekly_q: see https://dpkwhan.github.io/weeklyq/ → Q/KDB
+
 # Hackathon projects:
 For more hackathon projects see my devpost accounts:
 - https://devpost.com/crm15

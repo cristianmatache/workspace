@@ -1,15 +1,17 @@
+from dataclasses import dataclass
 from datetime import datetime
-from logging import Logger as LoggingLogger, getLogger, CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, basicConfig
-from os import getpid, mkdir
+from logging import Logger as LoggingLogger, getLogger, CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, StreamHandler, \
+    Formatter, FileHandler
+from os import getpid
 from pathlib import Path
 from traceback import format_exc
-from typing import ClassVar, Optional, Union, Dict
+from typing import ClassVar, Optional, Union, Dict, Set
 from warnings import warn
 
 from colorama import Fore, Style
 
-DEFAULT_LOGGER_FORMAT = '%(gmttime)s [%(name)s] %(levelname)s: %(message)s'
-DEFAULT_PRINT_PREFIX_FORMAT = '%(color)s %(utcnow)s [%(name)s PID:%(pid)s] %(levelname)s:'
+DEFAULT_LOGGER_FORMAT = '%(asctime)s [%(name)s] %(levelname)s: %(message)s'
+DEFAULT_PRINT_PREFIX_FORMAT = '%(utcnow)s [%(name)s PID:%(pid)s] %(levelname)s:'
 
 LOG_LEVELS = [CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET]
 LEVEL_NAMES = {
@@ -26,6 +28,12 @@ DEFAULT_LEVEL_COLORS = {
     INFO: Fore.BLUE,
     DEBUG: Fore.WHITE,
 }
+
+
+@dataclass
+class Handlers:
+    console: StreamHandler
+    file: Optional[FileHandler]
 
 
 class Logger:
@@ -56,40 +64,50 @@ class Logger:
 
     Can be used in regular methods and class methods, cannot be used in static methods.
     """
-    __colors: ClassVar[Dict[int, str]] = DEFAULT_LEVEL_COLORS
     __log_is_initialized: ClassVar[bool] = False
-    __log_is_colored: ClassVar[bool] = True  # Whether console to color log messages by level by default
-    __print_level: ClassVar[int] = DEBUG
+    __level: ClassVar[int] = DEBUG
+    __handlers: Handlers
+    __seen_loggers: Set[str] = set()
+    __colors: ClassVar[Dict[int, str]] = DEFAULT_LEVEL_COLORS
+    __is_colored: ClassVar[bool] = True  # Whether console to color log messages by level by default
     __print_prefix_format: ClassVar[str] = DEFAULT_PRINT_PREFIX_FORMAT
 
     @classmethod
     def initialize_log(
-            cls, level: int, logger_format: str = DEFAULT_LOGGER_FORMAT, log_dir: Optional[Union[Path, str]] = None,
+            cls, level: int, logger_format: str = DEFAULT_LOGGER_FORMAT, log_file: Optional[Union[Path, str]] = None,
             *, is_colored: bool = True, color_overrides: Optional[Dict[int, str]] = None
     ) -> None:
         assert level in LOG_LEVELS
-        # TODO: add console handle
-        if log_dir is not None:
-            log_dir = Path(log_dir) / 'logs'
-            if not log_dir.exists():
-                mkdir(log_dir)
-            # TODO: add file handler
+        formatter = Formatter(logger_format)
+        # Prepare writing to console
+        console_handler = StreamHandler()
+        console_handler.setFormatter(formatter)
 
-        basicConfig(format=logger_format)
+        file_handler: Optional[FileHandler] = None
+        if log_file is not None:
+            log_dir = Path(log_file).parent
+            log_dir.mkdir(parents=True, exist_ok=True)
+            # Prepare writing to file
+            file_handler = FileHandler(log_file)
+            file_handler.setFormatter(formatter)
+
         cls.__log_is_initialized = True
-        cls.__log_is_colored = is_colored
+        cls.__level = level
+        cls.__handlers = Handlers(console_handler, file_handler)
+        cls.__is_colored = is_colored
         if color_overrides is not None:
             cls.__colors = {**cls.__colors, **color_overrides}
 
     @classmethod
     def initialize_print(
             cls, level: int, prefix_format: str = DEFAULT_PRINT_PREFIX_FORMAT,
-            color_overrides: Optional[Dict[int, str]] = None
+            *, is_colored: bool = True, color_overrides: Optional[Dict[int, str]] = None
     ) -> None:
         assert not cls.__log_is_initialized, 'Logger is already initialized'
         warn('Initializing printing instead of logging. It is recommended to use logging.')
-        cls.__print_level = level
+        cls.__level = level
         cls.__print_prefix_format = prefix_format
+        cls.__is_colored = is_colored
         if color_overrides is not None:
             cls.__colors = {**cls.__colors, **color_overrides}
 
@@ -98,31 +116,40 @@ class Logger:
         return f'{cls.__module__}.{cls.__name__}'
 
     @classmethod
-    def __logger(cls) -> LoggingLogger:
+    def __logger(cls, logger_name: Optional[str] = None) -> LoggingLogger:
         """Returns a logger."""
-        return getLogger(cls.__logger_name())
+        logger_name_ = cls.__logger_name() if logger_name is None else logger_name
+        logger = getLogger(logger_name_)
+        if logger_name_ not in cls.__seen_loggers:
+            logger.setLevel(cls.__level)
+            logger.addHandler(cls.__handlers.console)
+            if cls.__handlers.file is not None:
+                logger.addHandler(cls.__handlers.file)
+        return logger
 
     @classmethod
     def __print(cls, level: int, *messages: str) -> None:
         assert level in LOG_LEVELS
-        if level < cls.__print_level or cls.__print_level == NOTSET:
+        if level < cls.__level or cls.__level == NOTSET:
             return
 
         prefix = cls.__print_prefix_format % {
-            'color': cls.__colors[level],
             'utcnow': datetime.utcnow(),
             'name': cls.__logger_name(),
             'pid': getpid(),
             'levelname': LEVEL_NAMES[level]
         }
 
-        print(prefix, *messages, Style.RESET_ALL)
+        if cls.__is_colored:
+            print(f'{cls.__colors[level]}{prefix}', *messages, Style.RESET_ALL)
+        else:
+            print(prefix, *messages, Style.RESET_ALL)
 
     @classmethod
     def __log_fallback_print(cls, level: int, message: str) -> None:
         assert level in LOG_LEVELS
-        log_message = f'{cls.__colors[level]}{message}{Style.RESET_ALL}' if cls.__log_is_colored else message
         if cls.__log_is_initialized:
+            log_message = f'{cls.__colors[level]}{message}{Style.RESET_ALL}' if cls.__is_colored else message
             cls.__logger().log(level, log_message)
         else:
             cls.__print(level, message)

@@ -37,7 +37,7 @@ stages:
               which flake8
               which bandit
               which pylint
-            displayName: Sanity check py linters
+            displayName: 'Sanity check py linters'
 
           - script: make flake8
             displayName: 'Run flake8'
@@ -50,3 +50,16 @@ stages:
 
           - script: make pylint
             displayName: 'Run pylint'
+
+  - stage: test
+    displayName: 'test'
+    jobs:
+      - job: test_py
+        steps:
+          - template: use_py_deps.yml
+          - script: |
+              which pytest
+            displayName: 'Sanity check py test'
+
+          - script: pytest lib_py_utils/ --verbose
+            displayName: 'Pytest lib_py_utils'

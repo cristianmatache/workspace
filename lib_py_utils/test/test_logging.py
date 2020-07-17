@@ -1,7 +1,7 @@
 from logging import WARN, FATAL, ERROR, DEBUG
 
 from colorama import Fore
-from pytest import raises
+from pytest import raises, warns
 
 from py_utils.logging import Logger
 
@@ -38,12 +38,14 @@ def test_logger_print() -> None:
     my_class.cls_method(100)
 
     # With initialization
-    Logger.initialize_print(level=WARN, prefix_format="Cristian's %(pid)s", color_overrides={FATAL: Fore.GREEN})
+    with warns(UserWarning):
+        Logger.initialize_print(level=WARN, prefix_format="Cristian's %(pid)s", color_overrides={FATAL: Fore.GREEN})
     my_class.method(10)
     my_class.cls_method(100)
 
     # Reinitializing printing is allowed
-    Logger.initialize_print(level=ERROR, is_colored=False)
+    with warns(UserWarning):
+        Logger.initialize_print(level=ERROR, is_colored=False)
     my_class.cls_method(10)
 
 

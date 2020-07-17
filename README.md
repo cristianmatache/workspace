@@ -7,10 +7,10 @@ A monorepo containing some of my small projects. See individual README.md files 
 ![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
 
 # Contents:
-- app_iqor: IQOR = I Quit Ordinary Renting (HackZurich 2019) => Python+Q/KDB
-- dotfiles: my take-everywhere rc-files
-- lib_py_utils: a few interesting general purpose Python utility functions
-- tutorials_q:
+- **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) => Python+Q/KDB
+- **dotfiles:** my take-everywhere rc-files
+- **lib_py_utils:** a few interesting general purpose Python utility functions
+- **tutorials_q:**
   - weekly_q: see https://dpkwhan.github.io/weeklyq/
   
 # Hackathon projects:

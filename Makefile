@@ -2,7 +2,7 @@ clean-pyc:
 	find . -name *.pyc | xargs rm -f && find . -name *.pyo | xargs rm -f;
 
 mypy:
-	mypy app_iqor/ lib_py_utils/py_utils/ --config-file .ini-files/mypy.ini
+	mypy app_iqor/ lib_py_utils/ --config-file .ini-files/mypy.ini
 
 flake8:
 	flake8 . --config=.ini-files/.flake8

@@ -31,3 +31,8 @@ How it is implemented
 ---------------------
 Backend: Lightweight Python-Flask wrapper over a powerful Q/KDB backend.
 Frontend: HTML, CSS, Jinja
+
+Team
+----
+- Oana Ciocioman: https://github.com/oanaciocioman
+- Cristian Matache: https://github.com/cristianmatache

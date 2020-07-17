@@ -4,6 +4,8 @@ mypy
 flake8
 pylint
 bandit
+# test
+pytest
 # from all projects altogether
 flask
 flask_assets

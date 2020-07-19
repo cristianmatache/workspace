@@ -7,7 +7,8 @@ A monorepo containing some of my small projects. See individual README.md files 
 ![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
 
 # Contents:
-- **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) →  Python+Q/KDB
+- **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) →  Q/KDB+Python
+- **app_paper_plane:** Paper Plane = find same flight but cheaper by changing country on Skyscanner (LauzHack 2018) → Python
 - **dotfiles:** my take-everywhere rc-files
 - **lib_bzl_utils:** useful macros for Bazel →  Starlark
 - **lib_py_utils:** a few interesting general purpose utility functions → Python

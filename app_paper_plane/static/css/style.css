@@ -1,0 +1,341 @@
+
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  color: #000;
+  font-family: "Arial";
+  font-size: 13px;
+  line-height: 1.69em;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: none;
+}
+
+.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px
+}
+
+#nav {
+  margin-bottom: 0px;
+  border: none;
+  border-radius: 0px;
+  min-height: 60px;
+}
+
+.navbar-default {
+  background-color: #3498dd;
+}
+
+.navbar-default .nav li a {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  font-size: 2em;
+  color: #fff;
+}
+
+.navbar-default .nav li a:hover {
+  color: #3498dd;
+  background: #fff;
+}
+
+#section {
+  background-color: #;
+  display: block;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding: 60px 0px;
+  background: #fff url("https://i.pinimg.com/originals/96/8b/e1/968be1d03c8a0223d90f2bcae25df69f.jpg") no-repeat fixed center;
+  background-size: cover;
+}
+
+.row {
+  padding-top: 50px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.row h2 {
+  font-family: 'Arial';
+  font-size: 36px;
+  color: #fff;
+  font-weight: 700;
+  margin-left: 30px;
+  margin-top: 30px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+
+/* Start features style */
+
+.features {
+  background-color: rgba(138, 138, 138, 0.81);
+  padding: 15px;
+}
+
+.features .dropdown {
+  text-align: center;
+  margin-bottom: 60px;
+  margin-top: 60px;
+  width: 80%;
+}
+
+.features label {
+  font-size: 28px;
+  font-family: 'Arial';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.features .dropdown-select {
+  background-color: #ffe4b2;
+  background-color: #f2f2f2;
+  color: #333;
+  font-family: 'Arial';
+  font-size: 28px;
+  border: 0;
+  border-radius: 0;
+  padding: 5px;
+  margin: 0;
+  margin: 0;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: field;
+  outline: none;
+  position: relative;
+  width: 80%;
+}
+
+.features .dropdown-select:focus {
+  color: #333;
+  text-shadow: 0 1px white;
+  background-color: #ffe4b2;
+  outline: none;
+  width: 80%;
+}
+
+.features .dropdown-select > option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #f2f2f2;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.destination {
+  background-color: rgba(185, 161, 146, 0.75);
+  padding: 15px;
+}
+
+.destination .wrapper {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.destination label {
+  font-size: 28px;
+  font-family: 'Arial';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 15px;
+  background: #E8E8E8;
+  text-align: center;
+  cursor: pointer;
+  width: 80%;
+}
+
+.destination input[type=text] {
+  padding: 10px;
+  border: none;
+  width: 80%;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.destination input[type=text]:focus {
+  background-color: #ffe4b2;
+  content: '';
+  outline: none !important;
+  color: black;
+}
+
+.destination input:focus::-webkit-input-placeholder,
+.destination input:focus::-moz-input-placeholder {
+  font-family: 'Arial';
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.dates {
+  background-color: rgba(138, 138, 138, 0.81);
+  padding: 15px;
+}
+
+.dates .wrapper {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.dates label {
+  font-size: 28px;
+  font-family: 'Arial';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 15px;
+  background: #E8E8E8;
+  text-align: center;
+  cursor: pointer;
+  width: 80%;
+}
+
+.dates input[type=date] {
+  padding: 10px;
+  border: none;
+  width: 80%;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.dates input[type=date]:focus {
+  background-color: #ffe4b2;
+  content: '';
+  outline: none !important;
+  color: black;
+}
+
+.dates input:focus::-webkit-input-placeholder,
+.dates input:focus::-moz-input-placeholder {
+  font-family: 'Arial';
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.company {
+  background-color: rgba(185, 161, 146, 0.75);
+  padding: 15px;
+}
+
+.company .wrapper {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.company label {
+  font-size: 28px;
+  font-family: 'Arial';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 15px;
+  background: #E8E8E8;
+  cursor: pointer;
+  width: 80%;
+}
+
+.company input[type=number] {
+  padding: 10px;
+  border: none;
+  width: 80%;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.company input[type=number]:focus {
+  background-color: #ffe4b2;
+  content: '';
+  outline: none !important;
+  color: black;
+}
+
+.company input::-webkit-input-placeholder,
+.company input::-moz-input-placeholder {
+  font-family: 'Arial';
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 300;
+  color: #333;
+}
+
+.buttonHolder {
+  text-align: center;
+}
+
+.btn-xl {
+  padding: 20px 40px;
+  border-color: #f6bf01;
+  border-radius: 0px;
+  text-transform: uppercase;
+  font-family: 'Arial';
+  font-size: 36px;
+  font-weight: 700;
+  color: #fff;
+  background-color: rgba(138, 138, 138, 0.81);
+}
+
+.btn-xl:hover,
+.btn-xl:focus,
+.btn-xl:active,
+.btn-xl.active,
+.open .dropdown-toggle.btn-xl {
+  border-color: rgba(138, 138, 138, 0.81);
+  color: #fff;
+  background-color: rgba(138, 138, 138, 0.81);
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  transition: all .3s;
+}
+
+
+/* Start Signtaure Style */
+
+.signature {
+  position: absolute;
+  margin: auto;
+  bottom: 0;
+  top: auto;
+  width: 100%;
+}
+
+.signature p {
+  text-align: center;
+  font-family: 'Arial';
+  font-size: 1.13em;
+  color: #333;
+}
+
+.signature .fa-heart {
+  color: #AC1D3F;
+}
+
+.signature a {
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+/* End Signtaure style */

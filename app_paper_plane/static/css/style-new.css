@@ -1,0 +1,116 @@
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'), url(https://fonts.gstatic.com/s/montserrat/v12/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v12/JTURjIg1_i6t8kCHKm45_dJE3gnD-w.ttf) format('truetype');
+}
+.listing-card {
+  font-family: 'Montserrat';
+  margin-left: 15%;
+  margin-right: 15%;
+  /*width: 350px;*/
+  min-height: 90px;
+  background-color: white;
+  border-top: 0.5px solid #ddd;
+  border-bottom: 0.5px solid #ddd;
+  padding: 10px;
+}
+.listing-card .card-wrapper .right-column {
+  float: right;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  padding-left: 5%;
+  margin-right: 5%;
+}
+.listing-card .card-wrapper .right-column .heart-rating {
+  /*margin: 8px 0;*/
+  margin-top: 5%;
+}
+.listing-card .card-wrapper .right-column .heart-rating .__percentage {
+  font-size: 25px;
+  color: #333;
+}
+.listing-card .card-wrapper .right-column .heart-rating .__votes {
+  display: block;
+  color: #999;
+  font-size: 9px;
+  margin-top: 5px;
+}
+.listing-card .card-wrapper .right-column .action-button {
+  font-family: 'Montserrat';
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #cd4557;
+  outline: none;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  line-height: 16px;
+  padding: 10px 10px;
+  cursor: pointer;
+}
+.listing-card .card-wrapper .poster {
+  float: left;
+  width: 75px;
+  height: 90px;
+  text-align: center;
+}
+.listing-card .card-wrapper .poster img {
+  width: 60px;
+  border-radius: 3px;
+}
+.listing-card .card-wrapper .movie-info {
+  /*margin: 0 80px;*/
+  margin-top: 1.5%;
+}
+.listing-card .card-wrapper .movie-info .title {
+  font-size: 20px;
+  color: #333;
+  cursor: pointer;
+}
+.listing-card .card-wrapper .movie-info .language {
+  display: block;
+  font-size: 13px;
+  color: #999;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.listing-card .card-wrapper .movie-info .genre {
+  font-size: 9px;
+  padding: 0;
+}
+.listing-card .card-wrapper .movie-info .genre li {
+  display: inline-block;
+  color: #bbc9de;
+  cursor: pointer;
+}
+.listing-card .card-wrapper .movie-info .genre li:after {
+  content: ",";
+}
+.listing-card .card-wrapper .movie-info .genre li:last-child:after {
+  content: "";
+}
+.listing-card .card-wrapper .movie-info .tags {
+  font-size: 9px;
+  padding: 0;
+}
+.listing-card .card-wrapper .movie-info .tags li {
+  display: inline-block;
+  background-color: #edf1f6;
+  color: #919eb4;
+  padding: 2px 4px;
+  margin-right: 3px;
+  cursor: pointer;
+}
+.listing-card .card-wrapper .movie-info .tags li:last-child {
+  margin-right: 0;
+}

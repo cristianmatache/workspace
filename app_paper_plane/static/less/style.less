@@ -1,0 +1,123 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+.listing-card {
+  font-family: 'Montserrat';
+  margin: 150px auto;
+  width: 350px;
+  min-height: 90px;
+  background-color: white;
+  border-top: 0.5px solid #ddd;
+  border-bottom: 0.5px solid #ddd;
+  padding: 10px;
+  // transform: scale(1.5);
+  
+  .card-wrapper {
+    
+    .right-column {
+      float: right;
+      width: 90px;
+      height: 90px;
+      text-align: center;
+      
+      .heart-rating {
+        margin: 8px 0;
+        
+        .__percentage {
+          font-size: 14px;
+          color: #333;
+        }
+
+        .__votes {
+          display: block;
+          color: #999;
+          font-size: 9px;
+          margin-top: 5px;
+        }
+      }
+      
+      .action-button {
+        font-family: 'Montserrat';
+        background-color: #cd4557;
+        outline: none;
+        border: none;
+        color: white;
+        text-transform: uppercase;
+        border-radius: 5px;
+        letter-spacing: 1px;
+        line-height: 16px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    }
+    
+    .poster {
+      float: left;
+      width: 75px;
+      height: 90px;
+      // background-color: #ddd;
+      text-align: center;
+      
+      img {
+        width: 60px;
+        border-radius: 3px;
+      }
+    }
+    
+    .movie-info {
+      margin: 0 80px;
+      
+      .title {
+        font-size: 16px;
+        color: #333;
+        cursor: pointer;
+      }
+      
+      .language {
+        display: block;
+        font-size: 10px;
+        color: #999;
+        margin-top: 8px;
+        cursor: pointer;
+      }
+      
+      .genre {
+        font-size: 9px;
+        padding: 0;
+        
+        li {
+          display: inline-block;
+          color: #bbc9de;
+          cursor: pointer;
+          
+          &:after {
+            content: ",";
+          }
+          
+          &:last-child {
+            &:after {
+              content: "";
+            }
+          }
+        }
+      }
+      
+      .tags {
+        font-size: 9px;
+        padding: 0;
+        
+        li {
+          display: inline-block;
+          background-color: #edf1f6;
+          color: #919eb4;
+          padding: 2px 4px;
+          margin-right: 3px;
+          cursor: pointer;
+          
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+}

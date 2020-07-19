@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Flight search test</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<link href='https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,600,500,700,800,900' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,700' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Coming+Soon' rel='stylesheet' type='text/css'>
+  
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css'>
+
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+
+
+  
+</head>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<body>
+	<section id="section">
+				<div style="font-family: Arial; font-size: 38px; font-weight: bold; color: white">
+					<img src="{{ url_for('static',filename='paper-plane.png') }}" height="80" width="80" style="margin-left: 38%; margin-bottom: 20px"/>
+					Paper Plane </div>
+
+		<div class="container-fluid">
+
+			<!-- Flight features -->
+			<div class="row features">
+				<h2><i class="fa fa-list-ul"></i> Flight Features</h2>
+				<div class="col-sm-6 dropdown">
+					<label for="fType">Type</label>
+					<select id="fType" name="fType" class="dropdown-select">
+						<option value="">Select…</option>
+						<option value="oneWay">One Way</option>
+						<option value="return">Return</option>
+						<option value="multi">Multi Cities</option>
+					</select>
+				</div>
+				<div class="col-sm-6 dropdown">
+					<label for="fClass">Class</label>
+					<select id="fClass" name="fClass" class="dropdown-select">
+						<option value="">Select…</option>
+						<option value="economy">Economy</option>
+						<option value="business">Business</option>
+						<option value="firstClass">First Class</option>
+					</select>
+				</div>
+			</div>
+
+			<!-- Destination part -->
+			<div class="row destination">
+				<h2><i class="fa fa-map-marker"></i> Destination</h2>
+				<div class="col-sm-6 wrapper">
+					<label for="from">from</label>
+					<input id="from" placeholder="Enter name of city or airport" size="35" type="text"/>
+				</div>
+				<div class="col-sm-6 wrapper">
+					<label for="to">to</label>
+					<input id="to" placeholder="Enter name of city or airport" size="35" type="text"/>
+				</div>
+			</div>
+
+			<!-- Departure and Arrival Dates -->
+			<div class="row dates">
+				<h2><i class="fa fa-calendar"></i> Departure and Arrival Dates</h2>
+				<div class="col-sm-6 wrapper">
+					<label for="depDate"><i class="fa fa-plane"></i> departure</label>
+					<input id="depDate" name="depDate" type="date"/>
+				</div>
+
+				<div class="col-sm-6 wrapper">
+					<label for="arrDate"><i class="fa fa-plane fa-rotate-180"></i> arrival</label>
+					<input id="arrDate" name="arrDate" type="date"/>
+				</div>
+			</div>
+
+			<!-- Guset Part -->
+			<div class="row company">
+				<h2><i class="fa fa-user"></i> Guests</h2>
+				<div class="col-sm-4 wrapper">
+					<label for="adults">adults</label>
+					<input id="adults" type="number" name="adults" min="0" />
+				</div>
+
+				<div class="col-sm-4 wrapper">
+					<label for="children">children</label>
+					<input id="children" type="number" name="children" min="0" />
+				</div>
+
+				<div class="col-sm-4 wrapper">
+					<label for="infants">infants</label>
+					<input id="infants" type="number" name="infants" min="0" />
+				</div>
+			</div>
+
+			<div class="row buttonHolder">
+				<!--<div style="display: flex">
+				<div class="col-sm-12 wrapper" style="flex: 1">
+					<button value="Search" class="btn btn-xl" onclick="sendData()"><i class="fa fa-search"></i> Get Cached Prices</button>
+									</div>-->
+
+				<div class="col-sm-12 wrapper" style="flex: 1">
+					<button value="Search" class="btn btn-xl" style="background-color:rgba(226, 147, 29, 0.8); border-color: rgba(226, 147, 29, 0.8)" onclick="liveData()"><i class="fa fa-search"></i> Browse Markets</button>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
+<script>
+
+    function sendData() {
+        var fType = $('#fType').find(":selected").text();
+        var fClass = $('#fClass').find(":selected").text();
+        var from = $("#from").val();
+        var to = $("#to").val();
+        var depDate = $("#depDate").val();
+        var arrDate = $("#arrDate").val();
+        var adults = $("#adults").val();
+        var children = $("#children").val();
+        var infants = $("#infants").val();
+        var redirect = `/getprice/${from}/${to}/${depDate}`;
+        $.get( redirect, function() {
+            window.location(redirect);
+        });
+    }
+
+    function liveData() {
+        var fType = $('#fType').find(":selected").text();
+        var fClass = $('#fClass').find(":selected").text();
+        var from = $("#from").val();
+        var to = $("#to").val();
+        var depDate = $("#depDate").val();
+        var arrDate = $("#arrDate").val();
+        var adults = $("#adults").val();
+        var children = $("#children").val();
+        var infants = $("#infants").val();
+        var redirect = `/getlive/${from}/${to}/${depDate}`;
+        $.get( redirect, function() {
+            window.location(redirect);
+        });
+    }
+
+</script>
+
+</html>

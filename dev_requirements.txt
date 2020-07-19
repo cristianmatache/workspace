@@ -14,3 +14,7 @@ pandas
 qpython
 colorama
 returns
+pathos
+requests
+dpath
+flask

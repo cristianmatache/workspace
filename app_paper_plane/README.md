@@ -5,7 +5,7 @@ PAPER PLANE
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
 
-This is the submission to LauzHack 2018 by Andrawes Al Bahou, Cristian Matache, Oana Ciocioman.
+This is the submission to LauzHack 2018 by Andrawes Al Bahou, Cristian Matache, Oana Ciocioman. See: https://devpost.com/software/paper-plane-jrzi15
 
 ## About: 
 

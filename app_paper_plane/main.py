@@ -55,7 +55,7 @@ class Request:
         self.req_id = value
 
 
-class Details(TypedDict, total=True):
+class Details(TypedDict, total=False):
     date_out: str
     date_in: str
     currency: str
@@ -149,10 +149,12 @@ class MarketsSweeper:
             'date_in':  date_in,
             'currency': currency,
             'locale':   locale,
-            'market':   init_market,
+            'market':   init_market
+        }
+        self.details.update({
             'src': self.get_place(src)[0],
             'dst': self.get_place(dst)[0]
-        }
+        })
         print(f'FROM: {self.details["src"]} TO: {self.details["dst"]}')
 
     @extract('/Places/0/PlaceId')
@@ -218,7 +220,6 @@ class MarketsSweeper:
             if prices:
                 entry = (market, markets[market], prices[0], urls[0])
                 # Update reqs -> update file
-                print('---------', entry)
                 REQUESTS[req_id].table.append(entry)
         # Mark job completion
         REQUESTS[req_id].poll_id = 0

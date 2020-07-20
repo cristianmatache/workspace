@@ -1,0 +1,6 @@
+startup --output_user_root=D:/workspace/bazelbuild/cmworkspace_root
+
+#startup --output_base=D:/workspace/bazelbuild/bazel_base
+#build --disk_cache=D:/workspace/bazelbuild/bazel_cache
+
+build --action_env=PYTHONPATH=app_iqor:app_paper_plane:lib_py_utils

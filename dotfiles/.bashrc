@@ -25,7 +25,8 @@ alias q="q -p 5000 -U /c/q/credentials.txt"
 export PATH=/d/Anaconda3/Scripts/:$PATH
 export PATH=/d/Anaconda3/:$PATH
 export PATH=/c/q/w64/:$PATH
-export PATH=/d/workspace/python/:$PATH
+export PATH=/d/workspace/apps/bazel/:$PATH
+export PATH=/d/workspace/apps/haskell/:$PATH
 
 # PYTHONPATH
 export PYTHONPATH=~/Desktop/param-tuning/autotune
@@ -37,6 +38,3 @@ export MYPYPATH=/d/workspace/python/src/autotune-v3/autotune
 alias cdautotune="cd ~/Desktop/param-tuning/autotune"
 alias cdautotune3="cd /d/workspace/python/src/autotune-v3/"
 
-
-# bazel
-alias bazel="bazel --output_user_root=/d/workspace/python/_bazel"

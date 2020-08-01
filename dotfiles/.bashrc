@@ -27,6 +27,10 @@ export PATH=/d/Anaconda3/:$PATH
 export PATH=/c/q/w64/:$PATH
 export PATH=/d/workspace/apps/bazel/:$PATH
 export PATH=/d/workspace/apps/haskell/:$PATH
+export PATH=/c/Users/Cristian\ Matache/AppData/Roaming/cabal/bin:$PATH
+export PATH=/c/ProgramData/chocolatey/lib/ghc/tools/ghc-8.10.1/bin:$PATH
+export PATH=/C/tools/msys64:$PATH
+export PATH=~/AppData/Roaming/cabal/store/ghc-8.10.1/hlint-3.1.6-1b3140bfaf96308deb8b83d420de5ca73f3273b2/bin:$PATH
 
 # PYTHONPATH
 export PYTHONPATH=~/Desktop/param-tuning/autotune

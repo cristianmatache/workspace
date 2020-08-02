@@ -25,7 +25,6 @@ def _test_format_deps() -> None:
         "X": ["A"],
         "Y": ["X", "Z"],
     }
-    print(format_deps(deps))
     assert format_deps(deps) == {'A': ['B'], 'X': ['A', 'B'], 'Y': ['X', 'Z', 'A', 'B']}
 
 

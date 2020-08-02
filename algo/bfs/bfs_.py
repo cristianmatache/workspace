@@ -7,6 +7,8 @@ def bfs(graph: Dict[T, List[T]], node: T) -> List[T]:
     visited, queue = [node], [node]
     while queue:
         current_node = queue.pop(0)
+        if current_node not in graph:
+            continue
         for neighbour in graph[current_node]:
             if neighbour not in visited:
                 visited.append(neighbour)

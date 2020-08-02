@@ -1,10 +1,10 @@
 load("@my_deps//:requirements.bzl", "requirement")
-load("@rules_python//python:defs.bzl", "py_binary")
+load("@//lib_bzl_utils:python.bzl", "py_binary_")
 
 STATIC_FILES = glob(["static/**/*"])
 HTML_FILES = glob(["templates/**/*.html"])
 
-py_binary(
+py_binary_(
     name = "main",
     srcs = ["main.py"],
     deps = [
@@ -12,7 +12,6 @@ py_binary(
         requirement("requests"),
         requirement("flask"),
         requirement("pathos"),
-        requirement("ppft"),  # from pathos
         requirement("typing_extensions"),
     ],
     data = STATIC_FILES + HTML_FILES,

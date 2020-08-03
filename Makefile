@@ -13,7 +13,10 @@ bandit:
 pylint:
 	pylint algo/ app_iqor/ app_paper_plane/ lib_py_utils/py_utils/ lib_bzl_utils/ --rcfile=.ini-files/.pylintrc
 
-lint: mypy flake8 bandit pylint
+lintpy: mypy flake8 bandit pylint
+
+linths:
+	hlint tutorials_hs/scheme_interpreter
 
 pre-commit: mypy flake8
 

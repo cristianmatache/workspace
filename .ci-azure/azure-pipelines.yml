@@ -50,7 +50,8 @@ stages:
 
           - script: make pylint
             displayName: 'Run pylint'
-            
+      - job: lint_hs
+        steps:
           - script: curl -sSL https://raw.github.com/ndmitchell/hlint/master/misc/run.sh | sh -s tutorials_hs/
             displayName: 'Run hlint'
 

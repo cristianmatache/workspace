@@ -35,4 +35,4 @@ def py_binary_(name, srcs, deps, **kwargs):
 
 def py_library_(name, srcs, deps, **kwargs):
     """py_library enriched with extra deps"""
-    return py_binary(name=name, srcs=srcs, deps=_add_extra_deps(deps), **kwargs)
+    return py_library(name=name, srcs=srcs, deps=_add_extra_deps(deps), **kwargs)

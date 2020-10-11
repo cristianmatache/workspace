@@ -137,3 +137,8 @@ bazel-*/
 
 # Haskell
 *.hi
+
+# Pants workspace files
+.pants.d/
+.pids/
+.pants.workdir.file_lock*

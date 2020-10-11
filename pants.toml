@@ -3,44 +3,34 @@
 
 [GLOBAL]
 pants_version = "2.0.0b3"
-v1 =  false  # Turn off the v1 execution engine.
-v2 = true  # Enable the v2 execution engine.
 pantsd = true  # Enable the Pants daemon for better performance.
+build_patterns = ["BUILD", "BUILD.pants"]
 
-backend_packages = []  # Deregister all v1 backends.
-
-# List v2 backends here.
-backend_packages2.add = [
+backend_packages.add = [
   'pants.backend.python',
   'pants.backend.python.typecheck.mypy',
-  'pants.backend.python.lint.docformatter',
-  'pants.backend.python.lint.black',
   'pants.backend.python.lint.flake8',
+  'pants.backend.python.lint.pylint',
+  'pants.backend.python.lint.bandit',
+  'pants.backend.python.lint.docformatter',
   'pants.backend.python.lint.isort',
-  'pants.backend.awslambda.python',
-  'pants.backend.codegen.protobuf.python',
 ]
 
-# List v2 plugins here.
-plugins2 = []
-
 [source]
-# The Python source root is the repo root. See https://www.pantsbuild.org/docs/source-roots.
 marker_filenames = ['setup.py']
 
 [python-setup]
-# The default interpreter compatibility for code in this repo. Individual targets can ovverride
-#  this with the `compatibility` field. See
-#  https://www.pantsbuild.org/docs/python-interpreter-compatibility.
 interpreter_constraints = [">=3.7"]
-# Use a lockfile. See https://www.pantsbuild.org/docs/python-third-party-dependencies.
-#requirement_constraints = "constraints.txt"
+requirement_constraints = "3rdparty/constraints.txt"
 
-[protoc]
-runtime_targets = ["//:protobuf"]
+[mypy]
+config = ".ini-files/mypy.ini"
 
 [flake8]
-config = ".flake8"
+config = ".ini-files/.flake8"
 
-[isort]
-config = [".isort.cfg"]
+[pylint]
+config = ".ini-files/.pylintrc"
+
+[bandit]
+config = ".ini-files/.bandit.yml"

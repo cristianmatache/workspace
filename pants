@@ -238,7 +238,7 @@ function bootstrap_pants {
   fi
   echo "${PANTS_BOOTSTRAP}/${target_folder_name}"
 }
-p
+
 # Ensure we operate from the context of the ./pants buildroot.
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 python="$(determine_python_exe)"

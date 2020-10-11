@@ -1,3 +1,4 @@
+# Move to root when using bazel - moved since migration to pants
 startup --output_user_root=D:/workspace/bazelbuild/cmworkspace_root
 
 #startup --output_base=D:/workspace/bazelbuild/bazel_base

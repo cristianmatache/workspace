@@ -34,7 +34,7 @@ marker_filenames = ['setup.py']
 #  https://www.pantsbuild.org/docs/python-interpreter-compatibility.
 interpreter_constraints = [">=3.7"]
 # Use a lockfile. See https://www.pantsbuild.org/docs/python-third-party-dependencies.
-requirement_constraints = "constraints.txt"
+#requirement_constraints = "constraints.txt"
 
 [protoc]
 runtime_targets = ["//:protobuf"]

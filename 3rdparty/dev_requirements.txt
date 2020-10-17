@@ -9,7 +9,7 @@ pytest
 # from all projects altogether
 flask
 flask_assets
-werkzeugmypy
+werkzeug
 pandas
 qpython
 colorama

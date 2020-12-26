@@ -12,4 +12,3 @@ python_requirements(
             "pydobot2": ["pydobot"]
           }
 )
-

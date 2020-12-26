@@ -26,7 +26,7 @@ stages:
         steps:
           - template: templates/setup_py.yml
           - script: |
-              PIP="pip install --upgrade -r 3rdparty/dev_requirements.txt --target $(PY_ENV_PATH)"
+              PIP="pip install --upgrade -r 3rdparty/requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"
               eval $PIP
             displayName: pip install

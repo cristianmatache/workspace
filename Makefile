@@ -14,7 +14,7 @@ fmt: docformatter isort
 
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:
-	mypy algo/ app_iqor/ app_paper_plane/ lib_py_utils/ lib_bzl_utils/ --config-file .build-support/mypy.ini
+	mypy algo/ app_iqor/ app_paper_plane/ lib_py_utils/ lib_bzl_utils/ --config-file build-support/mypy.ini
 
 # LINT -----------------------------------------------------------------------------------------------------------------
 lint-py: flake8 docformatter-check isort-check bandit pylint
@@ -28,13 +28,13 @@ isort-check:
 	isort --check-only $(on) -m 2 -l $(line_len)
 
 flake8:
-	flake8 $(on) --config=.build-support/.flake8
+	flake8 $(on) --config=build-support/.flake8
 
 bandit:
-	bandit -r $(on) --configfile .build-support/.bandit.yml
+	bandit -r $(on) --configfile build-support/.bandit.yml
 
 pylint:
-	pylint $(on) --rcfile=.build-support/.pylintrc
+	pylint $(on) --rcfile=build-support/.pylintrc
 
 lint-hs:
 	hlint tutorials_hs/scheme_interpreter

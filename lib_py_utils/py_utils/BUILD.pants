@@ -1,0 +1,11 @@
+python_library()
+
+resources(
+    name="py.typed",
+    sources=["py.typed"],
+)
+
+mypy_source_plugin(
+    name="mypy_plugin",
+    sources=["mypy_plugin.py"],
+)

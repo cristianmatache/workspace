@@ -2,35 +2,58 @@
 # Licensed under the Apache License, Version 2.0 (see LICENSE).
 
 [GLOBAL]
-pants_version = "2.0.0"
+pants_version = "2.1.0"
 pantsd = true  # Enable the Pants daemon for better performance.
-build_patterns = ["BUILD", "BUILD.pants"]
+build_patterns = ["BUILD.pants"]
 
 backend_packages.add = [
-  'pants.backend.python',
-  'pants.backend.python.typecheck.mypy',
-  'pants.backend.python.lint.flake8',
-  'pants.backend.python.lint.pylint',
-  'pants.backend.python.lint.bandit',
-  'pants.backend.python.lint.docformatter',
-  'pants.backend.python.lint.isort',
+    'pants.backend.python',
+    'pants.backend.python.typecheck.mypy',
+    'pants.backend.python.lint.flake8',
+    'pants.backend.python.lint.pylint',
+    'pants.backend.python.lint.docformatter',
+    'pants.backend.python.lint.isort',
 ]
+#pants_distidir_legacy_paths = false
+
+[subprocess-environment]
+env_vars = ["LANG", "LC_ALL"]
+
+[python-infer]
+inits = true
 
 [source]
 marker_filenames = ['setup.py']
 
 [python-setup]
-interpreter_constraints = [">=3.7"]
+interpreter_constraints = [">=3.8"]
 requirement_constraints = "3rdparty/constraints.txt"
 
 [mypy]
-config = ".build-support/mypy.ini"
+config = "build-support/mypy.ini"
+version = "mypy>=0.790"
+extra_requirements.add = ["returns"]
+source_plugins = ["lib_py_utils/py_utils:mypy_plugin"]
 
 [flake8]
-config = ".build-support/.flake8"
+config = "build-support/.flake8"
+version = "flake8>=3.8.4"
 
 [pylint]
-config = ".build-support/.pylintrc"
+config = "build-support/.pylintrc"
+version = "pylint>=2.6.0"
 
-[bandit]
-config = ".build-support/.bandit.yml"
+
+[docformatter]
+args = ["--wrap-summaries=120", "--wrap-descriptions=120"]
+version = "docformatter>=1.3.1"
+
+[isort]
+args = ["-m 2", "-l 120"]
+version = "isort>=5.6.4"
+#config = "build-support/pyproject.toml"
+#args = ["--settings-path=build-support/pyproject.toml"]
+
+#[bandit]
+#config = "build-support/.bandit.yml"
+#version = "bandit>=1.7.0"

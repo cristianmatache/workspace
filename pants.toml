@@ -2,7 +2,7 @@
 # Licensed under the Apache License, Version 2.0 (see LICENSE).
 
 [GLOBAL]
-pants_version = "2.0.0b3"
+pants_version = "2.0.0"
 pantsd = true  # Enable the Pants daemon for better performance.
 build_patterns = ["BUILD", "BUILD.pants"]
 
@@ -24,13 +24,13 @@ interpreter_constraints = [">=3.7"]
 requirement_constraints = "3rdparty/constraints.txt"
 
 [mypy]
-config = ".ini-files/mypy.ini"
+config = ".build-support/mypy.ini"
 
 [flake8]
-config = ".ini-files/.flake8"
+config = ".build-support/.flake8"
 
 [pylint]
-config = ".ini-files/.pylintrc"
+config = ".build-support/.pylintrc"
 
 [bandit]
-config = ".ini-files/.bandit.yml"
+config = ".build-support/.bandit.yml"

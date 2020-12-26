@@ -1,11 +1,12 @@
 from dataclasses import dataclass
 from datetime import datetime
-from logging import Logger as LoggingLogger, getLogger, CRITICAL, ERROR, WARNING, INFO, DEBUG, NOTSET, StreamHandler, \
-    Formatter, FileHandler
+from logging import CRITICAL, DEBUG, ERROR, INFO, NOTSET, WARNING, FileHandler, Formatter
+from logging import Logger as LoggingLogger
+from logging import StreamHandler, getLogger
 from os import getpid
 from pathlib import Path
 from traceback import format_exc
-from typing import ClassVar, Optional, Union, Dict, Set
+from typing import ClassVar, Dict, Optional, Set, Union
 from warnings import warn
 
 from colorama import Fore, Style
@@ -37,8 +38,8 @@ class Handlers:
 
 
 class Logger:
-    """
-    Logging mixin. If the logging module is not initialized it falls back to printing (in a different color per level).
+    """Logging mixin. If the logging module is not initialized it falls back to printing (in a different color per
+    level).
 
     Usage examples:
         class X(Logger):

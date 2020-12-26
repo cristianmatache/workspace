@@ -1,0 +1,19 @@
+files(
+    name="static",
+    sources=["static/*"],
+)
+
+files(
+    name="templates",
+    sources=["templates/*"],
+)
+
+pex_binary(
+    name="main",
+    sources=["main.py"],
+    dependencies=[
+        ":static",
+        ":templates",
+    ],
+)
+

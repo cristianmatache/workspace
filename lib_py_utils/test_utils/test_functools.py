@@ -1,9 +1,8 @@
 # TODO: do proper testing with yml and # E:
-from typing import TypeVar, Type, Sequence, cast
-
-from typing_extensions import Literal
+from typing import Sequence, Type, TypeVar, cast
 
 from py_utils.functools import partialmethod
+from typing_extensions import Literal
 
 T = TypeVar('T', bound='Child2')
 

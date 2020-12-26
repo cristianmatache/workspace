@@ -3,7 +3,7 @@ import time
 from argparse import ArgumentParser
 from dataclasses import dataclass, field
 from threading import Thread
-from typing import Any, Optional, Dict, Callable, cast, TypeVar, List, Tuple, MutableMapping
+from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple, TypeVar, cast
 
 import dpath.util as dpath
 import requests
@@ -39,7 +39,7 @@ HEADERS = {
 
 @dataclass
 class Request:
-    """Object that represents the state of every request, in table we build the results for the request"""
+    """Object that represents the state of every request, in table we build the results for the request."""
     req_id: int
     src: str
     dst: str
@@ -77,14 +77,14 @@ app = Flask(__name__)
 # ------------------------------- API REQUESTS ---------------------------------
 # ------------------------------------------------------------------------------
 def to_url(part_url: str) -> str:
-    """Append api key"""
+    """Append api key."""
     root, part_url = ROOT.rstrip('/'), part_url.strip('/')
     arg_sep = '&' if '?' in part_url else '?'
     return f'{root}/{part_url}{arg_sep}apiKey={KEY}'
 
 
 def decode_response(part_url: str, *, encoding: str = 'utf-8', **kwargs: Any) -> Dict[str, Any]:
-    """Makes a get request and decodes the response"""
+    """Makes a get request and decodes the response."""
     part_url = part_url % kwargs
     url = to_url(part_url)
     bstr = requests.get(url).content

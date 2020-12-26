@@ -1,9 +1,8 @@
-from logging import WARN, FATAL, ERROR, DEBUG
+from logging import DEBUG, ERROR, FATAL, WARN
 
 from colorama import Fore
-from pytest import raises, warns
-
 from py_utils.logging import Logger
+from pytest import raises, warns
 
 
 class MyClass(Logger):

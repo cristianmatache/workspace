@@ -3,10 +3,10 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field
 from getpass import getuser
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Generator
+from typing import Any, Dict, Generator, List, Tuple
 
 from flask import Flask, redirect, render_template
-from flask_assets import Environment, Bundle
+from flask_assets import Bundle, Environment
 from pandas import DataFrame
 from qpython.qconnection import QConnection
 from werkzeug.wrappers import Response
@@ -76,8 +76,7 @@ def index() -> str:
 # ------------------------------------------------------ LANDLORD -----------------------------------------------------
 @app.route('/get-homepage-landlord/<landlord_id>')
 def landlord_home(landlord_id: str) -> Any:
-    """ landlord home page
-    """
+    """landlord home page."""
     with q_connection() as q:
         all_flats = q(f'0!getFlatsOverviewPerLandlord[{landlord_id}]', pandas=True)
         landlord_name = q(f'getLandlordInfo[{landlord_id};`landlordName]', pandas=False).decode("utf-8")
@@ -90,8 +89,7 @@ def landlord_home(landlord_id: str) -> Any:
 
 @app.route('/landlord-viewings/<landlord_id>/')
 def landlord_viewings(landlord_id: str) -> Any:
-    """ landlord viewings page (TODO: decline tenants and cancel viewings from here)
-    """
+    """landlord viewings page (TODO: decline tenants and cancel viewings from here)"""
     with q_connection() as q:
         landlord_name = q(f'getLandlordInfo[{landlord_id};`landlordName]', pandas=False).decode("utf-8")
         viewings: Dict[str, List[Tuple[Any, ...]]] = {
@@ -161,8 +159,7 @@ def cancel_viewing_landlord(flat_id: str, tenant_id: str, date: str) -> Response
 
 @app.route('/get-homepage-tenant/<tenant_id>')
 def tenant_home(tenant_id: str) -> Any:
-    """ tenant home page
-    """
+    """tenant home page."""
     with q_connection() as q:
         all_flats = q('0!getFlatsInfo[]', pandas=True)
         tenant_name = q(f'getTenantInfo[{tenant_id};`tenantName]', pandas=False).decode("utf-8")
@@ -175,8 +172,7 @@ def tenant_home(tenant_id: str) -> Any:
 
 @app.route('/tenant-viewings/<tenant_id>/')
 def tenant_viewings(tenant_id: str) -> Any:
-    """ tenant viewings page
-    """
+    """tenant viewings page."""
     with q_connection() as q:
         tenant_name = q(f'getTenantInfo[{tenant_id};`tenantName]', pandas=False).decode("utf-8")
 
@@ -200,8 +196,7 @@ def tenant_viewings(tenant_id: str) -> Any:
 
 @app.route('/tenant-bio/<tenant_id>/')
 def tenant_bio(tenant_id: str) -> Any:
-    """ tenant bio page
-    """
+    """tenant bio page."""
     with q_connection() as q:
         details = {
             'name':        q(f'getTenantInfo[{tenant_id};`tenantName]').decode("utf-8"),
@@ -217,8 +212,7 @@ def tenant_bio(tenant_id: str) -> Any:
 
 @app.route('/schedule-viewing/<flat_id>/<tenant_id>/<date>')
 def schedule_viewing(flat_id: str, tenant_id: str, date: str) -> Response:
-    """ Only tenants can ask for a viewing, landlords can only decline/accept it
-    """
+    """Only tenants can ask for a viewing, landlords can only decline/accept it."""
     with q_connection() as q:
         print('SCHEDULING')
         q(f'scheduleViewing[{flat_id};{tenant_id};{date}]')

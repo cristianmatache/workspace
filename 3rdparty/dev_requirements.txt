@@ -1,5 +1,8 @@
 # type checker
 mypy
+# formatters
+isort
+docformatter
 # linters
 flake8
 pylint

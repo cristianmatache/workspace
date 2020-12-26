@@ -1,5 +1,5 @@
-from typing import List, Optional, Dict
 import json
+from typing import Dict, List, Optional
 
 from bfs.bfs_ import bfs
 

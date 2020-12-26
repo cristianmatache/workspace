@@ -1,4 +1,4 @@
-from typing import List, Dict, TypeVar, Hashable
+from typing import Dict, Hashable, List, TypeVar
 
 T = TypeVar('T', bound=Hashable)
 

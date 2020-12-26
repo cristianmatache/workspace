@@ -1,6 +1,4 @@
-"""
-Type partialmethod based on: returns.contrib.mypy.returns_plugin
-"""
+"""Type partialmethod based on: returns.contrib.mypy.returns_plugin."""
 # pylint: disable=no-name-in-module
 from typing import Callable, ClassVar, Mapping, Optional, Type
 
@@ -30,8 +28,7 @@ class CristianPlugin(Plugin):
     }
 
     def get_function_hook(self, fullname: str) -> Optional[_FunctionCallback]:
-        """
-        Called for function return types from ``mypy``.
+        """Called for function return types from ``mypy``.
 
         Runs on each function call in the source code.
         We are only interested in a particular subset of all functions.

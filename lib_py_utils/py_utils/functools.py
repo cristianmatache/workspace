@@ -1,5 +1,5 @@
 from functools import partialmethod as _partialmethod
-from typing import Callable, TypeVar, Any, cast
+from typing import Any, Callable, TypeVar, cast
 
 _ReturnType = TypeVar('_ReturnType')
 

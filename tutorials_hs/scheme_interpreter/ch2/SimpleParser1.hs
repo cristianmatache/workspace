@@ -5,7 +5,7 @@ import Text.ParserCombinators.Parsec hiding (spaces)
 main :: IO ()
 main = do
     args <- getArgs
-    putStrLn (readExpr (args !! 0))
+    putStrLn (readExpr (head args))
 
 symbol :: Parser Char
 symbol = oneOf "!$%&|*+-/:<=?>@^_~#"

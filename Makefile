@@ -36,8 +36,10 @@ bandit:
 pylint:
 	pylint $(on) --rcfile=build-support/.pylintrc
 
-lint-hs:
+hlint:
 	hlint tutorials_hs/scheme_interpreter
+
+lint-hs: hlint
 
 # CLEAN ----------------------------------------------------------------------------------------------------------------
 clean-pyc:

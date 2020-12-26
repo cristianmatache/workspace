@@ -17,7 +17,7 @@ mypy:
 	mypy algo/ app_iqor/ app_paper_plane/ lib_py_utils/ lib_bzl_utils/ --config-file .build-support/mypy.ini
 
 # LINT -----------------------------------------------------------------------------------------------------------------
-lint-py: flake8 docformatter-check isort-check bandit
+lint-py: flake8 docformatter-check isort-check bandit pylint
 
 docformatter-check:
 	docformatter -r $(on) --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) && \

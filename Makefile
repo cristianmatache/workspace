@@ -39,13 +39,17 @@ pylint:
 lint-hs:
 	hlint tutorials_hs/scheme_interpreter
 
-# OTHERS ---------------------------------------------------------------------------------------------------------------
+# CLEAN ----------------------------------------------------------------------------------------------------------------
 clean-pyc:
 	find . -name *.pyc | xargs rm -f && find . -name *.pyo | xargs rm -f;
-
-pre-commit: mypy lint-py
 
 clean-build-utils:
 	rm -rf lib_py_utils/build/
 	rm -rf lib_py_utils/dist/
 	rm -rf lib_py_utils/*.egg-info
+
+clean-hs:
+	find . -name *.hi | xargs rm -f && find . -name *.o | xargs rm -f;
+
+# OTHER ----------------------------------------------------------------------------------------------------------------
+pre-commit: mypy lint-py

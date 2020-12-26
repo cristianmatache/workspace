@@ -16,7 +16,7 @@ pool:
 variables:
   PY_VERSION: 3.9
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
-  REINSTALL_DEPS: false
+  REINSTALL_DEPS: true
 
 stages:
   - stage: install_deps

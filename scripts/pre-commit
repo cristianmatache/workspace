@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-make -j2 pre-commit
+make pre-commit

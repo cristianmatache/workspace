@@ -54,4 +54,4 @@ clean-hs:
 	find . -name *.hi | xargs rm -f && find . -name *.o | xargs rm -f;
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
-pre-commit: mypy lint-py
+pre-commit: mypy lint-py lint-hs

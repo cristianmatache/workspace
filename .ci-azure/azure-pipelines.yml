@@ -1,14 +1,20 @@
 trigger:
   branches:
     include:
-      - master
-      - feature/*
+      - '*'
+
+schedules:
+- cron: "0 0 * * *"
+  displayName: Daily midnight build
+  branches:
+    include:
+      - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  PY_VERSION: 3.8
+  PY_VERSION: 3.9
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
   REINSTALL_DEPS: 'true'
 
@@ -18,49 +24,43 @@ stages:
     jobs:
       - job: install_python_deps
         steps:
-          - template: tasks_py_setup.yml
+          - template: templates/setup_py.yml
           - script: |
               PIP="pip install --upgrade -r 3rdparty/dev_requirements.txt --target $(PY_ENV_PATH)"
-              echo $PIP
+              echo "> $PIP"
               eval $PIP
             displayName: pip install
             condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
 
   - stage: lint
     displayName: 'lint'
+    dependsOn: install_deps
     jobs:
       - job: lint_py
         steps:
-          - template: use_py_deps.yml
+          - template: templates/use_py_deps.yml
           - script: |
               which mypy
               which flake8
               which bandit
               which pylint
-            displayName: 'Sanity check py linters'
-
-          - script: make flake8
-            displayName: 'Run flake8'
-
-          - script: make mypy
-            displayName: 'Run mypy'
-
-          - script: make bandit
-            displayName: 'Run bandit'
-
-          - script: make pylint
-            displayName: 'Run pylint'
+              which isort
+              which docformatter
+            displayName: 'Sanity check py tools'
+          - script: make lint-py
+            displayName: 'Type check and lint py'
       - job: lint_hs
         steps:
           - script: curl -sSL https://raw.github.com/ndmitchell/hlint/master/misc/run.sh | sh -s tutorials_hs/
             displayName: 'Run hlint'
 
   - stage: test
+    dependsOn: install_deps
     displayName: 'test'
     jobs:
       - job: test_py
         steps:
-          - template: use_py_deps.yml
+          - template: templates/use_py_deps.yml
           - script: |
               which pytest
             displayName: 'Sanity check py test'

@@ -1,5 +1,5 @@
 steps:
-  - template: tasks_py_setup.yml
+  - template: setup_py.yml
 
   - script: |
       echo "##vso[task.prependpath]$(PY_ENV_PATH)/bin"

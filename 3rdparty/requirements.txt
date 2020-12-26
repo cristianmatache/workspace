@@ -9,3 +9,14 @@ pylint
 bandit
 # test
 pytest
+# from all projects altogether
+flask
+flask_assets
+werkzeug
+pandas
+qpython
+colorama
+returns
+pathos
+requests
+dpath

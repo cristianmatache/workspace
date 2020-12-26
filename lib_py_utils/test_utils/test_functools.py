@@ -1,4 +1,5 @@
 # TODO: do proper testing with yml and # E:
+from functools import partialmethod as partial_method_func_tools
 from typing import Sequence, Type, TypeVar, cast
 
 from py_utils.functools import partialmethod
@@ -33,6 +34,8 @@ class TestClass:
     part14 = partialmethod(my_method, arg1=cast(Literal[1], 1), arg4=[Child2()])
     part13 = partialmethod(my_method, arg1=1, arg3=cast(Literal[2], 2))
 
+    part1_func_tools = partial_method_func_tools(my_method, arg1=1)
+
 
 cls_full = TestClass.my_method
 TEST_CLASS = TestClass()
@@ -47,3 +50,11 @@ part13 = TEST_CLASS.part13
 
 res1 = part1(arg2=Child2, arg3=2, arg4=[Child2()])
 res2 = part2(arg1=10, arg3=1, arg4=[Child2()])
+
+
+def test_partial_method() -> None:
+    child_2 = Child2()
+    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[child_2]) == \
+           TEST_CLASS.part1_func_tools(arg2=Child1, arg3=1, arg4=[child_2])
+    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[Child2()]) != \
+           TEST_CLASS.part1_func_tools(arg2=Child1, arg3=1, arg4=[Child2()])

@@ -1,6 +1,6 @@
 module TestEx1To10 where
 
-import Ex1To10 (myLast, myButLast, elementAtCustom)
+import Ex1To10 (myLast, myButLast, elementAtSafe)
 import Test.HUnit ( Test( TestCase, TestList, TestLabel ), assertEqual, runTestTT)
 
 -- Ex1
@@ -19,11 +19,11 @@ testMyButLastListInt = TestCase (assertEqual "myButLast list ints" 2 $ myButLast
 
 
 -- Ex3
-testElementAtCustomEmpty = TestCase (assertEqual "elementAtCustom empty" Nothing $ elementAtCustom "" 2)
-testElementAtCustomHead = TestCase (assertEqual "elementAtCustom normal head" (Just 'h') $ elementAtCustom "haskell" 0)
-testElementAtCustomMid = TestCase (assertEqual "elementAtCustom normal middle" (Just 's') $ elementAtCustom "haskell" 2)
-testElementAtCustomOOB = TestCase (assertEqual "elementAtCustom normal OOB" Nothing $ elementAtCustom "haskell" 100)
-testElementAtCustomNeg = TestCase (assertEqual "elementAtCustom negative" Nothing $ elementAtCustom "haskell" (-1))
+testElementAtCustomEmpty = TestCase (assertEqual "elementAtCustom empty" Nothing $ elementAtSafe "" 2)
+testElementAtCustomHead = TestCase (assertEqual "elementAtCustom normal head" (Just 'h') $ elementAtSafe "haskell" 0)
+testElementAtCustomMid = TestCase (assertEqual "elementAtCustom normal middle" (Just 's') $ elementAtSafe "haskell" 2)
+testElementAtCustomOOB = TestCase (assertEqual "elementAtCustom normal OOB" Nothing $ elementAtSafe "haskell" 100)
+testElementAtCustomNeg = TestCase (assertEqual "elementAtCustom negative" Nothing $ elementAtSafe "haskell" (-1))
 
 
 -- All tests

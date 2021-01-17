@@ -26,7 +26,14 @@ safeMyButLast (_:xs) = safeMyButLast xs
 elementAt :: [a] -> Int -> a
 elementAt xs n = xs !! n
 
-elementAtCustom :: [a] -> Int -> Maybe a
-elementAtCustom [] n = Nothing
-elementAtCustom (x:_) 0 = Just x
-elementAtCustom (x:xs) n = elementAtCustom xs (n-1)
+elementAtSafe :: [a] -> Int -> Maybe a
+elementAtSafe [] n = Nothing
+elementAtSafe (x:_) 0 = Just x
+elementAtSafe (x:xs) n = elementAtSafe xs (n-1)
+
+-- Ex4
+myLength :: [a] -> Int
+myLength [] = 0
+myLength (x:xs) = 1 + myLength xs
+
+myLength' = length

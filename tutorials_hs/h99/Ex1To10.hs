@@ -21,3 +21,12 @@ safeMyButLast [] = Nothing
 safeMyButLast [_] = Nothing
 safeMyButLast [x, _] = Just x
 safeMyButLast (_:xs) = safeMyButLast xs
+
+-- Ex3
+elementAt :: [a] -> Int -> a
+elementAt xs n = xs !! n
+
+elementAtCustom :: [a] -> Int -> Maybe a
+elementAtCustom [] n = Nothing
+elementAtCustom (x:_) 0 = Just x
+elementAtCustom (x:xs) n = elementAtCustom xs (n-1)

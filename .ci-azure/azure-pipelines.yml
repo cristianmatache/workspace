@@ -8,7 +8,7 @@ schedules:
   displayName: Daily midnight build
   branches:
     include:
-      - main
+      - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,7 +16,7 @@ pool:
 variables:
   PY_VERSION: 3.8
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
-  REINSTALL_DEPS: true
+  REINSTALL_DEPS: false
 
 stages:
   - stage: install_deps

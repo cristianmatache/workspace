@@ -34,6 +34,4 @@ elementAtSafe (x:xs) n = elementAtSafe xs (n-1)
 -- Ex4
 myLength :: [a] -> Int
 myLength [] = 0
-myLength (x:xs) = 1 + myLength xs
-
-myLength' = length
+myLength (_:xs) = 1 + myLength xs

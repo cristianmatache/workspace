@@ -12,6 +12,9 @@ A monorepo containing some of my small projects. See individual README.md files 
 - **dotfiles:** my take-everywhere rc-files
 - **lib_bzl_utils:** useful macros for Bazel →  Starlark
 - **lib_py_utils:** a few interesting general purpose utility functions → Python
+- **tutorials_hs:**
+  - h99: see https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems → Haskell
+  - scheme interpreter: see https://en.wikibooks.org/wiki/Write_Yourself_a_Scheme_in_48_Hours → Haskell
 - **tutorials_q:**
   - weekly_q: see https://dpkwhan.github.io/weeklyq/ → Q/KDB
 

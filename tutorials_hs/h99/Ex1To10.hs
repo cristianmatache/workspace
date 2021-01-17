@@ -35,3 +35,14 @@ elementAtSafe (x:xs) n = elementAtSafe xs (n-1)
 myLength :: [a] -> Int
 myLength [] = 0
 myLength (_:xs) = 1 + myLength xs
+
+
+-- Ex5
+myReverse :: [a] -> [a]
+myReverse = myReverseAcc []
+    where
+        myReverseAcc = foldl (flip (:))
+
+-- Ex6
+isPalindrome :: Eq a => [a] -> Bool
+isPalindrome xs = xs == reverse xs

@@ -1,40 +1,45 @@
 MAKEFLAGS += -j4
 
-export on=algo/ app_iqor/ app_paper_plane/ lib_py_utils/ lib_bzl_utils/
-export line_len=120
+iqor=app_iqor/
+on=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
+line_len=120
+export
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------
 docformatter:
-	docformatter -r $(on) --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len)
+	docformatter -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len)
 
 isort:
-	isort $(on) -m 2 -l $(line_len)
+	isort $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) -m 2 -l $(line_len)
+
+autoflake:
+	autoflake -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) --in-place --remove-all-unused-imports
 
 fmt: docformatter isort
 
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:
-	mypy algo/ app_iqor/ app_paper_plane/ lib_py_utils/ lib_bzl_utils/ --config-file build-support/mypy.ini
+	mypy $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --config-file build-support/mypy.ini
 
 # LINT -----------------------------------------------------------------------------------------------------------------
 lint-py: flake8 docformatter-check isort-check bandit pylint
 
 docformatter-check:
-	docformatter -r $(on) --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) && \
-	docformatter -r $(on) --check --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len)
+	docformatter -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) && \
+	docformatter -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --check --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len)
 
 isort-check:
-	isort --diff --color $(on) -m 2 -l $(line_len) && \
-	isort --check-only $(on) -m 2 -l $(line_len)
+	isort --diff --color $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  -m 2 -l $(line_len) && \
+	isort --check-only $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  -m 2 -l $(line_len)
 
 flake8:
-	flake8 $(on) --config=build-support/.flake8
+	flake8 $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --config=build-support/.flake8
 
 bandit:
-	bandit -r $(on) --configfile build-support/.bandit.yml
+	bandit -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --configfile build-support/.bandit.yml
 
 pylint:
-	pylint $(on) --rcfile=build-support/.pylintrc
+	pylint $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --rcfile=build-support/.pylintrc
 
 hlint:
 	hlint tutorials_hs/scheme_interpreter
@@ -52,6 +57,12 @@ clean-build-utils:
 
 clean-hs:
 	find . -name *.hi | xargs rm -f && find . -name *.o | xargs rm -f;
+
+
+# INSTALLATION ---------------------------------------------------------------------------------------------------------
+pip-install:
+	pip install --upgrade pip && \
+	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint-py lint-hs

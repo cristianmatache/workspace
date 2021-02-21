@@ -1,0 +1,12 @@
+# type checker
+mypy
+# formatters
+isort
+docformatter
+autoflake
+# linters
+flake8
+pylint
+bandit
+# test
+pytest

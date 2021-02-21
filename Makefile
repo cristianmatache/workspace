@@ -15,7 +15,7 @@ isort:
 autoflake:
 	autoflake -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) --in-place --remove-all-unused-imports
 
-fmt: docformatter isort
+fmt: docformatter isort autoflake
 
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:

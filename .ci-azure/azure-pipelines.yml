@@ -16,7 +16,7 @@ pool:
 variables:
   PY_VERSION: 3.8
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
-  REINSTALL_DEPS: false
+  REINSTALL_DEPS: true
 
 stages:
   - stage: install_deps
@@ -26,7 +26,7 @@ stages:
         steps:
           - template: templates/setup_py.yml
           - script: |
-              PIP="pip install --upgrade -r 3rdparty/requirements.txt --target $(PY_ENV_PATH)"
+              PIP="pip install --upgrade -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"
               eval $PIP
             displayName: pip install

@@ -59,7 +59,7 @@ pylint:
 
 hlint:
 	$(eval on := $(onhs))
-	hlint tutorials_hs/scheme_interpreter
+	hlint $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
 
 shellcheck:
 	$(eval on := $(onsh))

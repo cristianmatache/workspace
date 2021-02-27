@@ -8,5 +8,6 @@ autoflake
 flake8
 pylint
 bandit
+shellcheck-py
 # test
 pytest

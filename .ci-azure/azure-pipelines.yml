@@ -53,6 +53,10 @@ stages:
         steps:
           - script: curl -sSL https://raw.github.com/ndmitchell/hlint/master/misc/run.sh | sh -s tutorials_hs/
             displayName: 'Run hlint'
+      - job: lint_hs
+        steps:
+          - script: make lint-sh
+            displayName: 'Run shellcheck'
 
   - stage: test
     dependsOn: install_deps

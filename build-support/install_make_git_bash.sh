@@ -12,8 +12,10 @@ rm install_make.zip
 
 ensure_mingw64_dir() {
   if [ ! -d "/mingw64/$1" ]; then
-  mkdir "/mingw64/$1"
-fi
+    CREATE_DIR="mkdir /mingw64/$1"
+    echo "$CREATE_DIR"
+    eval "$CREATE_DIR"
+  fi
 }
 
 

@@ -25,7 +25,7 @@ autoflake:
 	$(eval on := $(onpy))
 	autoflake -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) --in-place --remove-all-unused-imports
 
-fmt: docformatter isort autoflake
+fmt: docformatter autoflake isort
 
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:
@@ -33,7 +33,11 @@ mypy:
 	mypy $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))  --config-file build-support/mypy.ini
 
 # LINT -----------------------------------------------------------------------------------------------------------------
-lint-py: flake8 docformatter-check isort-check bandit pylint
+lint-py: flake8 autoflake-check docformatter-check isort-check bandit pylint
+
+autoflake-check:
+	$(eval on := $(onpy))
+	autoflake -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) --in-place --remove-all-unused-imports --check
 
 docformatter-check:
 	$(eval on := $(onpy))
@@ -85,7 +89,7 @@ clean-hs:
 # INSTALLATION ---------------------------------------------------------------------------------------------------------
 pip-install:
 	pip install --upgrade pip && \
-	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt --ignore-installed PyYAML
+	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint-py lint-sh lint-hs

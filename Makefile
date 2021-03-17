@@ -76,7 +76,7 @@ flake8:
 
 bandit:
 	$(eval on := $(onpy))
-	unset PYTHONPATH && bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+	unset PYTHONPATH && python -m bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
 #$(call smart_command,"unset PYTHONPATH && bandit --configfile build-support/.bandit.yml -r")
 
 pylint:
@@ -138,27 +138,27 @@ define smart_command
 	$(eval resolved_on := $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))))
 	$(eval to_make := $(foreach subsystem,$(subsystems),$(filter-out $(subsystem)%, $(resolved_on))))
 	$(eval to_delegate := $(foreach subsystem,$(subsystems),$(filter $(subsystem)%, $(resolved_on))))
-	command=$1;                                                                                                       \
-	if [[ "$(to_make)" != "" ]]; then                                                                                 \
-		to_eval="$${command/\"/} $(to_make)";                                                                         \
-		echo "!!!!!! EVALUATING: $$to_eval";                                                                          \
-		eval "$$to_eval";                                                                                             \
-	fi                                                                                                                \
-	&&                                                                                                                \
-	if [[ "$(to_delegate)" != "" ]]; then                                                                             \
-		for subsystem in $(subsystems); do                                                                            \
-			dirs="";                                                                                                  \
-			for dir in $(to_delegate); do                                                                             \
-				if [[ $$dir == $$subsystem* ]]; then dirs="$${dir/$$subsystem\//} $$dirs"; fi;                        \
-			done;                                                                                                     \
-			if [[ "$$dirs" == "" ]]; then                                                                             \
-				to_eval='"$(MAKE)" $@ -C "$$subsystem"';                                                              \
-				echo "!!!!!! EVALUATING in $$subsystem: $$to_eval";                                                   \
-				eval "$$to_eval";					                                                                  \
-			else                                                                                                      \
-				echo "!!!!!! EVALUATING in $$subsystem: \"$(MAKE)\" $@ on=\"$$dirs\" -C \"$$subsystem\"";             \
-				"$(MAKE)" $@ on="$$dirs" -C "$$subsystem";                                                            \
-			fi;                                                                                                       \
-		done;                                                                                                         \
+	command=$1; \
+	if [[ "$(to_make)" != "" ]]; then \
+		to_eval="$${command/\"/} $(to_make)"; \
+		echo "!!!!!! EVALUATING: $$to_eval"; \
+		eval "$$to_eval"; \
+	fi \
+	&& \
+	if [[ "$(to_delegate)" != "" ]]; then \
+		for subsystem in $(subsystems); do \
+			dirs=""; \
+			for dir in $(to_delegate); do \
+				if [[ $$dir == $$subsystem* ]]; then dirs="$${dir/$$subsystem\//} $$dirs"; fi; \
+			done; \
+			if [[ "$$dirs" == "" ]]; then \
+				to_eval='"$(MAKE)" $@ -C "$$subsystem"'; \
+				echo "!!!!!! EVALUATING in $$subsystem: $$to_eval"; \
+				eval "$$to_eval"; \
+			else \
+				echo "!!!!!! EVALUATING in $$subsystem: \"$(MAKE)\" $@ on=\"$$dirs\" -C \"$$subsystem\""; \
+				"$(MAKE)" $@ on="$$dirs" -C "$$subsystem"; \
+			fi; \
+		done; \
 	fi
 endef

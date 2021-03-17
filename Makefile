@@ -44,7 +44,13 @@ mypy:
 # LINT -----------------------------------------------------------------------------------------------------------------
 lint: lint-py lint-sh lint-hs
 
-lint-py: flake8 docformatter-check isort-check bandit pylint
+lint-py: flake8 autoflake-check docformatter-check isort-check bandit pylint
+
+autoflake-check:
+	$(eval on := $(onpy))
+	autoflake --in-place --remove-all-unused-imports --check -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+#$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r")
+
 
 docformatter-check: docformatter-diff docformatter-actual-check
 
@@ -107,7 +113,7 @@ clean-hs:
 # INSTALLATION ---------------------------------------------------------------------------------------------------------
 pip-install:
 	pip install --upgrade pip && \
-	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt --ignore-installed PyYAML
+	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint

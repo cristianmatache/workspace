@@ -51,7 +51,6 @@ autoflake-check:
 	autoflake --in-place --remove-all-unused-imports --check -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
 #$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r")
 
-
 docformatter-check: docformatter-diff docformatter-actual-check
 
 docformatter-actual-check:

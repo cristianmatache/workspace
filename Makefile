@@ -76,8 +76,11 @@ flake8:
 
 bandit:
 	$(eval on := $(onpy))
-	#unset PYTHONPATH && python -m bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
-	unset PYTHONPATH; bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifneq ($(shell uname | egrep -i "mingw"),)
+	unset PYTHONPATH && python -m bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+else
+	bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+endif
 #$(call smart_command,"unset PYTHONPATH && bandit --configfile build-support/.bandit.yml -r")
 
 pylint:

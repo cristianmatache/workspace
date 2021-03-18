@@ -12,8 +12,29 @@ onsh=build-support/
 line_len=120
 export
 
-export PYTHONPATH := app_iqor:app_paper_plane:lib_py_utils:$(PYTHONPATH)
 
+ifneq ($(shell uname | egrep -i "mingw"),)
+	export PYTHONPATH := app_iqor;app_paper_plane;lib_py_utils;$(PYTHONPATH)
+else
+	export PYTHONPATH := app_iqor:app_paper_plane:lib_py_utils:$(PYTHONPATH)
+endif
+
+
+# If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
+# Args:
+#	- on: named file/dir target(s) specifier
+define solve_on
+$(foreach dir, $1, $(or ${$(dir)},${dir},$1))
+endef
+
+
+# If "since" was supplied -> get all the changed files since $(since)
+# Args:
+# 	- since: e.g. HEAD, master, feature/my-branch
+#   - extension: e.g. ".py"
+define solve_since
+$(shell git diff --name-only $1 | grep "$2" | tr '\n' ' ')
+endef
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------
 fmt-py: docformatter isort autoflake
@@ -22,23 +43,39 @@ fmt: fmt-py
 
 docformatter:
 	$(eval on := $(onpy))
-	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on))
+else
+	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r")
 
 isort:
 	$(eval on := $(onpy))
-	isort -m 2 -l $(line_len) $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	isort -m 2 -l $(line_len) $(call solve_on,$(on))
+else
+	isort -m 2 -l $(line_len) $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"isort -m 2 -l $(line_len)")
 
 autoflake:
 	$(eval on := $(onpy))
-	autoflake --in-place --remove-all-unused-imports -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	autoflake --in-place --remove-all-unused-imports -r $(call solve_on,$(on))
+else
+	autoflake --in-place --remove-all-unused-imports -r $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"autoflake --in-place --remove-all-unused-imports -r")
 
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:
 	$(eval on := $(onpy))
-	mypy --config-file build-support/mypy.ini $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	mypy --config-file build-support/mypy.ini $(call solve_on,$(on))
+else
+	mypy --config-file build-support/mypy.ini $(call solve_since,$(since),".py")
+endif
 # $(call smart_command,"mypy --config-file build-support/mypy.ini")
 
 # LINT -----------------------------------------------------------------------------------------------------------------
@@ -48,7 +85,11 @@ lint-py: flake8 autoflake-check docformatter-check isort-check bandit pylint
 
 autoflake-check:
 	$(eval on := $(onpy))
-	autoflake --in-place --remove-all-unused-imports --check -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on))
+else
+	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r")
 
 
@@ -56,46 +97,74 @@ docformatter-check: docformatter-diff docformatter-actual-check
 
 docformatter-actual-check:
 	$(eval on := $(onpy))
-	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_on,$(on))
+else
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r")
 
 docformatter-diff:
 	$(eval on := $(onpy))
-	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on))
+else
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r")
 
 isort-check:
 	$(eval on := $(onpy))
-	isort --diff --color --check-only -m 2 -l $(line_len) $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_on,$(on))
+else
+	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"isort --diff --color --check-only -m 2 -l $(line_len)")
 
 flake8:
 	$(eval on := $(onpy))
-	flake8 --config=build-support/.flake8 $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	flake8 --config=build-support/.flake8 $(call solve_on,$(on))
+else
+	flake8 --config=build-support/.flake8 $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"flake8 --config=build-support/.flake8")
 
 bandit:
 	$(eval on := $(onpy))
-ifneq ($(shell uname | egrep -i "mingw"),)
-	unset PYTHONPATH && python -m bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	bandit --configfile build-support/.bandit.yml -r $(call solve_on,$(on))
 else
-	bandit --configfile build-support/.bandit.yml -r $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+	bandit --configfile build-support/.bandit.yml -r $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"unset PYTHONPATH && bandit --configfile build-support/.bandit.yml -r")
 
 pylint:
 	$(eval on := $(onpy))
-	pylint --rcfile=build-support/.pylintrc $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	pylint --rcfile=build-support/.pylintrc $(call solve_on,$(on))
+else
+	pylint --rcfile=build-support/.pylintrc $(call solve_since,$(since),".py")
+endif
 #$(call smart_command,"pylint --rcfile=build-support/.pylintrc")
 
 hlint:
 	$(eval on := $(onhs))
-	hlint $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on)))
+ifeq ($(since),)
+	hlint $(call solve_on,$(on))
+else
+	hlint $(call solve_since,$(since),".hs")
+endif
 #$(call smart_command,"hlint")
 
 shellcheck:
 	$(eval on := $(onsh))
-	find $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))) -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
+ifeq ($(since),)
+	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
+else
+	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
+endif
 
 lint-hs: hlint
 
@@ -139,7 +208,7 @@ subsystems=""
 # 	    - if files/subdirs of a subsystem are passed in forward them as "on"-s and remove the base path
 # 		  hence there will be no problems with cd
 define smart_command
-	$(eval resolved_on := $(foreach dir, $(on), $(or ${$(dir)},${dir},$(on))))
+	$(eval resolved_on := $2)
 	$(eval to_make := $(foreach subsystem,$(subsystems),$(filter-out $(subsystem)%, $(resolved_on))))
 	$(eval to_delegate := $(foreach subsystem,$(subsystems),$(filter $(subsystem)%, $(resolved_on))))
 	command=$1; \

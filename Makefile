@@ -10,6 +10,12 @@ onsh=build-support/
 
 # Common args
 line_len=120
+
+# Config files
+MYPY_CONFIG=build-support/mypy.ini
+PYLINT_CONFIG=build-support/.pylintrc
+FLAKE8_CONFIG=build-support/.flake8
+BANDIT_CONFIG=build-support/.bandit.yml
 export
 
 
@@ -57,7 +63,7 @@ ifeq ($(since),)
 else
 	isort -m 2 -l $(line_len) $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"isort -m 2 -l $(line_len)")
+#$(call smart_command,"isort -m 2 -l $(line_len)",$(call solve_on,$(on)))
 
 autoflake:
 	$(eval on := $(onpy))
@@ -72,11 +78,11 @@ endif
 mypy:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	mypy --config-file build-support/mypy.ini $(call solve_on,$(on))
+	mypy --config-file $(MYPY_CONFIG) $(call solve_on,$(on))
 else
-	mypy --config-file build-support/mypy.ini $(call solve_since,$(since),".py")
+	mypy --config-file $(MYPY_CONFIG) $(call solve_since,$(since),".py")
 endif
-# $(call smart_command,"mypy --config-file build-support/mypy.ini")
+# $(call smart_command,"mypy --config-file $(MYPY_CONFIG)",$(call solve_on,$(on)))
 
 # LINT -----------------------------------------------------------------------------------------------------------------
 lint: lint-py lint-sh lint-hs
@@ -87,10 +93,11 @@ autoflake-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on))
+#	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_on,$(on)))
 else
 	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_since,$(since),".py")
+#	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_since,$(since),".py"))
 endif
-#$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r")
 
 docformatter-check: docformatter-diff docformatter-actual-check
 
@@ -101,7 +108,7 @@ ifeq ($(since),)
 else
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r")
+#$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r",$(call solve_on,$(on)))
 
 docformatter-diff:
 	$(eval on := $(onpy))
@@ -124,38 +131,39 @@ endif
 flake8:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	flake8 --config=build-support/.flake8 $(call solve_on,$(on))
+	flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on))
 else
-	flake8 --config=build-support/.flake8 $(call solve_since,$(since),".py")
+	flake8 --config=$(FLAKE8_CONFIG) $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"flake8 --config=build-support/.flake8")
 
 bandit:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	bandit --configfile build-support/.bandit.yml -r $(call solve_on,$(on))
+	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_on,$(on))
 else
-	bandit --configfile build-support/.bandit.yml -r $(call solve_since,$(since),".py")
+	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"unset PYTHONPATH && bandit --configfile build-support/.bandit.yml -r")
+#$(call smart_command,"unset PYTHONPATH && bandit --configfile $(BANDIT_CONFIG) -r",$(call solve_on,$(on)))
 
 pylint:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	pylint --rcfile=build-support/.pylintrc $(call solve_on,$(on))
+	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on))
 else
-	pylint --rcfile=build-support/.pylintrc $(call solve_since,$(since),".py")
+	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"pylint --rcfile=build-support/.pylintrc")
+#$(call smart_command,"pylint --rcfile=$(PYLINT_CONFIG),$(call solve_on,$(on))")
 
 hlint:
 	$(eval on := $(onhs))
 ifeq ($(since),)
-	hlint $(call solve_on,$(on))
+	$(call smart_command,"hlint",$(call solve_on,$(on)))
+#	hlint $(call solve_on,$(on))
 else
-	hlint $(call solve_since,$(since),".hs")
+	$(call smart_command,"hlint",$(call solve_since,$(since),".hs"))
+#	hlint $(call solve_since,$(since),".hs")
 endif
-#$(call smart_command,"hlint")
 
 shellcheck:
 	$(eval on := $(onsh))
@@ -198,9 +206,9 @@ subsystems=""
 # What: if the targets belong to some subsystem, forward them to the inner makefile rule, else use the global one
 # Why: if we need nested Makefile-s (normally it would be better to use the config files per sub-project)
 # How:
-# 1. expand aliases passed in "on" if any
+# 1. expand aliases passed in "on/since" if any (i.e. $2)
 # 2. work out which target directories/files belong to subsystems (inner makefiles) such that we forward the make rule
-# 3. smart_command is passed the actual command apart from the file/dir targets (which will be injected at the end)
+# 3. smart_command is passed the actual command ($1) apart from the file/dir targets ($2) (which will be appended)
 #		- for each subsystem work out which files actually belong to it
 # 		- if a whole subsystem is passed but no files/dirs inside it -> make inner makefile without "on"s to use the
 #		  defaults in that makefile

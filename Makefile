@@ -19,10 +19,11 @@ BANDIT_CONFIG=build-support/.bandit.yml
 export
 
 
+SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
 ifneq ($(shell uname | egrep -i "mingw"),)
-	export PYTHONPATH := app_iqor;app_paper_plane;lib_py_utils;$(PYTHONPATH)
+	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(SOURCES_ROOTS)" | sed 's/:/;/g');$(PYTHONPATH)
 else
-	export PYTHONPATH := app_iqor:app_paper_plane:lib_py_utils:$(PYTHONPATH)
+	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(SOURCES_ROOTS)"):$(PYTHONPATH)
 endif
 
 
@@ -144,7 +145,7 @@ ifeq ($(since),)
 else
 	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"unset PYTHONPATH && bandit --configfile $(BANDIT_CONFIG) -r",$(call solve_on,$(on)))
+#$(call smart_command,"bandit --configfile $(BANDIT_CONFIG) -r",$(call solve_on,$(on)))
 
 pylint:
 	$(eval on := $(onpy))

@@ -40,7 +40,7 @@ endef
 # 	- since: e.g. HEAD, master, feature/my-branch
 #   - extension: e.g. ".py"
 define solve_since
-$(shell git diff --name-only $1 | grep "$2" | tr '\n' ' ')
+$(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' ')
 endef
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------

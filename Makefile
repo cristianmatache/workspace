@@ -35,15 +35,7 @@ endif
 # Args:
 #	- on: named file/dir target(s) specifier
 #	- file extension regex: e.g. "*.py"
-ifneq ($(shell uname | egrep -i "msys"),)
-# if ran from within cmd we need to `find "$1"` but that triggers find "" so we put a condition on $1 to exist
-# (only used by .bat files that are used by PyCharm external tools to trigger make fmt/lint/mypy)
-solve_on = $(if $(is_multi_lang),$(if $1,$(shell find $(call solve_aliases,"$1") -type f -iname "$2")),$(call solve_aliases,$1))
-else
-# Linux/Git Bash
-# (this should be the main implementation)
 solve_on = $(if $(is_multi_lang),$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call solve_aliases,$1))
-endif
 
 # If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
 # Args:

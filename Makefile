@@ -41,10 +41,10 @@ multi_lang_on = $(foreach target,$(shell find $(call solve_aliases,$1) -type f -
 # If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
 # Args:
 #	- on: named file/dir target(s) specifier
-solve_aliases = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,$(target)))
+solve_aliases = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,${target}))
 
 # Sanitize double/single/no quotes
-sanitize = $(foreach target,$(shell echo '$1' | tr '\\\\\\\\' '/' | tr -d "'" | tr -d '"' ),"$(target)")
+sanitize = $(foreach target,$(shell echo $1 | tr '\\\\\\\\' '/' | tr -d "'" | tr -d '"' ),"$(target)")
 
 # If "since" was supplied -> get all the changed files since $(since)
 # Args:

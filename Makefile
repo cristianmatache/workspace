@@ -35,12 +35,16 @@ endif
 # Args:
 #	- on: named file/dir target(s) specifier
 #	- file extension regex: e.g. "*.py"
-solve_on = $(foreach target, $(if $(is_multi_lang),$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call solve_aliases,$1)), "$(target)")
+solve_on = $(if $(is_multi_lang),$(call multi_lang_on,$1,$2),$(call solve_aliases,$1))
+multi_lang_on = $(foreach target,$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call sanitize,$(target)))
 
 # If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
 # Args:
 #	- on: named file/dir target(s) specifier
-solve_aliases = $(foreach dir, $1, $(or ${$(dir)},${dir},$1))
+solve_aliases = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,$(target)))
+
+# Sanitize double/single/no quotes
+sanitize = $(foreach target,$(shell echo '$1' | tr '\\\\\\\\' '/' | tr -d "'" | tr -d '"' ),"$(target)")
 
 # If "since" was supplied -> get all the changed files since $(since)
 # Args:

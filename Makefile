@@ -26,22 +26,10 @@ else
 	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(SOURCES_ROOTS)"):$(PYTHONPATH)
 endif
 
-
-# Solve the "on" that was supplied:
-# 1. solve the alias -> if "on" contains aliases, replace them with their resolved targets
-# 2. if the goal is not multi language -> keep the "on" as it was passed/expanded by the alias processing
-# 3. if the goal is multi language (e.g. lint) -> replace all directories in "on" with the files that they contain
-#    that match the file extension regex ($2)
-# Args:
-#	- on: named file/dir target(s) specifier
-#	- file extension regex: e.g. "*.py"
-solve_on = $(if $(is_multi_lang),$(call multi_lang_on,$1,$2),$(call solve_aliases,$1))
-multi_lang_on = $(foreach target,$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call sanitize,$(target)))
-
 # If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
 # Args:
 #	- on: named file/dir target(s) specifier
-solve_aliases = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,${target}))
+solve_on = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,${target}))
 
 # Sanitize double/single/no quotes
 ifneq ($(shell uname | egrep -i "msys"),)  # is cmd
@@ -50,6 +38,11 @@ else  # is Unix or Git bash
 sanitize = $1
 endif
 
+# Only run the command if the "on" specs are suitable for the expected language
+# Args:
+#   - on: "on" specifier
+#   - $2: file extension regex e.g. "*.py"
+lang = [[ ! -z `find $(call solve_on,$1) -type f -name $2` ]]
 
 # If "since" was supplied -> get all the changed files since $(since)
 # Args:
@@ -57,15 +50,8 @@ endif
 #   - extension: e.g. ".py"
 solve_since = $(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' ')
 
-# Only run the command if the "on" specs are suitable for the expected language
-# Args:
-#   - on: "on" specifier
-#   - $2: file extension regex e.g. "*.py"
-lang = [[ ! -z `find $(call solve_aliases,$1) -type f -name $2` ]]
-
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------
-fmt: export is_multi_lang = true
 fmt: fmt-py
 
 fmt-py: docformatter isort autoflake
@@ -74,7 +60,7 @@ docformatter:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on),"*.py"); fi
+	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on)); fi
 else
 	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
 endif
@@ -84,17 +70,17 @@ isort:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	isort -m 2 -l $(line_len) $(call solve_on,$(on),"*.py"); fi
+	isort -m 2 -l $(line_len) $(call solve_on,$(on)); fi
 else
 	isort -m 2 -l $(line_len) $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"isort -m 2 -l $(line_len)",$(call solve_on,$(on),"*.py"))
+#$(call smart_command,"isort -m 2 -l $(line_len)",$(call solve_on,$(on)))
 
 autoflake:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	autoflake --in-place --remove-all-unused-imports -r $(call solve_on,$(on),"*.py"); fi
+	autoflake --in-place --remove-all-unused-imports -r $(call solve_on,$(on)); fi
 else
 	autoflake --in-place --remove-all-unused-imports -r $(call solve_since,$(since),".py")
 endif
@@ -105,15 +91,14 @@ mypy:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	mypy --config-file $(MYPY_CONFIG) $(call solve_on,$(on),"*.py"); fi
+	mypy --config-file $(MYPY_CONFIG) $(call solve_on,$(on)); fi
 else
 	mypy --config-file $(MYPY_CONFIG) $(call solve_since,$(since),".py")
 endif
-# $(call smart_command,"mypy --config-file $(MYPY_CONFIG)",$(call solve_on,$(on),"*.py"))
+# $(call smart_command,"mypy --config-file $(MYPY_CONFIG)",$(call solve_on,$(on)))
 
 
 # LINT -----------------------------------------------------------------------------------------------------------------
-lint: export is_multi_lang = true
 lint: lint-py lint-sh  # lint-hs
 
 lint-hs: hlint
@@ -126,8 +111,8 @@ autoflake-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on),"*.py"); fi
-#	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_on,$(on),"*.py"))
+	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on)); fi
+#	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_on,$(on)))
 else
 	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_since,$(since),".py")
 #	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_since,$(since),".py"))
@@ -139,17 +124,17 @@ docformatter-actual-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_on,$(on),"*.py"); fi
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_on,$(on)); fi
 else
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r",$(call solve_on,$(on),"*.py"))
+#$(call smart_command,"docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r",$(call solve_on,$(on)))
 
 docformatter-diff:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on),"*.py"); fi
+	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on)); fi
 else
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
 endif
@@ -159,7 +144,7 @@ isort-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_on,$(on),"*.py"); fi
+	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_on,$(on)); fi
 else
 	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_since,$(since),".py")
 endif
@@ -169,7 +154,7 @@ flake8:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on),"*.py"); fi
+	flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on)); fi
 else
 	flake8 --config=$(FLAKE8_CONFIG) $(call solve_since,$(since),".py")
 endif
@@ -179,28 +164,28 @@ bandit:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_on,$(on),"*.py"); fi
+	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_on,$(on)); fi
 else
 	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"bandit --configfile $(BANDIT_CONFIG) -r",$(call solve_on,$(on),"*.py"))
+#$(call smart_command,"bandit --configfile $(BANDIT_CONFIG) -r",$(call solve_on,$(on)))
 
 pylint:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.py"); then  \
-	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on),"*.py"); fi
+	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on)); fi
 else
 	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_since,$(since),".py")
 endif
-#$(call smart_command,"pylint --rcfile=$(PYLINT_CONFIG),$(call solve_on,$(on),"*.py")")
+#$(call smart_command,"pylint --rcfile=$(PYLINT_CONFIG),$(call solve_on,$(on))")
 
 hlint:
 	$(eval on := $(onhs))
 ifeq ($(since),)
 	 if $(call lang,$(on),"*.hs"); then  \
-	$(call smart_command,"hlint",$(call solve_on,$(on),"*.hs")); fi
-#	hlint $(call solve_on,$(on),"*.hs")
+	$(call smart_command,"hlint",$(call solve_on,$(on))); fi
+#	hlint $(call solve_on,$(on))
 else
 	$(call smart_command,"hlint",$(call solve_since,$(since),".hs"))
 #	hlint $(call solve_since,$(since),".hs")
@@ -210,7 +195,7 @@ shellcheck:
 	$(eval on := $(onsh))
 ifeq ($(since),)
 	if $(call lang,$(on),"*.sh"); then \
-	find $(call solve_on,$(on),"*.sh") -type f -iname "*.sh" -exec shellcheck "{}" --format=gcc -e SC1017 \;; fi
+	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec shellcheck "{}" --format=gcc -e SC1017 \;; fi
 else
 	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
 endif

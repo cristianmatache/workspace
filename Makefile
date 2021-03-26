@@ -1,7 +1,7 @@
 MAKEFLAGS += -j4
 
 # Aliases
-iqor=app_iqor/
+iqor=app_iqor/ 
 
 # All projects
 onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/

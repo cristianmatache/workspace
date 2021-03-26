@@ -56,6 +56,7 @@ lang = [[ ! -z `find $(call solve_aliases,$1) -type f -name $2` ]]
 
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------
+fmt: export is_multi_lang = true
 fmt: fmt-py
 
 fmt-py: docformatter isort autoflake

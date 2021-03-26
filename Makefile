@@ -35,7 +35,7 @@ endif
 # Args:
 #	- on: named file/dir target(s) specifier
 #	- file extension regex: e.g. "*.py"
-solve_on = $(if $(is_multi_lang),$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call solve_aliases,$1))
+solve_on = $(foreach target, $(if $(is_multi_lang),$(shell find $(call solve_aliases,$1) -type f -iname "$2"),$(call solve_aliases,$1)), "$(target)")
 
 # If "on" was supplied as an alias -> solve the alias, otherwise pass in the raw on
 # Args:
@@ -203,7 +203,7 @@ shellcheck:
 	$(eval on := $(onsh))
 ifeq ($(since),)
 	if $(call if_lang,$(on),"*.sh"); then \
-	find $(foreach target, $(call solve_on,$(on),"*.sh"), "$(target)") -type f -iname "*.sh" -exec shellcheck "{}" --format=gcc -e SC1017 \;; fi
+	find $(call solve_on,$(on),"*.sh") -type f -iname "*.sh" -exec shellcheck "{}" --format=gcc -e SC1017 \;; fi
 else
 	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
 endif

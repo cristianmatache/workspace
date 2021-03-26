@@ -44,13 +44,18 @@ multi_lang_on = $(foreach target,$(shell find $(call solve_aliases,$1) -type f -
 solve_aliases = $(foreach target,$(foreach dir, $1, $(or ${$(dir)},${dir},$1)),$(call sanitize,${target}))
 
 # Sanitize double/single/no quotes
+ifneq ($(shell uname | egrep -i "msys"),)  # is cmd
 sanitize = $(foreach target,$(shell echo $1 | tr '\\\\\\\\' '/' | tr -d "'" | tr -d '"' ),"$(target)")
+else  # is Unix or Git bash
+sanitize = $1
+endif
+
 
 # If "since" was supplied -> get all the changed files since $(since)
 # Args:
 # 	- since: e.g. HEAD, master, feature/my-branch
 #   - extension: e.g. ".py"
-solve_since = $(foreach target, $(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' '), "$(target)")
+solve_since = $(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' ')
 
 # Only run the command if the "on" specs are suitable for the expected language
 # Args:

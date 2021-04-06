@@ -24,7 +24,7 @@ stages:
     jobs:
       - job: install_python_deps
         steps:
-          - template: templates/setup_py.yml
+          - template: ../templates/setup_py.yml
           - script: |
               PIP="pip install --upgrade -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"
@@ -38,7 +38,7 @@ stages:
     jobs:
       - job: lint_py
         steps:
-          - template: templates/use_py_deps.yml
+          - template: ../templates/use_py_deps.yml
           - script: |
               which mypy
               which flake8
@@ -64,7 +64,7 @@ stages:
     jobs:
       - job: test_py
         steps:
-          - template: templates/use_py_deps.yml
+          - template: ../templates/use_py_deps.yml
           - script: |
               which pytest
             displayName: 'Sanity check py test'

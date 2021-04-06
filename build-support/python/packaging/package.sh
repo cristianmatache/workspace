@@ -26,4 +26,4 @@ pip install $(echo $reqs | tr '\n' ' ' | tr -d '\r') --target "$deps_dir"
 cp -r -t "$deps_dir/" "$target"
 
 # finally, build!
-shiv --site-packages "$deps_dir" --compressed -o "$package_path" -e "$entry_point" -E --reproducible
+shiv --site-packages "$deps_dir" --compressed -o "$package_path" -e "$entry_point" -E --reproducible -p  "/usr/bin/env python"

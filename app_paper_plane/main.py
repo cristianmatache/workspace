@@ -280,7 +280,7 @@ def sweep_cache(src, dst, date_out):
     return render_template('index-table.html', res=MarketsSweeper(src, dst, date_out).sweep_cache())
 
 
-if __name__ == '__main__':
+def main() -> None:
     # Create a command line argument parser
     parser = ArgumentParser(description='JobAllocator. Manage task allocation for asynchronous distributed tasks.')
     # Add a job id argument
@@ -291,3 +291,7 @@ if __name__ == '__main__':
     input_port = clargs.flaskport
 
     app.run(host='localhost', port=input_port, debug=False)
+
+
+if __name__ == '__main__':
+    main()

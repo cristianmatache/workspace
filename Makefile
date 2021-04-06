@@ -7,15 +7,19 @@ iqor=app_iqor/
 onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
 onhs=tutorials_hs/scheme_interpreter
 onsh=build-support/
+onnb=.
 
 # Common args
 line_len=120
 
 # Config files
-MYPY_CONFIG=build-support/mypy.ini
-PYLINT_CONFIG=build-support/.pylintrc
-FLAKE8_CONFIG=build-support/.flake8
-BANDIT_CONFIG=build-support/.bandit.yml
+MYPY_CONFIG=build-support/python/tools-config/mypy.ini
+PYLINT_CONFIG=build-support/python/tools-config/.pylintrc
+FLAKE8_CONFIG=build-support/python/tools-config/.flake8
+ISORT_CONFIG=build-support/python/tools-config/pyproject.toml
+BANDIT_CONFIG=build-support/python/tools-config/.bandit.yml
+PYTEST_CONFIG=build-support/python/tools-config/pyproject.toml
+FLAKE8_NB_CONFIG=build-support/jupyter/tools-config/.flake8_nb
 export
 
 
@@ -41,8 +45,8 @@ endif
 # Only run the command if the "on" specs are suitable for the expected language
 # Args:
 #   - on: "on" specifier
-#   - $2: file extension regex e.g. "*.py"
-lang = [[ ! -z `find $(call solve_on,$1) -type f -name $2` ]]
+#   - $2: file extension regex e.g. ".*\.pyi?" or ".*\.sh"
+lang = [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
 
 # If "since" was supplied -> get all the changed files since $(since)
 # Args:
@@ -52,14 +56,16 @@ solve_since = $(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find
 
 
 # FORMAT ---------------------------------------------------------------------------------------------------------------
-fmt: fmt-py
+fmt: fmt-py fmt-nb
 
 fmt-py: docformatter isort autoflake
+
+fmt-nb: jblack
 
 docformatter:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on)); fi
 else
 	docformatter --in-place --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
@@ -69,28 +75,38 @@ endif
 isort:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
-	isort -m 2 -l $(line_len) $(call solve_on,$(on)); fi
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	isort --settings-path $(ISORT_CONFIG) $(call solve_on,$(on)); fi
 else
-	isort -m 2 -l $(line_len) $(call solve_since,$(since),".py")
+	isort --settings-path $(ISORT_CONFIG) $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"isort -m 2 -l $(line_len)",$(call solve_on,$(on)))
 
 autoflake:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	autoflake --in-place --remove-all-unused-imports -r $(call solve_on,$(on)); fi
 else
 	autoflake --in-place --remove-all-unused-imports -r $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"autoflake --in-place --remove-all-unused-imports -r")
 
+jblack:
+	$(eval on := $(onnb))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.ipynb"); then \
+  	jblack --line-length $(line_len) $(call solve_on,$(on)); fi
+else
+	jblack --line-length $(line_len) $(call solve_since,$(since),".ipynb");
+endif
+
+
 # TYPE-CHECK -----------------------------------------------------------------------------------------------------------
 mypy:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	mypy --config-file $(MYPY_CONFIG) $(call solve_on,$(on)); fi
 else
 	mypy --config-file $(MYPY_CONFIG) $(call solve_since,$(since),".py")
@@ -99,7 +115,7 @@ endif
 
 
 # LINT -----------------------------------------------------------------------------------------------------------------
-lint: lint-py lint-sh  # lint-hs
+lint: lint-py lint-sh lint-nb # lint-hs
 
 lint-hs: hlint
 
@@ -107,10 +123,12 @@ lint-sh: shellcheck
 
 lint-py: flake8 autoflake-check docformatter-check isort-check bandit pylint
 
+lint-nb: jblack-check flake8-nb
+
 autoflake-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on)); fi
 #	$(call smart_command,"autoflake --in-place --remove-all-unused-imports --check -r",$(call solve_on,$(on)))
 else
@@ -123,7 +141,7 @@ docformatter-check: docformatter-diff docformatter-actual-check
 docformatter-actual-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_on,$(on)); fi
 else
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_since,$(since),".py")
@@ -133,7 +151,7 @@ endif
 docformatter-diff:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on)); fi
 else
 	docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_since,$(since),".py")
@@ -143,17 +161,17 @@ endif
 isort-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
-	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_on,$(on)); fi
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	isort --diff --color --check-only --settings-path $(ISORT_CONFIG) $(line_len) $(call solve_on,$(on)); fi
 else
-	isort --diff --color --check-only -m 2 -l $(line_len) $(call solve_since,$(since),".py")
+	isort --diff --color --check-only --settings-path $(ISORT_CONFIG) $(line_len) $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"isort --diff --color --check-only -m 2 -l $(line_len)")
 
 flake8:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on)); fi
 else
 	flake8 --config=$(FLAKE8_CONFIG) $(call solve_since,$(since),".py")
@@ -163,7 +181,7 @@ endif
 bandit:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_on,$(on)); fi
 else
 	bandit --configfile $(BANDIT_CONFIG) -r $(call solve_since,$(since),".py")
@@ -173,7 +191,7 @@ endif
 pylint:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.py"); then  \
+	if $(call lang,$(on),".*\.pyi?"); then  \
 	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on)); fi
 else
 	pylint --rcfile=$(PYLINT_CONFIG) $(call solve_since,$(since),".py")
@@ -183,7 +201,7 @@ endif
 hlint:
 	$(eval on := $(onhs))
 ifeq ($(since),)
-	 if $(call lang,$(on),"*.hs"); then  \
+	if $(call lang,$(on),".*\.hs"); then  \
 	$(call smart_command,"hlint",$(call solve_on,$(on))); fi
 #	hlint $(call solve_on,$(on))
 else
@@ -191,14 +209,94 @@ else
 #	hlint $(call solve_since,$(since),".hs")
 endif
 
+# find .. --exec always has exit code 0 -> use find | xargs
 shellcheck:
 	$(eval on := $(onsh))
 ifeq ($(since),)
-	if $(call lang,$(on),"*.sh"); then \
-	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec shellcheck "{}" --format=gcc -e SC1017 \;; fi
+	if $(call lang,$(on),".*\.sh"); then \
+	find $(call solve_on,$(on)) -type f -iname "*.sh" | xargs shellcheck --format=gcc -e SC1017; fi
 else
-	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" -exec shellcheck --format=gcc -e SC1017 {} \;
+	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" | xargs shellcheck --format=gcc -e SC1017;
 endif
+#	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec sh -c 'for f; do shellcheck "$$f" --format=gcc -e SC1017 || exit 1; done' sh "{}" \+; fi
+
+jblack-check:
+	$(eval on := $(onnb))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.ipynb"); then \
+  	jblack --check --line-length $(line_len) $(call solve_on,$(on)); fi
+else
+	jblack --check --line-length $(line_len) $(call solve_since,$(since),".ipynb");
+endif
+
+flake8-nb:
+	$(eval on := $(onpy))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.ipynb"); then \
+  	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_on,$(on)); fi
+else
+	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_since,$(since),".ipynb");
+endif
+
+
+# TEST -----------------------------------------------------------------------------------------------------------------
+test: test-py
+
+test-py: pytest
+
+pytest:
+	$(eval on := $(onpy))
+	$(eval marks := "")
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.ipynb"); then \
+  	pytest -m $(marks) -c $(call solve_on,$(on)); fi
+else
+	pytest -m $(marks) -c $(call solve_since,$(since),".ipynb");
+endif
+
+
+# PACKAGE --------------------------------------------------------------------------------------------------------------
+package-py: shiv
+
+reqs-py:
+	$(eval exclude := "dataclasses")
+	$(eval env := py-env)
+	reqs=$$(pipreqs --no-pin --print $(on) | grep -iv $(exclude) | sort); \
+	pattern=$$(echo "$$reqs" | tr -d "\r" | tr "\n" "|" | awk '{print substr($$1, 1, length($$1)-1)}'); \
+	first_p_reqs=$$(cat build-support/python/packaging/first-party-libs.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$2}'); \
+	third_p_reqs=$$(cat 3rdparty/$(env)/requirements.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$1}'); \
+	echo -e "$$first_p_reqs\n$$third_p_reqs";
+
+reqs-py-libs:
+	$(eval on := $(SOURCES_ROOTS))
+	$(eval exclude := "dataclasses")
+	$(eval env := py-env)
+	$(eval delim := --------------------------------------------------)
+	for lib in $$(echo $(on) | sed 's/:/\n/g'); do \
+  		reqs=$$(pipreqs --no-pin --print $$lib | grep -iv $(exclude) | sort); \
+  		pattern=$$(echo "$$reqs" | tr -d "\r" | tr "\n" "|" | awk '{print substr($$1, 1, length($$1)-1)}'); \
+  		first_p_reqs=$$(cat build-support/python/packaging/first-party-libs.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$2}'); \
+  		third_p_reqs=$$(cat 3rdparty/$(env)/requirements.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$1}'); \
+  		echo "$$first_p_reqs" | sed 's/\ //g' > $$lib/generated-requirements.txt; \
+  		echo "$$third_p_reqs" | sed 's/\ //g' >> $$lib/generated-requirements.txt; \
+  		echo -e "$$lib\n$(delim)\n$$first_p_reqs\n$$third_p_reqs\n"; \
+ 	done
+
+shiv:
+	$(eval on := .)
+	find $(on) -type f -name "shiv-package.sh" | sort | xargs bash
+
+
+# DEV SETUP ------------------------------------------------------------------------------------------------------------
+env: env-py
+
+env-py:
+	pip install --upgrade pip
+	pip install -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
+
+pip-install:
+	pip install --upgrade pip
+	pip install -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
 
 
 # CLEAN ----------------------------------------------------------------------------------------------------------------
@@ -213,11 +311,6 @@ clean-build-utils:
 clean-hs:
 	find . -name *.hi | xargs rm -f && find . -name *.o | xargs rm -f;
 
-
-# INSTALLATION ---------------------------------------------------------------------------------------------------------
-pip-install:
-	pip install --upgrade pip && \
-	pip install -c 3rdparty/constraints.txt -r 3rdparty/requirements.txt -r 3rdparty/dev-requirements.txt
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint

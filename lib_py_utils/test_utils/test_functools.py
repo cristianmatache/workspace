@@ -2,8 +2,9 @@
 from functools import partialmethod as partial_method_func_tools
 from typing import Sequence, Type, TypeVar, cast
 
-from py_utils.functools import partialmethod
 from typing_extensions import Literal
+
+from py_utils.functools import partialmethod
 
 T = TypeVar('T', bound='Child2')
 

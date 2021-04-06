@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+addopts = "-vv --durations=10 --cache-clear"
+
+[tool.isort]
+line_length = 120
+multi_line_output = 2
+
+known_first_party = [
+    "py_utils",
+]
+default_section = "THIRDPARTY"

@@ -1,0 +1,25 @@
+# type checker
+mypy
+
+# formatters
+isort
+docformatter
+autoflake
+jupyterblack
+
+# linters
+flake8
+flake8-markdown
+#flake8-bugbear
+flake8-nb
+pylint
+bandit
+shellcheck-py
+
+# test
+pytest
+coverage
+
+# packaging
+pipreqs
+shiv

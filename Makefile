@@ -20,7 +20,6 @@ ISORT_CONFIG=build-support/python/tools-config/pyproject.toml
 BANDIT_CONFIG=build-support/python/tools-config/.bandit.yml
 PYTEST_CONFIG=build-support/python/tools-config/pyproject.toml
 FLAKE8_NB_CONFIG=build-support/jupyter/tools-config/.flake8_nb
-export
 
 
 SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
@@ -267,6 +266,7 @@ reqs-py:
 	third_p_reqs=$$(cat 3rdparty/$(env)/requirements.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$1}'); \
 	echo -e "$$first_p_reqs\n$$third_p_reqs";
 
+# Merging with existing requirements.txt may need manual adjustment
 reqs-py-libs:
 	$(eval on := $(SOURCES_ROOTS))
 	$(eval exclude := "dataclasses")
@@ -280,6 +280,8 @@ reqs-py-libs:
   		echo "$$first_p_reqs" | sed 's/\ //g' > $$lib/generated-requirements.txt; \
   		echo "$$third_p_reqs" | sed 's/\ //g' >> $$lib/generated-requirements.txt; \
   		echo -e "$$lib\n$(delim)\n$$first_p_reqs\n$$third_p_reqs\n"; \
+  		cat $$lib/requirements.txt $$lib/generated-requirements.txt | sort | dos2unix | uniq > $$lib/requirements.txt; \
+  		rm $$lib/generated-requirements.txt; \
  	done
 
 shiv:
@@ -288,13 +290,13 @@ shiv:
 
 
 # DEV SETUP ------------------------------------------------------------------------------------------------------------
-env: env-py
+env: env-py-replicate
 
-env-py:
+env-py-replicate:
 	pip install --upgrade pip
 	pip install -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
 
-pip-install:
+env-py-create:
 	pip install --upgrade pip
 	pip install -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
 

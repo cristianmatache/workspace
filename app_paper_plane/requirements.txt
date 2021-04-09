@@ -1,4 +1,6 @@
-pathos
-requests
+
 dpath
 flask
+flask_assets
+pathos
+requests

@@ -38,10 +38,10 @@ and it would be very easy to extend it with another tool, just following the exi
 ### Usage exampples:
 -  **without targets:**
     -  `make lint` runs:
-       * a bunch of python linters on all directories (in `$onpy`) that contain python/stub files.
-       * a bunch of notebook linters on all directories (in `$onnb`) that contain .ipynb files.
-       * a bash linter (shellcheck) on all directories (in `$onsh`) that contain bash files.
-       * a haskell linter (shellcheck) on all directories (in `$onhs`) that contain haskell files.
+       -  a bunch of python linters on all directories (in `$onpy`) that contain python/stub files.
+       -  a bunch of notebook linters on all directories (in `$onnb`) that contain .ipynb files.
+       -  a bash linter (shellcheck) on all directories (in `$onsh`) that contain bash files.
+       -  a haskell linter (shellcheck) on all directories (in `$onhs`) that contain haskell files.
     -  `make lint`, `make fmt -j1`, `make type-check` work similarly
     -  the `$(onpy)`, `$(onsh)`, ... variables are defined at the top of the Makefile and represent the default locations where to search for certain languages.
     -  per-tool config files (e.g. `mypy.ini`) are found in `build-support/<language>/tools-config/`

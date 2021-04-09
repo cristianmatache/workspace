@@ -29,10 +29,10 @@ Some projects will be ported over here, some others are lost somewhere in space 
 
 ## Makefile for scripting languages
 The way the Makefile of this project works is heavily inspired by monorepo build tools such as Pants, Bazel, Buck.
-It runs multiple linters, formatters, type checkers, hermetic packers, testing frameworks etc. It works on both 
+It runs multiple linters, formatters, type checkers, hermetic packers, testing frameworks, virtual environment managers etc. It works on both 
 Linux, WSL and Windows (for Windows please run  `build-support/make/install_make_git_bash.sh` running Git Bash as administrator)
 It currently supports:
-`mypy`, `flake8`, `pylint`, `bandit`, `docformatter`, `isort`, `autoflake`, `pipreqs`, `shiv`, `jupyterblack`, `flake8-nb`, `shellcheck`, `hlint`;
+`pip`, `mypy`, `flake8`, `pylint`, `bandit`, `docformatter`, `isort`, `autoflake`, `pipreqs`, `shiv`, `jupyterblack`, `flake8-nb`, `shellcheck`, `hlint`;
 and it would be very easy to extend it with another tool, just following the existing examples.
 
 ### Usage exampples:
@@ -46,9 +46,10 @@ and it would be very easy to extend it with another tool, just following the exi
     -  the `$(onpy)`, `$(onsh)`, ... variables are defined at the top of the Makefile and represent the default locations where to search for certain languages.
     -  per-tool config files (e.g. `mypy.ini`) are found in `build-support/<language>/tools-config/`
 -  **with nominal targets:**
-    -  `make lint on=app_iqor/server.py` runs all python linters on the file, same as `make lint-py on=app_iqor/server.py`
-    -  `make lint on=lib_py_utils` runs a bunch of linters on the directory, in this case, same as `make lint-py on=lib_py_utils`
-    -  same for `make fmt`, `make test`, `make type-check`
+    -  `make lint on=app_iqor/server.py` runs all python linters on the file, same as `make lint-py on=app_iqor/server.py`.
+    -  `make lint on=lib_py_utils` runs a bunch of linters on the directory, in this case, same as `make lint-py on=lib_py_utils`.
+    -  `make lint on="lib_py_utils app_iqor/server.py"` runs a bunch of linters on both targets.
+    -  same for `make fmt`, `make test`, `make type-check`.
 - **with aliases:**
     -  `make fmt on=iqor` is the same as `make fmt on=app_iqor/` because iqor is an alias for app_iqor.
        Even though this example is simplistic, it is useful to alias combinations of multiple files/directories.
@@ -62,8 +63,7 @@ and it would be very easy to extend it with another tool, just following the exi
       -  same for all tools e.g. isort, docformatter, autoflake, shellcheck, flake8, jblack etc.
   
 To add things on the PYTHONPATH (i.e. to mark directories as sources roots) go to build-support/make/python/setup.py
-Different languages have different goals, for example Python can be packaged hermetically with Shiv, while Bash can't
-obviously.
+Different languages have different goals, for example Python can be packaged hermetically with Shiv, while Bash obviously can't.
 
 The following goals must support the "on" and "since" syntax and ensure that they are only run if there are any
 targets for the language they target:

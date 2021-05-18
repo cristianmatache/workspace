@@ -30,7 +30,7 @@ Some projects will be ported over here, some others are lost somewhere in space 
 ## Makefile for scripting languages
 The way the Makefile of this project works is heavily inspired by monorepo build tools such as Pants, Bazel, Buck.
 It runs multiple linters, formatters, type checkers, hermetic packers, testing frameworks, virtual environment managers etc. It works on both 
-Linux, WSL and Windows (for Windows please run  `build-support/make/install_make_git_bash.sh` running Git Bash as administrator)
+Linux, WSL and Windows (for Windows please run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator)
 It currently supports:
 `pip`, `mypy`, `flake8`, `pylint`, `bandit`, `docformatter`, `isort`, `autoflake`, `pipreqs`, `shiv`, `jupyterblack`, `flake8-nb`, `shellcheck`, `hlint`;
 and it would be very easy to extend it with another tool, just following the existing examples.

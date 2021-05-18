@@ -8,10 +8,9 @@ endif
 env-py: env-py-replicate
 
 env-py-replicate:
-	pip install --upgrade pip
-	pip install -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
+	python -m pip install --upgrade pip
+	python -m pip install -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
 
 env-py-create:
-	pip install --upgrade pip
-	pip install -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt
-
+	python -m pip install --upgrade pip
+	python -m pip install -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt

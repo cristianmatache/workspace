@@ -1,3 +1,4 @@
-restart-airflow:
-	. deploy-support/airflow/kill_airflow.py
-	. deploy-support/airflow/start_airflow.py
+airflow-restart:
+	./deploy-support/airflow/kill_airflow.sh || echo "Airflow was not running"
+	sleep 3s
+	./deploy-support/airflow/start_airflow.sh

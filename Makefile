@@ -35,6 +35,9 @@ include build-support/make/bash/lint.mk
 include build-support/make/haskell/lint.mk
 include build-support/make/haskell/clean.mk
 
+# Airflow
+include deploy-support/make/airflow.mk
+
 env: env-py
 
 fmt: fmt-py fmt-nb

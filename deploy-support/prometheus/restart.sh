@@ -19,6 +19,7 @@ echo "Prometheus port is: $PROMETHEUS_PORT"
 cp "$RESOLVED_CONFIG" "$RESOLVED_HOME" && echo "Synchronized config file $RESOLVED_CONFIG to $RESOLVED_HOME"
 
 # Run
-echo "$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT"
+echo "$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT" --storage.tsdb.retention.time=1d
 echo "---------------------------------------------------------"
-"$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT"
+"$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT" --storage.tsdb.retention.time=1d
+# --storage.tsdb.path

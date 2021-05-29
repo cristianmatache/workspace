@@ -6,7 +6,7 @@ shiv:
 
 reqs-py:
 	$(eval exclude := "dataclasses")
-	$(eval env := py-env)
+	$(eval env := py-env-ws)
 	reqs=$$(pipreqs --no-pin --print $(on) | grep -iv $(exclude) | sort); \
 	pattern=$$(echo "$$reqs" | tr -d "\r" | tr "\n" "|" | awk '{print substr($$1, 1, length($$1)-1)}'); \
 	first_p_reqs=$$(cat build-support/python/packaging/first-party-libs.txt | awk -v pat="$$pattern" 'BEGIN {IGNORECASE = 1} ($$0~pat){print $$2}'); \
@@ -17,7 +17,7 @@ reqs-py:
 reqs-py-libs:
 	$(eval on := $(SOURCES_ROOTS))
 	$(eval exclude := "dataclasses")
-	$(eval env := py-env)
+	$(eval env := py-env-ws)
 	$(eval delim := --------------------------------------------------)
 	for lib in $$(echo $(on) | sed 's/:/\n/g'); do \
   		reqs=$$(pipreqs --no-pin --print $$lib | grep -iv $(exclude) | sort); \

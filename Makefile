@@ -6,7 +6,7 @@ iqor=app_iqor/
 # All projects
 onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
 onhs=tutorials_hs/scheme_interpreter
-onsh=build-support/
+onsh=build-support/ deploy-support/ lib_sh_utils/
 onnb=notebooks/
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.

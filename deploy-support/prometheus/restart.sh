@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
-# Windows and Linux
+# Windows and Linux, run from project root
+
+# Imports
+. lib_sh_utils/commands.sh
+
+# Constants
 PROMETHEUS_PORT=":$(echo "${PROMETHEUS_PORT:-7010}" | tr -d ":")"  # Remove : if already in PROMETHEUS_PORT
+RESOLVED_HOME=$(find_command_home prometheus "$HOME/prometheus" PROMETHEUS_HOME)
+RESOLVED_CONFIG="${PROMETHEUS_CONFIG:-deploy-support/prometheus/prometheus.yml}"
+RESOLVED_RULES="${PROMETHEUS_RULES:-deploy-support/prometheus/rules}"
 
 echo "---------------------------------------------------------"
-if command -v prometheus &> /dev/null
-then
-  echo "Prometheus is on \$PATH"
-  PROMETHEUS_LOC_ON_PATH="$(which prometheus)"
-  DEDUCED_HOME=$(dirname "$PROMETHEUS_LOC_ON_PATH")
-fi
-RESOLVED_HOME="${PROMETHEUS_HOME:-${DEDUCED_HOME:-${HOME}/prometheus}}"
-RESOLVED_CONFIG="${PROMETHEUS_CONFIG:-deploy-support/prometheus/prometheus.yml}"
-echo "Prometheus home is: $RESOLVED_HOME"
+echo "Prometheus home is:   $RESOLVED_HOME"
 echo "Prometheus config is: $RESOLVED_CONFIG"
-echo "Prometheus port is: $PROMETHEUS_PORT"
+echo "Prometheus rules are: $RESOLVED_RULES"
+echo "Prometheus port is:   $PROMETHEUS_PORT"
+
+# Lint Prometheus files
+make lint-prometheus promhome="$RESOLVED_HOME"
 
 # Sync config file
 cp "$RESOLVED_CONFIG" "$RESOLVED_HOME" && echo "Synchronized config file $RESOLVED_CONFIG to $RESOLVED_HOME"
+# Sync rules files
+cp -r "$RESOLVED_RULES" "$RESOLVED_HOME" && echo "Synchronized rules files $RESOLVED_RULES to $RESOLVED_HOME"  # TODO: use rsync
 
 # Run
 echo "$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT" --storage.tsdb.retention.time=1d

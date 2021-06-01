@@ -38,11 +38,14 @@ include build-support/make/haskell/clean.mk
 # Airflow
 include deploy-support/make/airflow.mk
 
+# Prometheus
+include build-support/make/prometheus/lint.mk
+
 env: env-py
 
 fmt: fmt-py fmt-nb
 
-lint: lint-py lint-sh lint-nb # lint-hs
+lint: lint-py lint-sh lint-nb lint-prometheus # lint-hs
 
 type-check: mypy
 

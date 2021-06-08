@@ -49,7 +49,8 @@ ifeq ($(since),)
 	if $(call lang,$(on),".*\.pyi?"); then  \
 	python -m flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on)); fi
 else
-	python -m flake8 --config=$(FLAKE8_CONFIG) $(call solve_since,$(since),".py")
+	if $(call lang,$(call solve_since,$(since),".py"),".*\.pyi?"); then \
+	python -m flake8 --config=$(FLAKE8_CONFIG) $(call solve_since,$(since),".py"); fi
 endif
 #$(call smart_command,"flake8 --config=build-support/.flake8")
 
@@ -69,6 +70,7 @@ ifeq ($(since),)
 	if $(call lang,$(on),".*\.pyi?"); then  \
 	python -m pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on)); fi
 else
-	python -m pylint --rcfile=$(PYLINT_CONFIG) $(call solve_since,$(since),".py")
+	if $(call lang,$(call solve_since,$(since),".py"),".*\.pyi?"); then \
+	python -m pylint --rcfile=$(PYLINT_CONFIG) $(call solve_since,$(since),".py"); fi
 endif
 #$(call smart_command,"pylint --rcfile=$(PYLINT_CONFIG),$(call solve_on,$(on))")

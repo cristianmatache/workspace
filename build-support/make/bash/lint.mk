@@ -5,7 +5,7 @@ shellcheck:
 	$(eval on := $(onsh))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.sh"); then \
-	find $(call solve_on,$(on)) -type f -iname "*.sh" | xargs --no-run-if-empty shellcheck -x --format=gcc -e SC1017; fi
+	find $(call solve_on,$(on)) -type f -iname "*.sh" | xargs shellcheck -x --format=gcc -e SC1017; fi
 else
 	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" | xargs --no-run-if-empty shellcheck -x --format=gcc -e SC1017;
 endif

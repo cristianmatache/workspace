@@ -7,5 +7,6 @@ ifeq ($(since),)
 	if $(call lang,$(on),".*\.md"); then \
 	$(mdlint) --config $(MARKDOWNLINT_CONFIG) $(call solve_on,$(on)); fi;
 else
-	$(mdlint) --config $(MARKDOWNLINT_CONFIG) $(call solve_since,$(since),".md")
+	if $(call lang,$(call solve_since,$(since),".md"),".*\.md"); then \
+	$(mdlint) --config $(MARKDOWNLINT_CONFIG) $(call solve_since,$(since),".md"); fi
 endif

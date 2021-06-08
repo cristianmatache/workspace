@@ -5,6 +5,10 @@
 
 # https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058
 echo "Installing make"
+
+# Imports
+. lib_sh_utils/src/commands.sh
+
 MAKE_DOWNLOAD_URL="https://sourceforge.net/projects/ezwinports/files/make-4.3-without-guile-w32-bin.zip/download"
 curl -kL $MAKE_DOWNLOAD_URL --output install_make.zip
 unzip install_make.zip -d install_make
@@ -38,5 +42,5 @@ cp -r install_make/share/man/* /mingw64/share/man/
 
 echo ""
 echo "Installed make"
-which make
+assert_command_exists make
 rm -rf install_make

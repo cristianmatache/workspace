@@ -27,10 +27,21 @@ find_command_home() {
   # try to work it out
   if command -v "$COMMAND" &> /dev/null
   then
-    LOC_ON_PATH="$(which "$COMMAND")"
+    LOC_ON_PATH="$(command -v "$COMMAND")"
     DEDUCED_HOME=$(dirname "$LOC_ON_PATH")
   else
     DEDUCED_HOME="$DEFAULT"
   fi
   echo "$DEDUCED_HOME"
+}
+
+assert_command_exists() {
+  local COMMAND
+  COMMAND="$1"
+  if command -v "$COMMAND"; then
+    echo "Found $COMMAND at $(command -v "$COMMAND")"
+  else
+    echo "$COMMAND does not exist"
+    exit 1
+  fi
 }

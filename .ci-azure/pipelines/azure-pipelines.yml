@@ -69,7 +69,7 @@ stages:
 
   - stage: test_py
     dependsOn: install_deps
-    displayName: 'test'
+    displayName: 'test py'
     jobs:
       - job: test_py
         steps:
@@ -81,11 +81,11 @@ stages:
           - script: make test-py
             displayName: 'Test py'
 
-  - stage: test_py
+  - stage: test_sh
     dependsOn: []
-    displayName: 'test'
+    displayName: 'test sh'
     jobs:
-      - job: test_py
+      - job: test_sh
         steps:
           - script: make -j1 env-sh test-sh
             displayName: 'Test sh'

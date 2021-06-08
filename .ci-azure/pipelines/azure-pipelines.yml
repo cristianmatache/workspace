@@ -61,7 +61,7 @@ stages:
             displayName: 'Run shellcheck'
       - job: lint_yaml
         steps:
-          - script: make -j1 env-yml lint-yml
+          - script: make lint-yml
             displayName: 'Run yamllint'
       - job: lint_markdown
         steps:
@@ -82,19 +82,11 @@ stages:
           - script: make test-py
             displayName: 'Test py'
 
-  - stage: test_sh
-    dependsOn: [ ]
-    displayName: 'test sh'
+  - stage: test_py
+    dependsOn: []
+    displayName: 'test'
     jobs:
-      - job: test_sh
+      - job: test_py
         steps:
-          - script: |
-              wget https://nodejs.org/dist/v16.3.0/node-v16.3.0-linux-x64.tar.xz
-              mkdir -p $(NODE_INSTALL_PATH)
-              tar -xvf node-v16.3.0-linux-x64.tar.xz --directory $(NODE_INSTALL_PATH)
-              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/node-v16.3.0-linux-x64/bin"
-            displayName: 'Download, untar and append npm to path'
-          - script: |
-              command -v npm
-              make -j1 env-sh test-sh
+          - script: make -j1 env-sh test-sh
             displayName: 'Test sh'

@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 MAKEFLAGS += -j4
 
 # Aliases

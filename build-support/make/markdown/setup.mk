@@ -8,4 +8,4 @@ env-md-ws-create:
 	cat $(NPM_DEV_MD_DEPS) | tr -d "\r" | xargs npm --prefix $(WS_MD_ENV) install --save-dev
 
 env-md-ws-replicate:
-	npm --prefix $(WS_MD_ENV) ci
+	npm --prefix $(WS_MD_ENV) ci || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"

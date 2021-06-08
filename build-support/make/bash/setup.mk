@@ -8,4 +8,4 @@ env-sh-ws-create:
 	cat $(NPM_DEV_SH_DEPS) | tr -d "\r" | xargs npm --prefix $(WS_SH_ENV) install --save-dev
 
 env-sh-ws-replicate:
-	npm --prefix $(WS_SH_ENV) ci
+	npm --prefix $(WS_SH_ENV) ci || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"

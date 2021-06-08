@@ -93,6 +93,9 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
   - `make mypy on=app_iqor/server.py` runs mypy on the given file.
   - `make mypy since=master` runs mypy on the diff between the current branch and master.
   - same for all tools e.g. isort, docformatter, autoflake, shellcheck, flake8, jblack etc.
+- **with multiple rules:**
+  - `make lint-py mypy lint-sh lint-md on=app_iqor/` runs all Python linters, mypy, shellcheck, markdownlint on
+    `app_iqor/`.
 
 To add things on the PYTHONPATH (i.e. to mark directories as sources roots) go to build-support/make/python/setup.py
 Different languages have different goals, for example Python can be packaged hermetically with Shiv, while Bash

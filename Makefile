@@ -57,7 +57,7 @@ include build-support/make/markdown/lint.mk
 include deploy-support/make/airflow.mk
 
 
-env: env-py
+env: env-py env-sh env-md
 
 fmt: fmt-py fmt-nb fmt-yml fmt-md
 
@@ -72,3 +72,7 @@ clean: clean-py clean-hs
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint
+
+rm-envs:
+	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/
+

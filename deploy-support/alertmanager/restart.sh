@@ -2,7 +2,7 @@
 # Windows and Linux, run from project root
 
 # Imports
-. lib_sh_utils/commands.sh
+. lib_sh_utils/src/commands.sh
 
 # Constants
 ALERTMANAGER_PORT=":$(echo "${ALERTMANAGER_PORT:-7013}" | tr -d ":")"  # Remove : if already in ALERTMANAGER_PORT

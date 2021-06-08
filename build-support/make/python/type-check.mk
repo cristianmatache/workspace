@@ -1,3 +1,5 @@
+type-check: mypy
+
 mypy:
 	$(eval on := $(onpy))
 ifeq ($(since),)

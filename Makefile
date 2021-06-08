@@ -8,6 +8,8 @@ onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
 onhs=tutorials_hs/scheme_interpreter
 onsh=build-support/ deploy-support/ lib_sh_utils/
 onnb=notebooks/
+onyml=.ci-azure/ build-support/ deploy-support/
+onmd=*.md app_* lib_* resources/
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.
 # It is recommended to keep everything in a single file if possible.
@@ -29,27 +31,41 @@ include build-support/make/jupyter/format.mk
 include build-support/make/jupyter/lint.mk
 
 # Bash
+include build-support/make/bash/setup.mk
+include build-support/make/bash/config.mk
 include build-support/make/bash/lint.mk
+include build-support/make/bash/test.mk
 
 # Haskell
 include build-support/make/haskell/lint.mk
 include build-support/make/haskell/clean.mk
 
+# YAML
+include build-support/make/yaml/config.mk
+include build-support/make/yaml/format.mk
+include build-support/make/yaml/lint.mk
+# Prometheus YAML
+include build-support/make/prometheus/lint.mk
+
+# Markdown
+include build-support/make/markdown/setup.mk
+include build-support/make/markdown/config.mk
+include build-support/make/markdown/format.mk
+include build-support/make/markdown/lint.mk
+
 # Airflow
 include deploy-support/make/airflow.mk
 
-# Prometheus
-include build-support/make/prometheus/lint.mk
 
 env: env-py
 
-fmt: fmt-py fmt-nb
+fmt: fmt-py fmt-nb fmt-yml fmt-md
 
-lint: lint-py lint-sh lint-nb lint-prometheus # lint-hs
+lint: lint-py lint-sh lint-nb lint-yml lint-prometheus lint-md # lint-hs
 
 type-check: mypy
 
-test: test-py
+test: test-py test-sh
 
 clean: clean-py clean-hs
 

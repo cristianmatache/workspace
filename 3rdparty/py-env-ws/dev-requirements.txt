@@ -6,6 +6,7 @@ isort
 docformatter
 autoflake
 jupyterblack
+nbstripout
 
 # linters
 flake8
@@ -15,6 +16,7 @@ flake8-nb
 pylint
 bandit
 shellcheck-py
+yamllint
 
 # test
 pytest

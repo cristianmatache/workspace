@@ -4,11 +4,11 @@ trigger:
       - '*'
 
 schedules:
-- cron: "0 0 * * *"
-  displayName: Daily midnight build
-  branches:
-    include:
-      - master
+  - cron: "0 0 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+        - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -26,7 +26,8 @@ stages:
         steps:
           - template: ../templates/setup_py.yml
           - script: |
-              PIP="pip install --upgrade -c 3rdparty/py-env-ws/constraints.txt -r 3rdparty/py-env-ws/requirements.txt -r 3rdparty/py-env-ws/dev-requirements.txt --target $(PY_ENV_PATH)"
+              PIP="pip install --upgrade -c 3rdparty/py-env-ws/constraints.txt -r 3rdparty/py-env-ws/requirements.txt \
+                   -r 3rdparty/py-env-ws/dev-requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"
               eval $PIP
             displayName: pip install
@@ -67,7 +68,7 @@ stages:
           - template: ../templates/use_py_deps.yml
           - script: |
               which pytest
-            displayName: 'Sanity check py test'
+            displayName: 'Sanity check pytest'
 
-          - script: pytest lib_py_utils/ --verbose
-            displayName: 'Pytest lib_py_utils'
+          - script: make test-py
+            displayName: 'Test py'

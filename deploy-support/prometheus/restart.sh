@@ -2,7 +2,7 @@
 # Windows and Linux, run from project root
 
 # Imports
-. lib_sh_utils/commands.sh
+. lib_sh_utils/src/commands.sh
 
 # Constants
 PROMETHEUS_PORT=":$(echo "${PROMETHEUS_PORT:-7010}" | tr -d ":")"  # Remove : if already in PROMETHEUS_PORT

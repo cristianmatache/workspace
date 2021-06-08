@@ -8,9 +8,9 @@ receivers:
   - name: 'web.hook'
     webhook_configs:
       - url: 'http://127.0.0.1:5001/'
-#email_configs:
-#  - to: 'cristianmatache@hotmail.com'
-#      send_resolved: true
+# email_configs:
+#   - to: 'cristianmatache@hotmail.com'
+#       send_resolved: true
 inhibit_rules:
   - source_match:
       severity: 'critical'

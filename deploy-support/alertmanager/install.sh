@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Run from repo root
-. lib_sh_utils/os.sh
+. lib_sh_utils/src/os.sh
 
 # Constants
 ALERTMANAGER_HOME="${ALERTMANAGER_HOME:-${HOME}/alertmanager}"

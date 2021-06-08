@@ -5,6 +5,9 @@
 # https://gist.github.com/evanwill/0207876c3243bbb6863e65ec5dc3f058
 echo "Installing rsync"
 
+# Imports
+. lib_sh_utils/src/commands.sh
+
 DOWNLOAD_URL="http://repo.msys2.org/msys/x86_64/rsync-3.2.3-1-x86_64.pkg.tar.zst"
 curl -kL $DOWNLOAD_URL --output install_rsync.pkg.tar.zst
 mkdir -p install_rsync
@@ -15,6 +18,5 @@ cp install_rsync/usr/bin/rsync.exe /usr/bin/
 cp -r install_rsync/usr/lib/rsync /usr/lib/
 
 echo ""
-echo "Installed rsync"
-which rsync
+assert_command_exists rsync
 rm -rf install_rsync

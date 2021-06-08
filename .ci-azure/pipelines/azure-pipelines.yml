@@ -26,7 +26,6 @@ stages:
         steps:
           - template: ../templates/setup_py.yml
           - script: |
-              which npm
               PIP="pip install --upgrade -c 3rdparty/py-env-ws/constraints.txt -r 3rdparty/py-env-ws/requirements.txt \
                    -r 3rdparty/py-env-ws/dev-requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"
@@ -59,6 +58,14 @@ stages:
         steps:
           - script: make lint-sh
             displayName: 'Run shellcheck'
+      - job: lint_yaml
+        steps:
+          - script: make -j1 env-yml lint-yml
+            displayName: 'Run yamllint'
+      - job: lint_markdown
+        steps:
+          - script: make -j1 env-md lint-md
+            displayName: 'Run markdownlint'
 
   - stage: test
     dependsOn: install_deps

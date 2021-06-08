@@ -21,7 +21,13 @@ lang = [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
 # Args:
 # 	- since: e.g. HEAD, master, feature/my-branch
 #   - extension: e.g. ".py"
-solve_since = $(shell git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' ')
+# Check if files with the given extension changed since $1, if any did, check whether they exist (i.e. filter deletions out)
+# Actually if they don't exist return the Makefile (which shouldn't match anything)
+solve_since = $(shell \
+	if [[ ! -z `git diff --name-only $1 | grep -F "$2"` ]] && [[ ! -z `git diff --name-only $1 | grep -F "$2" | xargs find` ]]; then \
+		git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' '; \
+	else echo "Makefile"; fi \
+	)
 
 ## Keep old implementation just in case
 #define solve_since

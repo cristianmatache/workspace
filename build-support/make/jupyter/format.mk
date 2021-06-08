@@ -13,7 +13,7 @@ nbstripout:
 	$(eval on := $(onnb))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.ipynb"); then \
-  	find $(call solve_on,$(on)) -type f -name "*.ipynb" -print | xargs python -m nbstripout --strip-empty-cells; fi
+  	find $(call solve_on,$(on)) -type f -name "*.ipynb" -print | xargs --no-run-if-empty python -m nbstripout --strip-empty-cells; fi
 else
-	find $(call solve_since,$(since),".ipynb") -type f -name "*.ipynb" -print | xargs python -m nbstripout --strip-empty-cells;
+	find $(call solve_since,$(since),".ipynb") -type f -name "*.ipynb" -print | xargs --no-run-if-empty python -m nbstripout --strip-empty-cells;
 endif

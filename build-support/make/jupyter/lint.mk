@@ -4,9 +4,9 @@ jblack-check:
 	$(eval on := $(onnb))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.ipynb"); then \
-  	jblack --check --line-length $(line_len) $(call solve_on,$(on)); fi
+  	python -m jupyterblack --check --line-length $(line_len) $(call solve_on,$(on)); fi
 else
-	jblack --check --line-length $(line_len) $(call solve_since,$(since),".ipynb");
+	python -m jupyterblack --check --line-length $(line_len) $(call solve_since,$(since),".ipynb");
 endif
 
 flake8-nb:
@@ -15,5 +15,5 @@ ifeq ($(since),)
 	if $(call lang,$(on),".*\.ipynb"); then \
   	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_on,$(on)); fi
 else
-	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_since,$(since),".ipynb");
+	find $(call solve_since,$(since),".ipynb") -type f -name "*.ipynb" | xargs --no-run-if-empty flake8_nb --config $(FLAKE8_NB_CONFIG);
 endif

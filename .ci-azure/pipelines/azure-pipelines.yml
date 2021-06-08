@@ -26,6 +26,7 @@ stages:
         steps:
           - template: ../templates/setup_py.yml
           - script: |
+              which npm
               PIP="pip install --upgrade -c 3rdparty/py-env-ws/constraints.txt -r 3rdparty/py-env-ws/requirements.txt \
                    -r 3rdparty/py-env-ws/dev-requirements.txt --target $(PY_ENV_PATH)"
               echo "> $PIP"

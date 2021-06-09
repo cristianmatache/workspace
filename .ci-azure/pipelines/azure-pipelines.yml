@@ -61,6 +61,7 @@ stages:
             displayName: 'Run shellcheck'
       - job: lint_yaml
         steps:
+          - template: ../templates/use_py_deps.yml
           - script: make lint-yml
             displayName: 'Run yamllint'
       - job: lint_markdown

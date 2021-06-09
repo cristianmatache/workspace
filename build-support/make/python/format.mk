@@ -1,4 +1,4 @@
-fmt-py: docformatter isort autoflake
+fmt-py: docformatter isort autoflake black
 
 docformatter:
 	$(eval on := $(onpy))
@@ -29,3 +29,12 @@ else
 	python -m autoflake --in-place --remove-all-unused-imports -r $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"autoflake --in-place --remove-all-unused-imports -r")
+
+black:
+	$(eval on := $(onpy))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	python -m black --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
+else
+	python -m black --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
+endif

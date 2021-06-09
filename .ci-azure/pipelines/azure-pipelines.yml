@@ -58,10 +58,18 @@ stages:
         steps:
           - script: make lint-sh
             displayName: 'Run shellcheck'
+      - job: lint_yaml
+        steps:
+          - script: make lint-yml
+            displayName: 'Run yamllint'
+      - job: lint_markdown
+        steps:
+          - script: make -j1 env-md lint-md
+            displayName: 'Run markdownlint'
 
-  - stage: test
+  - stage: test_py
     dependsOn: install_deps
-    displayName: 'test'
+    displayName: 'test py'
     jobs:
       - job: test_py
         steps:
@@ -72,3 +80,12 @@ stages:
 
           - script: make test-py
             displayName: 'Test py'
+
+  - stage: test_sh
+    dependsOn: []
+    displayName: 'test sh'
+    jobs:
+      - job: test_sh
+        steps:
+          - script: make -j1 env-sh test-sh
+            displayName: 'Test sh'

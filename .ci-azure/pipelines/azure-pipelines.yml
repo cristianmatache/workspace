@@ -16,6 +16,7 @@ pool:
 variables:
   PY_VERSION: 3.8
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
+  NODE_INSTALL_PATH: $(Pipeline.Workspace)/.node_home
   REINSTALL_DEPS: true
 
 stages:
@@ -88,5 +89,11 @@ stages:
     jobs:
       - job: test_sh
         steps:
-          - script: make -j1 env-sh test-sh
+          - script: |
+              wget https://nodejs.org/dist/v16.3.0/node-v16.3.0-linux-x64.tar.xz
+              mkdir -p $(NODE_INSTALL_PATH)
+              tar -xvf node-v16.3.0-linux-x64.tar.xz --directory $(NODE_INSTALL_PATH)
+              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/bin"
+              command -v npm
+              make -j1 env-sh test-sh
             displayName: 'Test sh'

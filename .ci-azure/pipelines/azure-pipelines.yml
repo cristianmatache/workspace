@@ -93,9 +93,8 @@ stages:
               wget https://nodejs.org/dist/v16.3.0/node-v16.3.0-linux-x64.tar.xz
               mkdir -p $(NODE_INSTALL_PATH)
               tar -xvf node-v16.3.0-linux-x64.tar.xz --directory $(NODE_INSTALL_PATH)
+              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/node-v16.3.0-linux-x64/bin"
             displayName: 'Download and unzip npm'
-          - script: |
-              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/bin"
           - script: |
               command -v npm
               make -j1 env-sh test-sh

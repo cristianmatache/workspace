@@ -21,6 +21,7 @@ _FunctionCallback = Callable[[FunctionContext], MypyType]
 @final
 class CristianPlugin(Plugin):
     """Our main plugin to dispatch different callbacks to specific features."""
+
     # pylint: disable=too-few-public-methods
 
     _function_hook_plugins: ClassVar[Mapping[str, _FunctionCallback]] = {

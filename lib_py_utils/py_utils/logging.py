@@ -65,6 +65,7 @@ class Logger:
 
     Can be used in regular methods and class methods, cannot be used in static methods.
     """
+
     __log_is_initialized: ClassVar[bool] = False
     __level: ClassVar[int] = DEBUG
     __handlers: Handlers
@@ -75,8 +76,13 @@ class Logger:
 
     @classmethod
     def initialize_log(
-            cls, level: int, logger_format: str = DEFAULT_LOGGER_FORMAT, log_file: Optional[Union[Path, str]] = None,
-            *, is_colored: bool = True, color_overrides: Optional[Dict[int, str]] = None
+        cls,
+        level: int,
+        logger_format: str = DEFAULT_LOGGER_FORMAT,
+        log_file: Optional[Union[Path, str]] = None,
+        *,
+        is_colored: bool = True,
+        color_overrides: Optional[Dict[int, str]] = None,
     ) -> None:
         assert level in LOG_LEVELS
         formatter = Formatter(logger_format)
@@ -101,8 +107,12 @@ class Logger:
 
     @classmethod
     def initialize_print(
-            cls, level: int, prefix_format: str = DEFAULT_PRINT_PREFIX_FORMAT,
-            *, is_colored: bool = True, color_overrides: Optional[Dict[int, str]] = None
+        cls,
+        level: int,
+        prefix_format: str = DEFAULT_PRINT_PREFIX_FORMAT,
+        *,
+        is_colored: bool = True,
+        color_overrides: Optional[Dict[int, str]] = None,
     ) -> None:
         assert not cls.__log_is_initialized, 'Logger is already initialized'
         warn('Initializing printing instead of logging. It is recommended to use logging.')
@@ -138,7 +148,7 @@ class Logger:
             'utcnow': datetime.utcnow(),
             'name': cls.__logger_name(),
             'pid': getpid(),
-            'levelname': LEVEL_NAMES[level]
+            'levelname': LEVEL_NAMES[level],
         }
 
         if cls.__is_colored:

@@ -7,7 +7,6 @@ from py_utils.logging import Logger
 
 
 class MyClass(Logger):
-
     def method(self, arg: int) -> None:
         self._log_debug(f'Debug: {arg}')
         self._log_info(f'Info: {arg}')

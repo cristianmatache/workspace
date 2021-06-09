@@ -1,4 +1,4 @@
-lint-py: flake8 autoflake-check docformatter-check isort-check bandit pylint
+lint-py: flake8 autoflake-check docformatter-check isort-check black-check bandit pylint
 
 autoflake-check:
 	$(eval on := $(onpy))
@@ -42,6 +42,15 @@ else
 	python -m isort --diff --color --check-only --settings-path $(ISORT_CONFIG) $(line_len) $(call solve_since,$(since),".py")
 endif
 #$(call smart_command,"isort --diff --color --check-only -m 2 -l $(line_len)")
+
+black-check:
+	$(eval on := $(onpy))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	python -m black --check --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
+else
+	python -m black --check --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
+endif
 
 flake8:
 	$(eval on := $(onpy))

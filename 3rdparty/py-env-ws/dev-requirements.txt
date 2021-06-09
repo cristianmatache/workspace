@@ -5,6 +5,7 @@ mypy
 isort
 docformatter
 autoflake
+black
 jupyterblack
 nbstripout
 

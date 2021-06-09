@@ -70,15 +70,8 @@ test: test-py test-sh
 clean: clean-py clean-hs
 
 # DEPLOY tools
-restartall: restart-airflow restart-prometheus restart-grafana restart-alertmanager
-
-killall: kill-airflow kill-prometheus kill-grafana kill-alertmanager
-
-restart-%:
-	./deploy-support/$(subst restart-,,$@)/restart.sh &
-
-kill-%:
-	./deploy-support/$(subst kill-,,$@)/kill.sh
+restart-%:   # e.g. make restart-airflow restart-prometheus restart-grafana restart-alertmanager
+	./deploy-support/$(subst restart-,,$@)/restart.sh
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ echo "Alertmanager config is: $RESOLVED_CONFIG"
 echo "Alertmanager port is:   $ALERTMANAGER_PORT"
 
 # Kill existing (if any)
-kill_process "alertmanager.exe" "alertmanager --config"
+. deploy-support/alertmanager/kill.sh
 
 # Run
 echo "$RESOLVED_HOME"/alertmanager --config.file "$RESOLVED_CONFIG" --web.listen-address="$ALERTMANAGER_PORT" --data.retention=24h

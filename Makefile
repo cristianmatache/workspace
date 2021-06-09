@@ -73,6 +73,9 @@ clean: clean-py clean-hs
 restart-%:   # e.g. make restart-airflow restart-prometheus restart-grafana restart-alertmanager
 	./deploy-support/$(subst restart-,,$@)/restart.sh &
 
+kill-%:   # e.g. make kill-airflow kill-prometheus kill-grafana kill-alertmanager
+	./deploy-support/$(subst kill-,,$@)/kill.sh
+
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 pre-commit: mypy lint

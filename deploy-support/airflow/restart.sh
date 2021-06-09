@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# Linux and WSL only
+# Linux and WSL only, run from project root
 
-pkill -f "airflow webserver" && echo "Airflow webserver was killed"
-pkill -f "airflow scheduler" && echo "Airflow scheduler was killed"
-
-sleep 2s
+. deploy-support/airflow/kill.sh
 
 ENV='/home/cristian/apps/miniconda3/envs/airflow/bin'
 export PATH="$ENV":"$PATH"

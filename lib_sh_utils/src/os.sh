@@ -24,7 +24,8 @@ kill_process() {
     existing_pid=$(tasklist | grep "$windows_pattern" | awk '{print $2}')
     if [[ -n "$existing_pid" ]]; then
       echo "Prometheus is running with PID: $existing_pid -> Killing it"
-      taskkill /pid "$existing_pid" && echo "Killed Prometheus $existing_pid"
+      # This forcibly kills the process which is not great but it's windows so hopefully no one is using it
+      taskkill //f //pid "$existing_pid" && echo "Killed Prometheus $existing_pid"
     fi
   else
     existing_pid=$(pgrep -f "$linux_pattern")

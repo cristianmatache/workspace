@@ -97,6 +97,11 @@ stages:
           - script: |
               echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/bin"
           - script: |
+              set -x
+              ls $(NODE_INSTALL_PATH)
+              echo $PATH
+              set +x
+
               command -v npm
               make -j1 env-sh test-sh
             displayName: 'Test sh'

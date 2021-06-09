@@ -21,7 +21,7 @@ echo "Prometheus port is:   $PROMETHEUS_PORT"
 make lint-prometheus promhome="$RESOLVED_HOME"
 
 # Kill existing (if any)
-kill_process "prometheus.exe" "prometheus --config"
+. deploy-support/prometheus/kill.sh
 
 # Run
 echo "$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT" --storage.tsdb.retention.time=1d

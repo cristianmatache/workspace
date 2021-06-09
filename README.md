@@ -41,7 +41,8 @@ managers etc. It works on Linux, WSL and Windows with Git Bash (for Windows plea
 run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator)
 It currently supports:
 
-- Python: `pip`, `mypy`, `pytest`, `flake8`, `pylint`, `bandit`, `docformatter`, `isort`, `autoflake`, `pipreqs`, `shiv`
+- Python: `pip`, `mypy`, `pytest`, `flake8`, `pylint`, `bandit`, `black`, `docformatter`, `isort`, `autoflake`,
+  `pipreqs`, `shiv`
 - Jupyter: `flake8-nb`, `jupyterblack`, `nbstripout`
 - Bash: `shellcheck`, `bats` (bash testing: `bats-core`, `bats-assert`, `bats-support`)
 - Haskell: `hlint`

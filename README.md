@@ -11,7 +11,7 @@ more details.
 ## Contents
 
 - **build-support:** Makefile library inspired by Pants/Bazel to run linters, formatters, test frameworks, type
-  checkers, packers etc. on a variety of languages (Python, Jupyter Notebooks, Bash, Haskell) → make
+  checkers, packers etc. on a variety of languages (Python, Jupyter Notebooks, Bash, Haskell, YAML, Markdown) → make
 - **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) → Q/KDB+Python
 - **app_paper_plane:** Paper Plane = find same flight but cheaper by changing country on Skyscanner (LauzHack 2018) →
   Python
@@ -48,7 +48,8 @@ It currently supports:
 - Haskell: `hlint`
 - YAML: `yamllint`
   - Prometheus YAML: `promtool check`
-      and it would be very easy to extend it with another tool, just following the existing examples.
+
+and it would be very easy to extend it with another tool, just following the existing examples.
 
 These tools may be run individually (e.g. `make mypy`) or altogether by a more general rule. For example:
 

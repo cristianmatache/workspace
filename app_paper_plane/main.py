@@ -19,17 +19,19 @@ KEY = 'ha735495689835252807543252794422'
 UID = 'i028f4656-cbb1-43fb-8952-5d1f0107a39e'
 
 URLS = {
-    'locales':    'reference/v1.0/locales',
-    'markets':    'reference/v1.0/countries/%(locale)s',
+    'locales': 'reference/v1.0/locales',
+    'markets': 'reference/v1.0/countries/%(locale)s',
     'currencies': 'reference/v1.0/currencies',
-    'places':     '/autosuggest/v1.0/%(market)s/%(currency)s/%(locale)s?query=%(query)s',
-    'quotes':     'browsequotes/v1.0/%(country)s/%(currency)s/%(locale)s/%(src)s/%(dst)s/%(date_out)s/%(date_in)s',
-    'session':    '/pricing/v1.0',
+    'places': '/autosuggest/v1.0/%(market)s/%(currency)s/%(locale)s?query=%(query)s',
+    'quotes': 'browsequotes/v1.0/%(country)s/%(currency)s/%(locale)s/%(src)s/%(dst)s/%(date_out)s/%(date_in)s',
+    'session': '/pricing/v1.0',
 }
 
-BODY = 'cabinclass=Economy&country=%(country)s&currency=%(currency)s&locale=%(locale)s&locationSchema=sky&' \
-       'originplace=%(src)s&destinationplace=%(dst)s&outbounddate=%(date_out)s&inbounddate=%(date_in)s&adults=1&' \
-       f'children=0&infants=0&apikey={KEY}'
+BODY = (
+    'cabinclass=Economy&country=%(country)s&currency=%(currency)s&locale=%(locale)s&locationSchema=sky&'
+    'originplace=%(src)s&destinationplace=%(dst)s&outbounddate=%(date_out)s&inbounddate=%(date_in)s&adults=1&'
+    f'children=0&infants=0&apikey={KEY}'
+)
 
 HEADERS = {
     'Content-Type': "application/x-www-form-urlencoded",
@@ -40,6 +42,7 @@ HEADERS = {
 @dataclass
 class Request:
     """Object that represents the state of every request, in table we build the results for the request."""
+
     req_id: int
     src: str
     dst: str
@@ -65,9 +68,7 @@ class Details(TypedDict, total=False):
     dst: str
 
 
-REQUESTS = {
-    0: Request(0, 'src', 'dst', 'date_out')
-}
+REQUESTS = {0: Request(0, 'src', 'dst', 'date_out')}
 
 
 app = Flask(__name__)
@@ -91,8 +92,9 @@ def decode_response(part_url: str, *, encoding: str = 'utf-8', **kwargs: Any) ->
     return cast(Dict[str, str], json.loads(bstr.decode(encoding)))
 
 
-def post_response(part_url: str = URLS['session'], body: str = BODY, headers: Optional[Dict[str, str]] = None,
-                  **kwargs: Any) -> MutableMapping[str, str]:
+def post_response(
+    part_url: str = URLS['session'], body: str = BODY, headers: Optional[Dict[str, str]] = None, **kwargs: Any
+) -> MutableMapping[str, str]:
     body = body % kwargs
     root, part_url = ROOT.rstrip('/'), part_url.strip('/')
     url = f'{root}/{part_url}'
@@ -112,7 +114,9 @@ def extract(path: str) -> Callable[[F], F]:
         def wrapper(*args, **kwargs):
             res = func(*args, **kwargs)
             return dpath.values(res, path)
+
         return cast(F, wrapper)
+
     return decorator
 
 
@@ -125,6 +129,7 @@ def duration(func: F) -> F:
             time_elapsed = time.time() - start_time
             print(f'TOTAL TIME {func.__name__}: {time_elapsed} seconds')
         return res
+
     return cast(F, wrapper)
 
 
@@ -132,10 +137,15 @@ def duration(func: F) -> F:
 # ----------------------------- MARKETS SWEEPER --------------------------------
 # ------------------------------------------------------------------------------
 class MarketsSweeper:
-
     def __init__(  # pylint: disable=too-many-arguments
-            self, src: str, dst: str, date_out: str, date_in: str = '',
-            currency: str = 'GBP', locale: str = 'en-GB', init_market: str = 'ES'
+        self,
+        src: str,
+        dst: str,
+        date_out: str,
+        date_in: str = '',
+        currency: str = 'GBP',
+        locale: str = 'en-GB',
+        init_market: str = 'ES',
     ) -> None:
         """
         Args:
@@ -146,15 +156,12 @@ class MarketsSweeper:
         """
         self.details: Details = {
             'date_out': date_out,
-            'date_in':  date_in,
+            'date_in': date_in,
             'currency': currency,
-            'locale':   locale,
-            'market':   init_market
+            'locale': locale,
+            'market': init_market,
         }
-        self.details.update({
-            'src': self.get_place(src)[0],
-            'dst': self.get_place(dst)[0]
-        })
+        self.details.update({'src': self.get_place(src)[0], 'dst': self.get_place(dst)[0]})
         print(f'FROM: {self.details["src"]} TO: {self.details["dst"]}')
 
     @extract('/Places/0/PlaceId')
@@ -196,7 +203,7 @@ class MarketsSweeper:
         res = post_response(country=country, **self.details)
         try:
             session: str = dpath.get(res, '/Location')
-            time.sleep(.1)
+            time.sleep(0.1)
             session = session.rstrip('/')
             return f'{session}?apikey={KEY}'
         except BaseException:  # noqa
@@ -261,8 +268,9 @@ def get_req(req_id):
     pprint_requests()
     req = REQUESTS[req_id]
     table = sorted(req.table, key=lambda t: (t[2], t[1]))
-    return render_template('loading.html', sofars=table, poll_id=req.poll_id, src=req.src, dst=req.dst,
-                           date_out=req.date_out)
+    return render_template(
+        'loading.html', sofars=table, poll_id=req.poll_id, src=req.src, dst=req.dst, date_out=req.date_out
+    )
 
 
 @app.route('/req_id_clicked/<req_id>')
@@ -271,8 +279,9 @@ def get_req_paused(req_id):
     pprint_requests()
     req = REQUESTS[req_id]
     table = sorted(req.table, key=lambda t: (t[2], t[1]))
-    return render_template('loading-clicked.html', sofars=table, poll_id=req.poll_id, src=req.src, dst=req.dst,
-                           date_out=req.date_out)
+    return render_template(
+        'loading-clicked.html', sofars=table, poll_id=req.poll_id, src=req.src, dst=req.dst, date_out=req.date_out
+    )
 
 
 @app.route('/getprice/<src>/<dst>/<date_out>')

@@ -1,6 +1,4 @@
-lint-py: flake8 bandit fmt-check-py pylint
-
-fmt-check-py: autoflake-check docformatter-check isort-check black-check
+lint-py: flake8 autoflake-check docformatter-check isort-check black-check bandit pylint
 
 autoflake-check:
 	$(eval on := $(onpy))
@@ -49,9 +47,9 @@ black-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m black -S --check --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
+	python -m black --check --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
 else
-	python -m black -S --check --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
+	python -m black --check --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
 endif
 
 flake8:

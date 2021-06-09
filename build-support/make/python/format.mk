@@ -34,7 +34,7 @@ black:
 	$(eval on := $(onpy))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m black --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
+	python -m black -S --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
 else
-	python -m black --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
+	python -m black -S --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
 endif

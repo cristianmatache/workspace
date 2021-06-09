@@ -62,6 +62,8 @@ env: env-py env-sh env-md
 
 fmt: fmt-py fmt-nb fmt-yml fmt-md
 
+fmt-check: fmt-check-py fmt-check-nb
+
 lint: lint-py lint-sh lint-nb lint-yml lint-prometheus lint-md # lint-hs
 
 type-check: mypy

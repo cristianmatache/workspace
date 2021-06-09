@@ -1,4 +1,6 @@
-lint-nb: jblack-check flake8-nb
+lint-nb: flake8-nb fmt-check-nb
+
+fmt-check-nb: jblack-check
 
 jblack-check:
 	$(eval on := $(onnb))

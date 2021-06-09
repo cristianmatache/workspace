@@ -3,6 +3,7 @@
 
 # Imports
 . lib_sh_utils/src/commands.sh
+. lib_sh_utils/src/os.sh
 
 # Constants
 PROMETHEUS_PORT=":$(echo "${PROMETHEUS_PORT:-7010}" | tr -d ":")"  # Remove : if already in PROMETHEUS_PORT
@@ -19,10 +20,8 @@ echo "Prometheus port is:   $PROMETHEUS_PORT"
 # Lint Prometheus files
 make lint-prometheus promhome="$RESOLVED_HOME"
 
-# Sync config file
-cp "$RESOLVED_CONFIG" "$RESOLVED_HOME" && echo "Synchronized config file $RESOLVED_CONFIG to $RESOLVED_HOME"
-# Sync rules files
-cp -r "$RESOLVED_RULES" "$RESOLVED_HOME" && echo "Synchronized rules files $RESOLVED_RULES to $RESOLVED_HOME"  # TODO: use rsync
+# Kill existing (if any)
+kill_process "prometheus.exe" "prometheus --config"
 
 # Run
 echo "$RESOLVED_HOME"/prometheus --config.file "$RESOLVED_CONFIG" --web.listen-address="$PROMETHEUS_PORT" --storage.tsdb.retention.time=1d

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Linux and WSL only
 
-pkill -f "airflow webserver" && echo "Airflow webserver was killed" || echo "Airflow webserver was not running"
-pkill -f "airflow scheduler" && echo "Airflow scheduler was killed" || echo "Airflow scheduler was not running"
+pkill -f "airflow webserver" && echo "Airflow webserver was killed"
+pkill -f "airflow scheduler" && echo "Airflow scheduler was killed"
 
 sleep 2s
 

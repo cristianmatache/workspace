@@ -19,15 +19,20 @@ rule_files:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: 'prometheus'
-
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-
-    static_configs:
-      - targets: [ 'localhost:7010' ]
 
   - job_name: 'airflow'
     metrics_path: /admin/metrics
     static_configs:
       - targets: [ 'localhost:7000' ]
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:7010' ]
+
+  - job_name: 'alertmanager'
+    static_configs:
+      - targets: [ 'localhost:7013' ]
+
+  - job_name: 'grafana'
+    static_configs:
+      - targets: [ 'localhost:7020' ]

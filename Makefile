@@ -71,7 +71,7 @@ clean: clean-py clean-hs
 
 # DEPLOY tools
 restart-%:   # e.g. make restart-airflow restart-prometheus restart-grafana restart-alertmanager
-	./deploy-support/$(subst restart-,,$@)/restart.sh
+	./deploy-support/$(subst restart-,,$@)/restart.sh &
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------

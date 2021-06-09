@@ -96,6 +96,13 @@ stages:
               echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/node-v16.3.0-linux-x64/bin"
             displayName: 'Download and unzip npm'
           - script: |
+              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/bin"
+          - script: |
+              set -x
+              ls $(NODE_INSTALL_PATH)
+              echo $PATH
+              set +x
+
               command -v npm
               make -j1 env-sh test-sh
             displayName: 'Test sh'

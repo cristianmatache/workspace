@@ -76,4 +76,3 @@ pre-commit: mypy lint
 
 rm-envs:
 	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/
-

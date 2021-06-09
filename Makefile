@@ -54,10 +54,7 @@ include build-support/make/markdown/config.mk
 include build-support/make/markdown/format.mk
 include build-support/make/markdown/lint.mk
 
-# Airflow
-include deploy-support/make/airflow.mk
-
-
+# BUILD tools
 env: env-py env-sh env-md
 
 fmt: fmt-py fmt-nb fmt-yml fmt-md
@@ -71,6 +68,10 @@ type-check: mypy
 test: test-py test-sh
 
 clean: clean-py clean-hs
+
+# DEPLOY tools
+restart-%:   # e.g. make restart-airflow restart-prometheus restart-grafana restart-alertmanager
+	./deploy-support/$(subst restart-,,$@)/restart.sh
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------

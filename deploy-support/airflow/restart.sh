@@ -8,7 +8,10 @@ export PATH="$ENV":"$PATH"
 echo "Using environment: $ENV"
 
 AIRFLOW_BASE="${AIRFLOW_HOME:-~/airflow}"
-rm -rf "$AIRFLOW_BASE/airflow-*"
+rm -rf "$AIRFLOW_BASE"/airflow-*.pid
+rm -rf "$AIRFLOW_BASE"/airflow-*.err
 
-airflow webserver --port 7000 -D
+sleep 1s
+
 airflow scheduler -D
+airflow webserver --port 7000 -D

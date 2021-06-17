@@ -47,8 +47,18 @@ KDB_SERVER = {
 }[getuser()]
 FLASK_SERVER = Server('localhost', 6000)
 
-COLUMNS_TO_CONVERT = ('tenantName', 'tenantEmail', 'tenantPhone', 'job', 'postcode', 'flatImage', 'flatName',
-                      'landlordName', 'landlordEmail', 'landlordPhone')
+COLUMNS_TO_CONVERT = (
+    'tenantName',
+    'tenantEmail',
+    'tenantPhone',
+    'job',
+    'postcode',
+    'flatImage',
+    'flatName',
+    'landlordName',
+    'landlordEmail',
+    'landlordPhone',
+)
 
 
 @contextmanager
@@ -83,8 +93,12 @@ def landlord_home(landlord_id: str) -> Any:
 
     all_flats = convert_byte_strings(all_flats, columns=('postcode', 'flatName', 'flatImage'))
 
-    return render_template('landlord-index.html', all_flats=df_to_list_of_tuples(all_flats),
-                           landlord_id=landlord_id, landlord_name=landlord_name)
+    return render_template(
+        'landlord-index.html',
+        all_flats=df_to_list_of_tuples(all_flats),
+        landlord_id=landlord_id,
+        landlord_name=landlord_name,
+    )
 
 
 @app.route('/landlord-viewings/<landlord_id>/')
@@ -93,14 +107,19 @@ def landlord_viewings(landlord_id: str) -> Any:
     with q_connection() as q:
         landlord_name = q(f'getLandlordInfo[{landlord_id};`landlordName]', pandas=False).decode("utf-8")
         viewings: Dict[str, List[Tuple[Any, ...]]] = {
-            'upcoming':      df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `upcoming]')),
+            'upcoming': df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `upcoming]')),
             'not_confirmed': df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `notConfirmed]')),
-            'viewed':        df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `viewed]')),
-            'declined':      df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `declined]'))
+            'viewed': df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `viewed]')),
+            'declined': df_to_list_of_tuples(q(f'getViewings[`landlord; {landlord_id}; `declined]')),
         }
-    return render_template('landlord-viewings.html', landlord_name=landlord_name,
-                           upcoming=viewings["upcoming"], not_confirmed=viewings["not_confirmed"],
-                           viewed=viewings["viewed"], declined=viewings["declined"])
+    return render_template(
+        'landlord-viewings.html',
+        landlord_name=landlord_name,
+        upcoming=viewings["upcoming"],
+        not_confirmed=viewings["not_confirmed"],
+        viewed=viewings["viewed"],
+        declined=viewings["declined"],
+    )
 
 
 @app.route('/flat-details/<flat_id>/')
@@ -119,19 +138,28 @@ def landlord_flat_details(flat_id: str) -> Any:
             'upcoming': q_convert(f'getViewingsPerFlat[{flat_id}; `upcoming]'),
             'not_confirmed': q_convert(f'getViewingsPerFlat[{flat_id}; `notConfirmed]'),
             'viewed': q_convert(f'getViewingsPerFlat[{flat_id}; `viewed]'),
-            'declined': q_convert(f'getViewingsPerFlat[{flat_id}; `declined]')
+            'declined': q_convert(f'getViewingsPerFlat[{flat_id}; `declined]'),
         }
 
         flat_info_df = q(f'getFlatInfo[{flat_id}]', pandas=True)
-        flat_info = df_to_list_of_tuples(convert_byte_strings(flat_info_df,
-                                                              columns=('postcode', 'flatImage', 'flatName')))
+        flat_info = df_to_list_of_tuples(
+            convert_byte_strings(flat_info_df, columns=('postcode', 'flatImage', 'flatName'))
+        )
 
-    return render_template('landlord-flat-details.html', landlord_name=landlord_name,
-                           upcoming=viewings["upcoming"], not_confirmed=viewings["not_confirmed"],
-                           viewed=viewings["viewed"], declined=viewings["declined"],
-                           upcoming_empty=bool(viewings["upcoming"]), not_conf_empty=bool(viewings["not_confirmed"]),
-                           viewed_empty=bool(viewings["viewed"]), declined_empty=bool(viewings["declined"]),
-                           flat_info=flat_info, landlord_id=landlord_id)
+    return render_template(
+        'landlord-flat-details.html',
+        landlord_name=landlord_name,
+        upcoming=viewings["upcoming"],
+        not_confirmed=viewings["not_confirmed"],
+        viewed=viewings["viewed"],
+        declined=viewings["declined"],
+        upcoming_empty=bool(viewings["upcoming"]),
+        not_conf_empty=bool(viewings["not_confirmed"]),
+        viewed_empty=bool(viewings["viewed"]),
+        declined_empty=bool(viewings["declined"]),
+        flat_info=flat_info,
+        landlord_id=landlord_id,
+    )
 
 
 @app.route('/decline-tenant/<flat_id>/<tenant_id>')
@@ -157,6 +185,7 @@ def cancel_viewing_landlord(flat_id: str, tenant_id: str, date: str) -> Response
 
 # ------------------------------------------------------- TENANT ------------------------------------------------------
 
+
 @app.route('/get-homepage-tenant/<tenant_id>')
 def tenant_home(tenant_id: str) -> Any:
     """tenant home page."""
@@ -166,8 +195,9 @@ def tenant_home(tenant_id: str) -> Any:
 
     all_flats = convert_byte_strings(all_flats, columns=('postcode', 'flatName', 'flatImage'))
 
-    return render_template('tenant-index.html', all_flats=df_to_list_of_tuples(all_flats),
-                           tenant_id=tenant_id, tenant_name=tenant_name)
+    return render_template(
+        'tenant-index.html', all_flats=df_to_list_of_tuples(all_flats), tenant_id=tenant_id, tenant_name=tenant_name
+    )
 
 
 @app.route('/tenant-viewings/<tenant_id>/')
@@ -182,16 +212,24 @@ def tenant_viewings(tenant_id: str) -> Any:
             return df_to_list_of_tuples(res)
 
         viewings: Dict[str, List[Tuple[Any, ...]]] = {
-            'upcoming':      q_convert(f'getViewings[`tenant; {tenant_id}; `upcoming]'),
+            'upcoming': q_convert(f'getViewings[`tenant; {tenant_id}; `upcoming]'),
             'not_confirmed': q_convert(f'getViewings[`tenant; {tenant_id}; `notConfirmed]'),
-            'viewed':        q_convert(f'getViewings[`tenant; {tenant_id}; `viewed]'),
-            'declined':      q_convert(f'getViewings[`tenant; {tenant_id}; `declined]')
+            'viewed': q_convert(f'getViewings[`tenant; {tenant_id}; `viewed]'),
+            'declined': q_convert(f'getViewings[`tenant; {tenant_id}; `declined]'),
         }
-    return render_template('tenant-viewings.html', tenant_name=tenant_name, tenant_id=tenant_id,
-                           upcoming=viewings["upcoming"], not_confirmed=viewings["not_confirmed"],
-                           viewed=viewings["viewed"], declined=viewings["declined"],
-                           upcoming_empty=bool(viewings["upcoming"]), not_conf_empty=bool(viewings["not_confirmed"]),
-                           viewed_empty=bool(viewings["viewed"]), declined_empty=bool(viewings["declined"]))
+    return render_template(
+        'tenant-viewings.html',
+        tenant_name=tenant_name,
+        tenant_id=tenant_id,
+        upcoming=viewings["upcoming"],
+        not_confirmed=viewings["not_confirmed"],
+        viewed=viewings["viewed"],
+        declined=viewings["declined"],
+        upcoming_empty=bool(viewings["upcoming"]),
+        not_conf_empty=bool(viewings["not_confirmed"]),
+        viewed_empty=bool(viewings["viewed"]),
+        declined_empty=bool(viewings["declined"]),
+    )
 
 
 @app.route('/tenant-bio/<tenant_id>/')
@@ -199,13 +237,13 @@ def tenant_bio(tenant_id: str) -> Any:
     """tenant bio page."""
     with q_connection() as q:
         details = {
-            'name':        q(f'getTenantInfo[{tenant_id};`tenantName]').decode("utf-8"),
-            'email':       q(f'getTenantInfo[{tenant_id};`tenantEmail]').decode("utf-8"),
-            'phone':       q(f'getTenantInfo[{tenant_id};`tenantPhone]').decode("utf-8"),
-            'age':         q(f'getTenantInfo[{tenant_id};`age]'),
+            'name': q(f'getTenantInfo[{tenant_id};`tenantName]').decode("utf-8"),
+            'email': q(f'getTenantInfo[{tenant_id};`tenantEmail]').decode("utf-8"),
+            'phone': q(f'getTenantInfo[{tenant_id};`tenantPhone]').decode("utf-8"),
+            'age': q(f'getTenantInfo[{tenant_id};`age]'),
             'is_employed': q(f'getTenantInfo[{tenant_id};`employment]'),
-            'salary':      q(f'getTenantInfo[{tenant_id};`yearlyIncome]'),
-            'job':         q(f'getTenantInfo[{tenant_id};`job]').decode("utf-8"),
+            'salary': q(f'getTenantInfo[{tenant_id};`yearlyIncome]'),
+            'job': q(f'getTenantInfo[{tenant_id};`job]').decode("utf-8"),
         }
     return render_template('tenant-bio.html', **details, tenant_id=tenant_id)
 

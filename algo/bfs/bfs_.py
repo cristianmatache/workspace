@@ -17,14 +17,7 @@ def bfs(graph: Dict[T, List[T]], node: T) -> List[T]:
 
 
 def test_bfs() -> None:
-    graph: Dict[str, List[str]] = {
-        'A': ['B', 'C'],
-        'B': ['D', 'E'],
-        'C': ['F'],
-        'D': [],
-        'E': ['F'],
-        'F': []
-    }
+    graph: Dict[str, List[str]] = {'A': ['B', 'C'], 'B': ['D', 'E'], 'C': ['F'], 'D': [], 'E': ['F'], 'F': []}
     assert bfs(graph, 'A') == ['A', 'B', 'C', 'D', 'E', 'F']
 
 

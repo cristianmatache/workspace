@@ -22,7 +22,6 @@ class Child2(Base):
 
 
 class TestClass:
-
     def my_method(self, arg1: int, arg2: Type[Base], arg3: Literal[1, 2], arg4: Sequence[T]) -> T:
         print(self, arg1, arg2, arg3)
         return arg4[0]
@@ -55,7 +54,9 @@ res2 = part2(arg1=10, arg3=1, arg4=[Child2()])
 
 def test_partial_method() -> None:
     child_2 = Child2()
-    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[child_2]) == \
-           TEST_CLASS.part1_func_tools(arg2=Child1, arg3=1, arg4=[child_2])
-    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[Child2()]) != \
-           TEST_CLASS.part1_func_tools(arg2=Child1, arg3=1, arg4=[Child2()])
+    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[child_2]) == TEST_CLASS.part1_func_tools(
+        arg2=Child1, arg3=1, arg4=[child_2]
+    )
+    assert TEST_CLASS.part1(arg2=Child1, arg3=1, arg4=[Child2()]) != TEST_CLASS.part1_func_tools(
+        arg2=Child1, arg3=1, arg4=[Child2()]
+    )

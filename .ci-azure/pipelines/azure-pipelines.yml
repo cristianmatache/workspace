@@ -4,11 +4,11 @@ trigger:
       - '*'
 
 schedules:
-- cron: "0 0 * * *"
-  displayName: Daily midnight build
-  branches:
-    include:
-      - master
+  - cron: "0 0 * * *"
+    displayName: Daily midnight build
+    branches:
+      include:
+        - master
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,6 +16,7 @@ pool:
 variables:
   PY_VERSION: 3.8
   PY_ENV_PATH: $(Pipeline.Workspace)/.env
+  NODE_INSTALL_PATH: $(Pipeline.Workspace)/.node_home
   REINSTALL_DEPS: true
 
 stages:
@@ -26,7 +27,13 @@ stages:
         steps:
           - template: ../templates/setup_py.yml
           - script: |
-              PIP="pip install --upgrade -c 3rdparty/py-env/constraints.txt -r 3rdparty/py-env/requirements.txt -r 3rdparty/py-env/dev-requirements.txt --target $(PY_ENV_PATH)"
+              PIP="python -m pip install --upgrade \
+                   -c 3rdparty/py-env-ws/constraints.txt \
+                   -r 3rdparty/py-env-ws/requirements.txt \
+                   -r 3rdparty/py-env-ws/dev-requirements.txt \
+                   -r 3rdparty/py-env-ws/mypy-requirements.txt \
+                   -r 3rdparty/py-env-ws/nb-requirements.txt \
+                   --target $(PY_ENV_PATH)"
               echo "> $PIP"
               eval $PIP
             displayName: pip install
@@ -57,17 +64,43 @@ stages:
         steps:
           - script: make lint-sh
             displayName: 'Run shellcheck'
+      - job: lint_yaml
+        steps:
+          - template: ../templates/use_py_deps.yml
+          - script: make lint-yml
+            displayName: 'Run yamllint'
+      - job: lint_markdown
+        steps:
+          - script: make -j1 env-md lint-md
+            displayName: 'Run markdownlint'
 
-  - stage: test
+  - stage: test_py
     dependsOn: install_deps
-    displayName: 'test'
+    displayName: 'test py'
     jobs:
       - job: test_py
         steps:
           - template: ../templates/use_py_deps.yml
           - script: |
               which pytest
-            displayName: 'Sanity check py test'
+            displayName: 'Sanity check pytest'
 
-          - script: pytest lib_py_utils/ --verbose
-            displayName: 'Pytest lib_py_utils'
+          - script: make test-py
+            displayName: 'Test py'
+
+  - stage: test_sh
+    dependsOn: [ ]
+    displayName: 'test sh'
+    jobs:
+      - job: test_sh
+        steps:
+          - script: |
+              wget https://nodejs.org/dist/v16.3.0/node-v16.3.0-linux-x64.tar.xz
+              mkdir -p $(NODE_INSTALL_PATH)
+              tar -xvf node-v16.3.0-linux-x64.tar.xz --directory $(NODE_INSTALL_PATH)
+              echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/node-v16.3.0-linux-x64/bin"
+            displayName: 'Download, untar and append npm to path'
+          - script: |
+              command -v npm
+              make -j1 env-sh test-sh
+            displayName: 'Test sh'

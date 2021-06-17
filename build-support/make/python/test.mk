@@ -4,8 +4,8 @@ pytest:
 	$(eval on := $(onpy))
 	$(eval marks := "")
 ifeq ($(since),)
-	if $(call lang,$(on),".*\.ipynb"); then \
-  	pytest -m $(marks) -c $(call solve_on,$(on)); fi
+	if $(call lang,$(on),".*\.py"); then \
+  	python -m pytest -m $(marks) -c $(call solve_on,$(on)); fi
 else
-	pytest -m $(marks) -c $(call solve_since,$(since),".ipynb");
+	python -m pytest -m $(marks) -c $(call solve_since,$(since),".py");
 endif

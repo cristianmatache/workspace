@@ -27,7 +27,7 @@ marker_filenames = ['setup.py']
 
 [python-setup]
 interpreter_constraints = [">=3.8"]
-requirement_constraints = "3rdparty/py-env/constraints.txt"
+requirement_constraints = "3rdparty/py-env-ws/constraints.txt"
 
 [mypy]
 config = "build-support/mypy.ini"

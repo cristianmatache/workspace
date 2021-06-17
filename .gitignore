@@ -80,6 +80,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+notebooks/.ipynb_checkpoints
 
 # IPython
 profile_default/
@@ -142,3 +143,12 @@ bazel-*/
 .pants.d/
 .pids/
 .pants.workdir.file_lock*
+
+# Prometheus
+data/
+
+# Bash env
+3rdparty/sh-env-ws/node_modules
+
+# Markdown env
+3rdparty/md-env-ws/node_modules

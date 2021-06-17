@@ -27,8 +27,13 @@ stages:
         steps:
           - template: ../templates/setup_py.yml
           - script: |
-              PIP="pip install --upgrade -c 3rdparty/py-env-ws/constraints.txt -r 3rdparty/py-env-ws/requirements.txt \
-                   -r 3rdparty/py-env-ws/dev-requirements.txt --target $(PY_ENV_PATH)"
+              PIP="python -m pip install --upgrade \
+                   -c 3rdparty/py-env-ws/constraints.txt \
+                   -r 3rdparty/py-env-ws/requirements.txt \
+                   -r 3rdparty/py-env-ws/dev-requirements.txt \
+                   -r 3rdparty/py-env-ws/mypy-requirements.txt \
+                   -r 3rdparty/py-env-ws/nb-requirements.txt \
+                   --target $(PY_ENV_PATH)"
               echo "> $PIP"
               eval $PIP
             displayName: pip install

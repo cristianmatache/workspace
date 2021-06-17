@@ -11,11 +11,20 @@ env-py: env-py-ws-replicate
 
 env-py-ws-replicate:
 	python -m pip install --upgrade pip
-	python -m pip install -c $(WS_ENV)/constraints.txt -r $(WS_ENV)/requirements.txt -r $(WS_ENV)/dev-requirements.txt -r $(WS_ENV)/nb-requirements.txt
+	python -m pip install \
+	-c $(WS_ENV)/constraints.txt \
+	-r $(WS_ENV)/requirements.txt \
+	-r $(WS_ENV)/dev-requirements.txt \
+	-r $(WS_ENV)/mypy-requirements.txt \
+	-r $(WS_ENV)/nb-requirements.txt
 
 env-py-ws-create:
 	python -m pip install --upgrade pip setuptools
-	python -m pip install -r $(WS_ENV)/requirements.txt -r $(WS_ENV)/dev-requirements.txt -r $(WS_ENV)/nb-requirements.txt
+	python -m pip install \
+	-r $(WS_ENV)/requirements.txt \
+	-r $(WS_ENV)/dev-requirements.txt \
+	-r $(WS_ENV)/mypy-requirements.txt \
+	-r $(WS_ENV)/nb-requirements.txt
 	pip list --format=freeze > $(WS_ENV)/constraints.txt
 	pip check
 

@@ -86,7 +86,8 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
   - same for `make fmt`, `make test`, `make type-check`.
 - **with aliases:**
   - `make fmt on=iqor` is the same as `make fmt on=app_iqor/` because iqor is an alias for app_iqor. Even though this
-      example is simplistic, it is useful to alias combinations of multiple files/directories.
+      example is simplistic, it is useful to alias combinations of multiple files/directories. It is recommended to set
+      aliases as constants in the Makefile even though environment variables would also work.
 - **with revision targets:**
   - `make fmt -j1 since=master` runs all formatters on the diff between the current branch and master.
   - `make fmt -j1 since=HEAD~1` runs all formatters on all files that changed since "2 commits ago".
@@ -112,3 +113,11 @@ for the language they target:
 - test
 
 If you want to learn more about the API of a specific rule, check the source code.
+
+### Installation
+
+To add this build system to an existing repo, one needs to simply copy `build-support/` and `3rdparty/` over.
+Run `make env`, as a one-off, to set up the python, markdown and bash environments (mostly pip/npm install-s). It is
+recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support for Prometheus, Alertmanager or
+Grafana. In addition, if renaming directories in `3rdparty` the correspondent paths in
+`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk`.

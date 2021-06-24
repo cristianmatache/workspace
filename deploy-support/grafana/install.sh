@@ -5,7 +5,7 @@
 . lib_sh_utils/src/os.sh
 
 # Constants
-GRAFANA_HOME="${GRAFANA_HOME:-${HOME}/grafana}"
+GRAFANA_HOME="$(dirname"${GRAFANA_HOME:-${HOME}/grafana/bin}")"
 VERSION="${GRAFANA_VERSION:-8.0.0}"
 OS="${GRAFANA_OS:-$(get_running_os)}"
 ARCHITECTURE="${GRAFANA_ARCHITECTURE:-amd64}"

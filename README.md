@@ -48,6 +48,7 @@ It currently supports:
 - Haskell: `hlint`
 - YAML: `yamllint`
   - Prometheus YAML: `promtool check`
+- Markdown: `markdownlint`
 
 and it would be very easy to extend it with another tool, just following the existing examples.
 

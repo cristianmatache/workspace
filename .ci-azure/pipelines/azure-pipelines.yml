@@ -47,12 +47,14 @@ stages:
         steps:
           - template: ../templates/use_py_deps.yml
           - script: |
+              which python
               which mypy
               which flake8
               which bandit
               which pylint
               which isort
               which docformatter
+              which flynt
             displayName: 'Sanity check py tools'
           - script: make lint-py
             displayName: 'Type check and lint py'

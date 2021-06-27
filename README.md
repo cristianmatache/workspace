@@ -53,7 +53,8 @@ It currently supports:
   - Lint only: `flake8-nb`
 - Bash:
   - Test: `bats` (bash testing: `bats-core`, `bats-assert`, `bats-support`)
-  - Lint: `shellcheck`
+  - Format + Lint: `shfmt`
+  - Lint only: `shellcheck`
 - Haskell:
   - Lint: `hlint`
 - YAML:

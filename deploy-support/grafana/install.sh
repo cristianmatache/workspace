@@ -30,7 +30,7 @@ rm -rf "$DEFAULT_DIR"
 
 cd "$ORIGINAL_DIR" || exit 1
 echo "--------------------- INSTALLED GRAFANA ---------------------"
-"$GRAFANA_HOME"/bin/grafana-server  -v
-"$GRAFANA_HOME"/bin/grafana-cli  -v
+"$GRAFANA_HOME"/bin/grafana-server -v
+"$GRAFANA_HOME"/bin/grafana-cli -v
 echo "------------------------------------------------------------------"
 echo "Please add '$GRAFANA_HOME/bin' to your \$PATH"

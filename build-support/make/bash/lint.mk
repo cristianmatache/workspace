@@ -1,4 +1,4 @@
-lint-sh: shellcheck
+lint-sh: shellcheck  # shfmt-check
 
 # find .. --exec always has exit code 0 -> use find | xargs
 shellcheck:
@@ -10,3 +10,12 @@ else
 	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" | xargs --no-run-if-empty shellcheck -x --format=gcc -e SC1017;
 endif
 #	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec sh -c 'for f; do shellcheck "$$f" --format=gcc -e SC1017 || exit 1; done' sh "{}" \+; fi
+
+
+shfmt-check:
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.sh"); then \
+	shfmt -d $(call solve_on,$(on)); fi
+else
+	shfmt -d $(call solve_since,$(since),".sh")
+endif

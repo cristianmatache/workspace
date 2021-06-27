@@ -35,6 +35,7 @@ include build-support/make/jupyter/lint.mk
 # Bash
 include build-support/make/bash/setup.mk
 include build-support/make/bash/config.mk
+include build-support/make/bash/format.mk
 include build-support/make/bash/lint.mk
 include build-support/make/bash/test.mk
 
@@ -58,7 +59,7 @@ include build-support/make/markdown/lint.mk
 # BUILD tools
 env: env-py env-sh env-md
 
-fmt: fmt-py fmt-nb fmt-yml fmt-md
+fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh
 
 fmt-check: fmt-check-py fmt-check-nb
 

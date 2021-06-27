@@ -6,7 +6,7 @@
 . lib_sh_utils/src/os.sh
 
 # Constants
-PROMETHEUS_PORT=":$(echo "${PROMETHEUS_PORT:-7010}" | tr -d ":")"  # Remove : if already in PROMETHEUS_PORT
+PROMETHEUS_PORT=":$(echo "${PROMETHEUS_PORT:-7010}" | tr -d ":")" # Remove : if already in PROMETHEUS_PORT
 RESOLVED_HOME=$(find_command_home prometheus "$HOME/prometheus" PROMETHEUS_HOME)
 RESOLVED_CONFIG="${PROMETHEUS_CONFIG:-deploy-support/prometheus/prometheus.yml}"
 RESOLVED_RULES="${PROMETHEUS_RULES:-deploy-support/prometheus/rules}"

@@ -29,6 +29,6 @@ rm -rf "$DEFAULT_DIR"
 
 cd "$ORIGINAL_DIR" || exit 1
 echo "---------------------- INSTALLED PROMETHEUS ----------------------"
-"$PROMETHEUS_HOME"/prometheus  --version
+"$PROMETHEUS_HOME"/prometheus --version
 echo "------------------------------------------------------------------"
 echo "Please add '$PROMETHEUS_HOME' to your \$PATH"

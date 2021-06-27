@@ -134,4 +134,4 @@ To add this build system to an existing repo, one needs to simply copy `build-su
 Run `make env`, as a one-off, to set up the python, markdown and bash environments (mostly pip/npm install-s). It is
 recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support for Prometheus, Alertmanager or
 Grafana. In addition, if renaming directories in `3rdparty` the correspondent paths in
-`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk`.
+`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk` should also be updated.

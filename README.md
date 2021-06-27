@@ -42,26 +42,30 @@ run  `build-support/git-bash-integration/install_make.sh` running Git Bash as ad
 It currently supports:
 
 - Python:
-  - Setup: `pip`/`conda`
+  - Setup: `pip` / `conda`
   - Type-check: `mypy`
   - Test: `pytest`
   - Format + Lint: `black`, `docformatter`, `isort`, `autoflake`, `flynt`, `pre-commit`
   - Lint only: `flake8`, `pylint`, `bandit`
   - Package: `pipreqs`, `shiv`
 - Jupyter:
+  - Setup: `pip`
   - Format + Lint: `jupyterblack`, `nbstripout`
   - Lint only: `flake8-nb`
 - Bash:
+  - Setup: `npm` and `conda`
   - Test: `bats` (bash testing: `bats-core`, `bats-assert`, `bats-support`)
   - Format + Lint: `shfmt`
   - Lint only: `shellcheck`
 - Haskell:
   - Lint: `hlint`
 - YAML:
+  - Setup: `pip`
   - Lint: `yamllint`
 - Prometheus YAML:
   - Lint: `promtool check`
 - Markdown:
+  - Setup: `npm`
   - Format + Lint: `markdownlint`
 
 and it would be very easy to extend it with another tool, just following the existing examples.

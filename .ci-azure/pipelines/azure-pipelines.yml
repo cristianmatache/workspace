@@ -64,6 +64,11 @@ stages:
             displayName: 'Run hlint'
       - job: lint_sh
         steps:
+          - script: |
+              echo "##vso[task.prependpath]$CONDA/bin"
+              command -v conda
+              make env-sh
+            displayName: 'Install sh deps'
           - script: make lint-sh
             displayName: 'Run shellcheck'
       - job: lint_yaml

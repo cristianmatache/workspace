@@ -1,4 +1,4 @@
-lint-sh: shellcheck  # shfmt-check
+lint-sh: shellcheck shfmt-check
 
 # find .. --exec always has exit code 0 -> use find | xargs
 shellcheck:

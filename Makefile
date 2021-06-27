@@ -26,6 +26,7 @@ include build-support/make/python/type-check.mk
 include build-support/make/python/test.mk
 include build-support/make/python/package.mk
 include build-support/make/python/clean.mk
+include build-support/make/python/pre-commit.mk
 
 # Notebooks
 include build-support/make/jupyter/format.mk
@@ -82,7 +83,7 @@ kill-%:
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
-pre-commit: mypy lint
+pre-commit: mypy lint pre-commit-tool
 
 rm-envs:
 	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/

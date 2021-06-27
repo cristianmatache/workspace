@@ -1,6 +1,6 @@
 lint-py: flake8 bandit fmt-check-py pylint
 
-fmt-check-py: autoflake-check docformatter-check isort-check black-check
+fmt-check-py: autoflake-check docformatter-check isort-check black-check flynt-check
 
 autoflake-check:
 	$(eval on := $(onpy))

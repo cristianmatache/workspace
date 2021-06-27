@@ -38,7 +38,6 @@ endif
 isort-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	which flynt
 	if $(call lang,$(on),".*\.pyi?"); then  \
 	python -m isort --diff --color --check-only --settings-path $(ISORT_CONFIG) $(line_len) $(call solve_on,$(on)); fi
 else
@@ -58,7 +57,6 @@ endif
 flynt-check:
 	$(eval on := $(onpy))
 ifeq ($(since),)
-	which python
 	if $(call lang,$(on),".*\.pyi?"); then  \
 	python -m flynt --dry-run --fail-on-change $(call solve_on,$(on)); fi
 else

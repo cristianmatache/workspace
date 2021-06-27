@@ -38,8 +38,9 @@ Some projects will be ported over here, some others are lost somewhere in space 
 The way the Makefile of this project works draws inspiration heavily from monorepo build tools such as Pants, Bazel,
 Buck. It runs multiple linters, formatters, type checkers, hermetic packers, testing frameworks, virtual environment
 managers etc. It works on Linux, WSL and Windows with Git Bash (for Windows please
-run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator)
-It currently supports:
+run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator).
+
+### Supported tools by language
 
 - Python:
   - Setup: `pip` / `conda`
@@ -68,7 +69,9 @@ It currently supports:
   - Setup: `npm`
   - Format + Lint: `markdownlint`
 
-and it would be very easy to extend it with another tool, just following the existing examples.
+It is very easy to extend this list with another tool, just following the existing examples.
+
+### Usage examples
 
 These tools may be run individually (e.g. `make mypy`) or altogether by a more general rule. For example:
 
@@ -76,8 +79,6 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
 - lint (e.g. `make lint`, `make lint-py`, `make lint-sh`, `make lint-yml`) - runs all linters for all/a specific
   language, these usually include checks whether the `fmt` command was run
 - test (e.g. `make test-py`, `make test-sh`)
-
-### Usage examples
 
 - **without targets:**
   - `make lint` runs:

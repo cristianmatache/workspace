@@ -38,3 +38,12 @@ ifeq ($(since),)
 else
 	python -m black -S --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
 endif
+
+flynt:
+	$(eval on := $(onpy))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	python -m flynt $(call solve_on,$(on)); fi
+else
+	python -m flynt $(call solve_since,$(since),".py")
+endif

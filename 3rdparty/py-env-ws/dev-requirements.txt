@@ -8,6 +8,7 @@ autoflake
 black
 jupyterblack
 nbstripout
+flynt
 
 # linters
 flake8
@@ -26,3 +27,5 @@ coverage
 # packaging
 pipreqs
 shiv
+
+pre-commit

@@ -54,6 +54,15 @@ else
 	python -m black -S --check --config $(BLACK_CONFIG) $(call solve_since,$(since),".py")
 endif
 
+flynt-check:
+	$(eval on := $(onpy))
+ifeq ($(since),)
+	if $(call lang,$(on),".*\.pyi?"); then  \
+	python -m flynt --dry-run --fail-on-change $(call solve_on,$(on)); fi
+else
+	python -m flynt --dry-run --fail-on-change $(call solve_since,$(since),".py")
+endif
+
 flake8:
 	$(eval on := $(onpy))
 ifeq ($(since),)

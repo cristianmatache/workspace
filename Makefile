@@ -9,7 +9,7 @@ onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
 onhs=tutorials_hs/scheme_interpreter
 onsh=build-support/ deploy-support/ lib_sh_utils/
 onnb=notebooks/
-onyml=.ci-azure/ build-support/ deploy-support/
+onyml=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 onmd=*.md app_* lib_* resources/
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.

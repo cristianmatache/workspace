@@ -10,3 +10,4 @@ env-sh-ws-create:
 
 env-sh-ws-replicate:
 	npm --prefix $(WS_SH_ENV) ci || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"
+	conda install go-shfmt -c conda-forge -y

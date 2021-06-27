@@ -9,8 +9,6 @@ ifeq ($(since),)
 else
 	find $(call solve_since,$(since),".sh") -type f -iname "*.sh" | xargs --no-run-if-empty shellcheck -x --format=gcc -e SC1017;
 endif
-#	find $(call solve_on,$(on)) -type f -iname "*.sh" -exec sh -c 'for f; do shellcheck "$$f" --format=gcc -e SC1017 || exit 1; done' sh "{}" \+; fi
-
 
 shfmt-check:
 ifeq ($(since),)

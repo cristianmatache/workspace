@@ -38,33 +38,40 @@ Some projects will be ported over here, some others are lost somewhere in space 
 The way the Makefile of this project works draws inspiration heavily from monorepo build tools such as Pants, Bazel,
 Buck. It runs multiple linters, formatters, type checkers, hermetic packers, testing frameworks, virtual environment
 managers etc. It works on Linux, WSL and Windows with Git Bash (for Windows please
-run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator)
-It currently supports:
+run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator).
+
+### Supported tools by language
 
 - Python:
-  - Setup: `pip`/`conda`
+  - Setup: `pip` / `conda`
   - Type-check: `mypy`
   - Test: `pytest`
   - Format + Lint: `black`, `docformatter`, `isort`, `autoflake`, `flynt`, `pre-commit`
   - Lint only: `flake8`, `pylint`, `bandit`
   - Package: `pipreqs`, `shiv`
 - Jupyter:
+  - Setup: `pip`
   - Format + Lint: `jupyterblack`, `nbstripout`
   - Lint only: `flake8-nb`
 - Bash:
+  - Setup: `npm` and `conda`
   - Test: `bats` (bash testing: `bats-core`, `bats-assert`, `bats-support`)
   - Format + Lint: `shfmt`
   - Lint only: `shellcheck`
 - Haskell:
   - Lint: `hlint`
 - YAML:
+  - Setup: `pip`
   - Lint: `yamllint`
 - Prometheus YAML:
   - Lint: `promtool check`
 - Markdown:
+  - Setup: `npm`
   - Format + Lint: `markdownlint`
 
-and it would be very easy to extend it with another tool, just following the existing examples.
+It is very easy to extend this list with another tool, just following the existing examples.
+
+### Usage examples
 
 These tools may be run individually (e.g. `make mypy`) or altogether by a more general rule. For example:
 
@@ -72,8 +79,6 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
 - lint (e.g. `make lint`, `make lint-py`, `make lint-sh`, `make lint-yml`) - runs all linters for all/a specific
   language, these usually include checks whether the `fmt` command was run
 - test (e.g. `make test-py`, `make test-sh`)
-
-### Usage examples
 
 - **without targets:**
   - `make lint` runs:

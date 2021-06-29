@@ -80,7 +80,7 @@ restart-%:
 	$(eval logdir := ./)
 	$(eval servicename := $(subst restart-,,$@))
 	mkdir -p $(logdir)/logs/$(servicename)
-	nohup ./deploy-support/$(servicename)/restart.sh &> $(logdir)/logs/$(servicename)/$(shell date --iso).txt &
+	nohup ./deploy-support/$(servicename)/restart.sh &>> $(logdir)/logs/$(servicename)/$(shell date --iso).txt &
 
 kill-%:
 	$(eval servicename := $(subst kill-,,$@))

@@ -77,10 +77,14 @@ restartall: restart-airflow restart-prometheus restart-grafana restart-alertmana
 killall: kill-airflow kill-prometheus kill-grafana kill-alertmanager
 
 restart-%:
-	./deploy-support/$(subst restart-,,$@)/restart.sh &
+	$(eval logdir := ./)
+	$(eval servicename := $(subst restart-,,$@))
+	mkdir -p $(logdir)/logs/$(servicename)
+	nohup ./deploy-support/$(servicename)/restart.sh &> $(logdir)/logs/$(servicename)/$(shell date --iso).txt &
 
 kill-%:
-	./deploy-support/$(subst kill-,,$@)/kill.sh
+	$(eval servicename := $(subst kill-,,$@))
+	./deploy-support/$(servicename)/kill.sh
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------

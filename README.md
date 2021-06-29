@@ -63,8 +63,8 @@ run  `build-support/git-bash-integration/install_make.sh` running Git Bash as ad
 - YAML:
   - Setup: `pip`
   - Lint: `yamllint`
-- Prometheus YAML:
-  - Lint: `promtool check`
+- Prometheus and Alertmanager YAML:
+  - Lint: `promtool check`, `amtool check-config`
 - Markdown:
   - Setup: `npm`
   - Format + Lint: `markdownlint`

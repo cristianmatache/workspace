@@ -49,6 +49,8 @@ include build-support/make/yaml/format.mk
 include build-support/make/yaml/lint.mk
 # Prometheus YAML
 include build-support/make/prometheus/lint.mk
+# Alertmanager YAML
+include build-support/make/alertmanager/lint.mk
 
 # Markdown
 include build-support/make/markdown/setup.mk
@@ -63,7 +65,7 @@ fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh
 
 fmt-check: fmt-check-py fmt-check-nb
 
-lint: lint-py lint-sh lint-nb lint-yml lint-prometheus lint-md # lint-hs
+lint: lint-py lint-sh lint-nb lint-yml lint-md lint-prometheus lint-alertmanager # lint-hs
 
 type-check: mypy
 

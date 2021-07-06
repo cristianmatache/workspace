@@ -12,7 +12,7 @@ else
 endif
 
 flake8-nb:
-	$(eval on := $(onpy))
+	$(eval on := $(onnb))
 ifeq ($(since),)
 	if $(call lang,$(on),".*\.ipynb"); then \
   	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_on,$(on)); fi

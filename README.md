@@ -82,19 +82,19 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
 
 - **without targets:**
   - `make lint` runs:
-    - a bunch of Python linters on all directories (in `$onpy`) that contain python/stub files.
-    - a bunch of notebook linters on all directories (in `$onnb`) that contain .ipynb files.
-    - a Bash linter (shellcheck) on all directories (in `$onsh`) that contain Bash files.
-    - a Haskell linter (hlint) on all directories (in `$onhs`) that contain Haskell files.
-    - a YAML linter (yamllint) on all directories (in `$onyml`) that contain YAML files.
+    - a bunch of Python linters on all directories (in `$ONPY`) that contain python/stub files.
+    - a bunch of notebook linters on all directories (in `$ONNB`) that contain .ipynb files.
+    - a Bash linter (shellcheck) on all directories (in `$ONSH`) that contain Bash files.
+    - a Haskell linter (hlint) on all directories (in `$ONHS`) that contain Haskell files.
+    - a YAML linter (yamllint) on all directories (in `$ONYML`) that contain YAML files.
   - `make lint`, `make fmt -j1`, `make type-check` work similarly
-  - the `$(onpy)`, `$(onsh)`, ... variables are defined at the top of the Makefile and represent the default locations
+  - the `$(ONPY)`, `$(ONSH)`, ... variables are defined at the top of the Makefile and represent the default locations
       where to search for certain languages.
   - per-tool config files (e.g. `mypy.ini`) are found in `build-support/<language>/tools-config/`
 - **per language:**
   Instead of running all linters for all languages, you may often want to run all linters for a specific programming
   language.
-  - `make lint-py` runs all Python linters over all Python targets (as specified by `$onpy`). because our target is a
+  - `make lint-py` runs all Python linters over all Python targets (as specified by `$ONPY`). because our target is a
       single python file.
   - `make fmt-py`, `make lint-sh`, `make lint-hs`, `make lint-yml`, `make fmt-yml`
 - **with nominal targets:**
@@ -112,7 +112,7 @@ These tools may be run individually (e.g. `make mypy`) or altogether by a more g
   - `make fmt -j1 since=master` runs all formatters on the diff between the current branch and master.
   - `make fmt -j1 since=HEAD~1` runs all formatters on all files that changed since "2 commits ago".
 - **with specific tools:**
-  - `make mypy` runs mypy on `$onpy`.
+  - `make mypy` runs mypy on `$ONPY`.
   - `make mypy on=app_iqor/server.py` runs mypy on the given file.
   - `make mypy since=master` runs mypy on the diff between the current branch and master.
   - same for all tools e.g. isort, docformatter, autoflake, shellcheck, flake8, jblack etc.

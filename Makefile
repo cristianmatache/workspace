@@ -4,22 +4,13 @@ MAKEFLAGS += -j4
 # Aliases
 iqor=app_iqor/ 
 
-# All projects
-onpy=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
-onsh=build-support/ deploy-support/ lib_sh_utils/
-onhs=tutorials_hs/scheme_interpreter
-onnb=notebooks/
-onyml=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
-onmd=*.md app_* lib_* resources/
-
-ifneq ($(since),)
-onpy=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.pyi?" | grep -v ".pylintrc"))
-onsh=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.sh"))
-onhs=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.hs"))
-onnb=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.ipynb"))
-onyml=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.ya?ml"))
-onmd=$(call files_that_exist,$(shell git diff --name-only $(since) | grep -E "*\.md"))
-endif
+# Targets
+ONPY=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
+ONSH=build-support/ deploy-support/ lib_sh_utils/
+ONHS=tutorials_hs/scheme_interpreter
+ONNB=notebooks/
+ONMD=*.md app_* lib_* resources/
+ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.
 # It is recommended to keep everything in a single file if possible.

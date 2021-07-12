@@ -14,7 +14,7 @@ endif
 # Args:
 #   - on: "on" specifier
 #   - $2: file extension regex e.g. ".*\.pyi?" or ".*\.sh"
-lang = [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
+lang = [[ ! -z "$1" ]] && [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
 
 
 ifneq ($(since),)
@@ -22,12 +22,12 @@ ifneq ($(since),)
 # 1. ensure the files exist (git diff --name-only also reports files that were deleted)
 # 2. ensure we only run the checks over the targets listed in the global $(ON<lang>) not across any changed <lang> file
 # Does not work if paths/file names contain spaces, XYZ is some file that does not exist, used to have a value for the final -o
-onpy=$(shell find $(call solve_on,$(ONPY)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.pyi?" | grep -v ".pylintrc"), -wholename $(file) -o) -wholename XYZ)
-onsh=$(shell find $(call solve_on,$(ONSH)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.sh"), -wholename $(file) -o) -wholename XYZ)
-onhs=$(shell find $(call solve_on,$(ONHS)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.hs"), -wholename $(file) -o) -wholename XYZ)
-onnb=$(shell find $(call solve_on,$(ONNB)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.ipynb"), -wholename $(file) -o) -wholename XYZ)
-onmd=$(shell find $(call solve_on,$(ONMD)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.md"), -wholename $(file) -o) -wholename XYZ)
-onyml=$(shell find $(ONYML) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.ya?ml"), -wholename $(file) -o) -wholename XYZ)
+onpy=$(shell find $(call solve_on,$(ONPY))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.pyi?" | grep -v ".pylintrc"), -wholename $(file) -o) -wholename XYZ)
+onsh=$(shell find $(call solve_on,$(ONSH))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.sh"), -wholename $(file) -o) -wholename XYZ)
+onhs=$(shell find $(call solve_on,$(ONHS))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.hs"), -wholename $(file) -o) -wholename XYZ)
+onnb=$(shell find $(call solve_on,$(ONNB))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.ipynb"), -wholename $(file) -o) -wholename XYZ)
+onmd=$(shell find $(call solve_on,$(ONMD))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.md"), -wholename $(file) -o) -wholename XYZ)
+onyml=$(shell find $(call solve_on,$(ONYML)) $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.ya?ml"), -wholename $(file) -o) -wholename XYZ)
 else
 onpy=$(ONPY)
 onsh=$(ONSH)

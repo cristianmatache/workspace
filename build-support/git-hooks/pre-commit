@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-make pre-commit since=HEAD~1
+make pre-commit since=--cached

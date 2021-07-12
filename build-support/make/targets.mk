@@ -16,18 +16,7 @@ endif
 #   - $2: file extension regex e.g. ".*\.pyi?" or ".*\.sh"
 lang = [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
 
-# If "since" was supplied -> get all the changed files since $(since), filtering only existing ones
-# (i.e. don't include deleted files that may be reported by `git diff --name-only`)
-# Args:
-# 	- since: e.g. HEAD, master, feature/my-branch
-#   - extension: e.g. ".py"
-# Check if files with the given extension changed since $1, if any did, check whether they exist (i.e. filter deletions out)
-# Actually if they don't exist return the README.md (which shouldn't match anything)
-solve_since = $(shell \
-	if [[ ! -z `git diff --name-only $1 | grep -F "$2"` ]] && [[ ! -z `git diff --name-only $1 | grep -F "$2" | xargs find` ]]; then \
-		git diff --name-only $1 | grep -F "$2" | xargs -d'\n' find 2>/dev/null | tr '\n' ' '; \
-	else echo "README.md"; fi \
-	)
+files_that_exist = $(shell if [[ ! -z "$1" ]]; then echo "$1" | xargs find 2>/dev/null; else echo /dev/null; fi)
 
 ## Keep old implementation just in case
 #define solve_since

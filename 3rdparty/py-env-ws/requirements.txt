@@ -1,3 +1,4 @@
+mypy
 flask
 flask_assets
 werkzeug
@@ -8,3 +9,4 @@ returns
 pathos
 requests
 dpath
+typing_extensions

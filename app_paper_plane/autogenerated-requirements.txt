@@ -4,3 +4,4 @@ flask
 flask_assets
 pathos
 requests
+typing_extensions

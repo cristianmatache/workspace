@@ -4,13 +4,18 @@ MAKEFLAGS += -j4
 # Aliases
 iqor=app_iqor/ 
 
-# Targets
+# Targets - for formatting, linting, type-checking, testing
 ONPY=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
 ONSH=build-support/ deploy-support/ lib_sh_utils/
 ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/
 ONMD=*.md app_* lib_* resources/
 ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
+
+# Targets - for packaging (e.g. generation of requirements.txt files)
+PY_LIBS=lib_py_utils/  # can be pip-install-ed
+PY_APPS=app_paper_plane/ app_iqor/  # cannot be pip-installed
+PY_PROJECTS=$(PY_LIBS) $(PY_APPS)
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.
 # It is recommended to keep everything in a single file if possible.

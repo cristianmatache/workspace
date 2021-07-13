@@ -1,5 +1,5 @@
 # type checker
-mypy
+# mypy - is a core package of the env because we wrote a mypy plugin
 
 # formatters
 isort

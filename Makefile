@@ -17,7 +17,7 @@ ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 PY_LIBS=lib_py_utils/  # can be pip-install-ed
 PY_APPS=app_paper_plane/ app_iqor/  # cannot be pip-installed
 PY_PROJECTS=$(PY_LIBS) $(PY_APPS)
-PY_LIB_NAMES=$(foreach path,$(utils),$(shell dirname $(path)))  # to be able to pip uninstall
+PY_LIB_NAMES=$(foreach path,$(utils),$(shell basename $(path)))  # to be able to pip uninstall
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.
 # It is recommended to keep everything in a single file if possible.

@@ -4,9 +4,10 @@ MAKEFLAGS += -j4
 # Aliases
 iqor=app_iqor/
 utils=lib_py_utils/py_utils lib_py_utils/test_utils
+gen_script=build-support/python/packaging/generate_pip_install_files.py
 
 # Targets - for formatting, linting, type-checking, testing
-ONPY=algo/ iqor app_paper_plane/ utils lib_bzl_utils/
+ONPY=algo/ iqor app_paper_plane/ utils lib_bzl_utils/ gen_script
 ONSH=build-support/ deploy-support/ lib_sh_utils/
 ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/

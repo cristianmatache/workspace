@@ -2,10 +2,11 @@ SHELL := /bin/bash
 MAKEFLAGS += -j4
 
 # Aliases
-iqor=app_iqor/ 
+iqor=app_iqor/
+utils=lib_py_utils/py_utils lib_py_utils/test_utils
 
 # Targets - for formatting, linting, type-checking, testing
-ONPY=algo/ iqor app_paper_plane/ lib_py_utils/ lib_bzl_utils/
+ONPY=algo/ iqor app_paper_plane/ utils lib_bzl_utils/
 ONSH=build-support/ deploy-support/ lib_sh_utils/
 ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/
@@ -16,6 +17,7 @@ ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 PY_LIBS=lib_py_utils/  # can be pip-install-ed
 PY_APPS=app_paper_plane/ app_iqor/  # cannot be pip-installed
 PY_PROJECTS=$(PY_LIBS) $(PY_APPS)
+PY_LIB_NAMES=$(foreach path,$(utils),$(shell dirname $(path)))  # to be able to pip uninstall
 
 # Because some rules may be long, I decided to separate the Makefile in several smaller files.
 # It is recommended to keep everything in a single file if possible.

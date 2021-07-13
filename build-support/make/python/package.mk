@@ -8,7 +8,7 @@ pip-install-local:
 	pip install --no-deps --upgrade $(PY_LIBS)
 
 pip-uninstall-local:
-	pip uninstall -y $(PY_LIBS)
+	pip uninstall -y $(PY_LIB_NAMES)
 
 # Run `make pip-install-local` first if you want to include your first party libraries in the output
 # on=<> **must** always be supplied because this extracts "imports" from any Python file/package
@@ -23,7 +23,7 @@ reqs-py:
 
 # Merging with existing requirements.txt may need manual adjustment because this never removes existing contents
 # Use reqs-py to investigate what packages need to be removed
-py-libs-reqs-files: # pip-install-local
+py-libs-reqs-files: pip-install-local
 	$(eval on := $(PY_PROJECTS))
 	$(eval exclude := "dataclasses")
 	$(eval core_3rdparty_reqs_file := 3rdparty/py-env-ws/requirements.txt)

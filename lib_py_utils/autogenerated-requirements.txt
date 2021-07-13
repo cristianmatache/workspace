@@ -1,4 +1,5 @@
-returns
+
 colorama
 mypy
+returns
 typing_extensions

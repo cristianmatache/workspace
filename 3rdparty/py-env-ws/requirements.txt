@@ -10,3 +10,4 @@ pathos
 requests
 dpath
 typing_extensions
+setuptools

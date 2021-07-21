@@ -40,6 +40,104 @@ Buck. It runs multiple linters, formatters, type checkers, hermetic packers, tes
 managers etc. It works on Linux, WSL and Windows with Git Bash (for Windows please
 run  `build-support/git-bash-integration/install_make.sh` running Git Bash as administrator).
 
+### Usage
+
+Usually to format, lint, type-check, test, package, ... the code, one needs to run a bunch of commands in the terminal,
+setting the right flags and the right parameters. This Make-based build system helps with running these commands with
+a very simple interface: `make <goal> <optional-targets>` where **goal = what tools we run** and
+**targets = over which files we run these tools**.
+
+#### Goals - what tools we run
+
+Goals mean what command line tools to run. This build system can run one more tools at once as follows:
+
+- *Individual* tool
+  - e.g. `make mypy`, `make flake8`, `make isort`
+- Multiple tools for a *specific* language
+  - e.g. `make fmt-py` runs all Python formatters `isort`, `black`, `docformatter`, `flynt`, `autoflake`
+  - e.g. `make fmt-sh` runs shfmt
+  - e.g. `make lint-py` runs all Python linters and formatters in "verification" mode - `flake8` + `pylint` + check
+    whether the code is already formatted with `isort`, `black`, `docformatter`, `flynt`, `autoflake`
+  - `make fmt-md`, `make lint-yml`, `test-sh`, `test-py` ... work similarly
+- Multiple tools for *multiple* languages
+  - e.g. `make fmt` runs all formatters for all supported languages (Python, Bash, Markdown, YAML, ...)
+  - e.g. `make lint` runs all linters for all supported languages
+  - e.g. `make test` runs all test suites for all supported languages
+
+It is possible to run multiple goals at once like `make lint test`. In addition, it is very easy to change the meaning
+of goals that run more than one command since they are very simply defined in Make based on other goals. For example,
+one can remove the `shfmt` from bash linting simply by doing the below:  
+
+```makefile
+# Before
+lint-sh: shellcheck shfmt-check  # where shellcheck and shfmt-check run the respective commands
+# After
+lint-sh: shellcheck
+```
+
+Per-tool config files (e.g. `mypy.ini`, `pyproject.toml`) are found in `build-support/<language>/tools-config/`.
+
+##### Targets - what files we run the tools on
+
+We have seen that Make gives us the power to run multiple terminal commands effortlessly. Using a Makefile like
+described above is standard practice in many projects, typically running the different tools over all their files.
+However, as projects grow, the need to run these tools at different granularities (e.g. in a specific directory,
+over a given file, on the diff between two branches, since we last committed etc). This is where targets come into play.
+
+- **without targets:**
+  - `make lint` runs:
+    - all Python linters on all directories (in the `$ONPY`) that contain Python/stub files.
+    - all notebook linters on all directories (in `$ONNB`) that contain .ipynb files.
+    - all Bash linters (shellcheck) on all directories (in `$ONSH`) that contain Bash files.
+    - a Haskell linter (hlint) on all directories (in `$ONHS`) that contain Haskell files.
+    - a YAML linter (yamllint) on all directories (in `$ONYML`) that contain YAML files.
+  - `make lint`, `make fmt -j1`, `make type-check` work similarly
+  - the `$(ONPY)`, `$(ONSH)`, ... variables are defined at the top of the Makefile and represent the default locations
+      where to search for files certain languages.
+- **with specific targets:**
+  - file: `make lint on=app_iqor/server.py` runs all Python linters on the file, same
+      as `make lint-py on=app_iqor/server.py`
+  - directory: `make lint on=lib_py_utils` runs a bunch of linters on the directory, in this case, same
+      as `make lint-py on=lib_py_utils/`.
+  - files/directories: `make lint on="lib_py_utils app_iqor/server.py"` runs a bunch of linters on both targets.
+  - globs: `make lint on=lib_*`
+  - aliases: `make fmt on=iqor` is the same as `make fmt on=app_iqor/` because `iqor` is an alias for `app_iqor/`. Even
+      though this example is simplistic, it is useful to alias combinations of multiple files/directories. It is
+      recommended to set aliases as constants in the Makefile even though environment variables would also work.
+  - same for `make fmt`, `make test`, `make type-check`.
+- **with git revision targets:**
+  - `make fmt -j1 since=master` runs all formatters on the diff between the current branch and master.
+  - `make fmt -j1 since=HEAD~1` runs all formatters on all files that changed since "2 commits ago".
+  - `make lint since=--cached` runs all linters on all files that are "git added".
+  - all goals that support the "on" syntax also support the "since" syntax
+
+#### Collaterals like Environments, PYTHONPATH
+
+Language specific setup is done in `build-support/make/<langugage>/setup.mk`. For example, to add things to the
+PYTHONPATH (i.e. to mark directories as sources roots) go to `build-support/make/python/setup.mk`. Go to the same place,
+to manage upgrades/replications of 3rd party dependencies (e.g. virtual environments).
+
+Different languages may have different goals, for example Python can be packaged hermetically with Shiv, while Bash
+obviously can't.
+
+The following goals must support the "on" and "since" syntax and ensure that they are only run if there are any targets
+for the language they target:
+
+- format
+- lint
+- type-check
+- test
+
+If you want to learn more about the API of a specific goal, check the source code.
+
+### Installation
+
+To add this build system to an existing repo, one needs to simply copy `build-support/` and `3rdparty/` over.
+Run `make env`, as a one-off, to set up the python, markdown and bash environments (mostly pip/npm install-s). It is
+recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support for Prometheus, Alertmanager or
+Grafana. In addition, if renaming directories in `3rdparty` the correspondent paths in
+`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk` should also be updated.
+
 ### Supported tools by language
 
 - Python:
@@ -71,73 +169,24 @@ run  `build-support/git-bash-integration/install_make.sh` running Git Bash as ad
 
 It is very easy to extend this list with another tool, just following the existing examples.
 
-### Usage examples
+### Comparison with Pants, Bazel, Pre-commit and traditional Makefiles
 
-These tools may be run individually (e.g. `make mypy`) or altogether by a more general rule. For example:
+Modern build tools like Pants or Bazel work similarly in terms of goals and targets, but they also add a caching layer
+on previous results of running the goals. While they come equipped with heavy machinery to support enormous scale
+projects, they also come with restrictions. In my opinion, Pants which is the most suitable modern build tool for
+Python, for example, doesn't allow building environments with arbitrary package managers (e.g. conda, mamba),
+does not work on Windows, prohibits inconsistent environments (which is good but sometimes simply impossible in
+practice), does not yet support multiple environments. Bazel, requires maintaining the dependencies between Python files
+twice, once as "imports" in the Python files (the normal thing to do) and twice in some specific `BUILD` files that
+must be placed in each directory (by contrast Pants features autodiscovery). Maintaining the same dependencies in two
+places is quite draining. Of course, these tools come with benefits like caching/incrementality and out-of-the-box
+support for hermetic packaging (e.g. PEXes) but again neither supports arbitrary packers. In general, playing with some
+new command line tools, or new programming languages / types of files (e.g. Jupyter Notebooks) is challenging with these
+frameworks. The Pants community is very welcoming and supportive towards incorporating new tools, so it would be good to
+give it a try first. However, if any of the mentioned shortcomings is a hard requirement, Make seems like a good and
+robust alternative that withstood the test of time in so many settings.
 
-- format (e.g. `make fmt`, `make fmt-py`, `make fmt-yml`) - runs all formatters for all/a specific language
-- lint (e.g. `make lint`, `make lint-py`, `make lint-sh`, `make lint-yml`) - runs all linters for all/a specific
-  language, these usually include checks whether the `fmt` command was run
-- test (e.g. `make test-py`, `make test-sh`)
-
-- **without targets:**
-  - `make lint` runs:
-    - a bunch of Python linters on all directories (in `$ONPY`) that contain python/stub files.
-    - a bunch of notebook linters on all directories (in `$ONNB`) that contain .ipynb files.
-    - a Bash linter (shellcheck) on all directories (in `$ONSH`) that contain Bash files.
-    - a Haskell linter (hlint) on all directories (in `$ONHS`) that contain Haskell files.
-    - a YAML linter (yamllint) on all directories (in `$ONYML`) that contain YAML files.
-  - `make lint`, `make fmt -j1`, `make type-check` work similarly
-  - the `$(ONPY)`, `$(ONSH)`, ... variables are defined at the top of the Makefile and represent the default locations
-      where to search for certain languages.
-  - per-tool config files (e.g. `mypy.ini`) are found in `build-support/<language>/tools-config/`
-- **per language:**
-  Instead of running all linters for all languages, you may often want to run all linters for a specific programming
-  language.
-  - `make lint-py` runs all Python linters over all Python targets (as specified by `$ONPY`). because our target is a
-      single python file.
-  - `make fmt-py`, `make lint-sh`, `make lint-hs`, `make lint-yml`, `make fmt-yml`
-- **with nominal targets:**
-  - `make lint on=app_iqor/server.py` runs all Python linters on the file, same
-      as `make lint-py on=app_iqor/server.py`
-  - `make lint on=lib_py_utils` runs a bunch of linters on the directory, in this case, same
-      as `make lint-py on=lib_py_utils`.
-  - `make lint on="lib_py_utils app_iqor/server.py"` runs a bunch of linters on both targets.
-  - same for `make fmt`, `make test`, `make type-check`.
-- **with aliases:**
-  - `make fmt on=iqor` is the same as `make fmt on=app_iqor/` because iqor is an alias for app_iqor. Even though this
-      example is simplistic, it is useful to alias combinations of multiple files/directories. It is recommended to set
-      aliases as constants in the Makefile even though environment variables would also work.
-- **with revision targets:**
-  - `make fmt -j1 since=master` runs all formatters on the diff between the current branch and master.
-  - `make fmt -j1 since=HEAD~1` runs all formatters on all files that changed since "2 commits ago".
-- **with specific tools:**
-  - `make mypy` runs mypy on `$ONPY`.
-  - `make mypy on=app_iqor/server.py` runs mypy on the given file.
-  - `make mypy since=master` runs mypy on the diff between the current branch and master.
-  - same for all tools e.g. isort, docformatter, autoflake, shellcheck, flake8, jblack etc.
-- **with multiple rules:**
-  - `make lint-py mypy lint-sh lint-md on=app_iqor/` runs all Python linters, mypy, shellcheck, markdownlint on
-    `app_iqor/`.
-
-To add things on the PYTHONPATH (i.e. to mark directories as sources roots) go to build-support/make/python/setup.py
-Different languages have different goals, for example Python can be packaged hermetically with Shiv, while Bash
-obviously can't.
-
-The following goals must support the "on" and "since" syntax and ensure that they are only run if there are any targets
-for the language they target:
-
-- format
-- lint
-- type-check
-- test
-
-If you want to learn more about the API of a specific rule, check the source code.
-
-### Installation
-
-To add this build system to an existing repo, one needs to simply copy `build-support/` and `3rdparty/` over.
-Run `make env`, as a one-off, to set up the python, markdown and bash environments (mostly pip/npm install-s). It is
-recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support for Prometheus, Alertmanager or
-Grafana. In addition, if renaming directories in `3rdparty` the correspondent paths in
-`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk` should also be updated.
+Pre-commit and typical usages of Make work exceptionally well on small projects but they don't really scale well to
+multi-projects monorepos. The build system proposed here, already incorporates `pre-commit` and is obviously compatible
+with any existing Makefiles. This approach simply takes the idea of advanced target selection and ports it over to
+classical techniques like pre-commit and Make.

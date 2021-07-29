@@ -14,7 +14,10 @@ endif
 # Args:
 #   - on: "on" specifier
 #   - $2: file extension regex e.g. ".*\.pyi?" or ".*\.sh"
-lang = [[ ! -z "$1" ]] && [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
+# Same as:
+#	lang = [[ ! -z "$1" ]] && [[ ! -z `find $(call solve_on,$1) -type f -regex $2` ]]
+# but does not expand such that generated commands are not huge
+lang = [[ ! -z $(if $(shell echo "$1"),$(if $(shell find $(call solve_on,$1) -type f -regex $2),'true',''),'') ]]
 
 
 ifneq ($(since),)
@@ -22,6 +25,7 @@ ifneq ($(since),)
 # 1. ensure the files exist (git diff --name-only also reports files that were deleted)
 # 2. ensure we only run the checks over the targets listed in the global $(ON<lang>) not across any changed <lang> file
 # Does not work if paths/file names contain spaces, XYZ is some file that does not exist, used to have a value for the final -o
+# Does not work if longer than `getconf ARG_MAX` characters
 onpy=$(shell find $(call solve_on,$(ONPY))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.pyi?" | grep -v ".pylintrc"), -wholename $(file) -o) -wholename XYZ)
 onsh=$(shell find $(call solve_on,$(ONSH))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.sh"), -wholename $(file) -o) -wholename XYZ)
 onhs=$(shell find $(call solve_on,$(ONHS))   $(foreach file,$(shell git diff --name-only $(since) | grep -E "*\.hs"), -wholename $(file) -o) -wholename XYZ)

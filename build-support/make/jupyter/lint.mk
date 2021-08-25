@@ -10,4 +10,4 @@ jblack-check:
 flake8-nb:
 	$(eval on := $(onnb))
 	if $(call lang,$(on),".*\.ipynb"); then \
-  	flake8_nb --config $(FLAKE8_NB_CONFIG) $(call solve_on,$(on)); fi
+  	find $(call solve_on,$(on)) -type f -iname "*.ipynb" | xargs python -m flake8_nb --config $(FLAKE8_NB_CONFIG); fi

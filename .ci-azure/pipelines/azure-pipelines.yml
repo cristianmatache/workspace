@@ -79,7 +79,7 @@ stages:
             displayName: 'Run yamllint'
       - job: lint_markdown
         steps:
-          - script: make -j1 env-md lint-md
+          - script: make -j1 env-md-default-replicate lint-md
             displayName: 'Run markdownlint'
 
   - stage: test_py

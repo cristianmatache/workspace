@@ -14,4 +14,5 @@ steps:
       LS_PYTHONPATH="ls $PYTHONPATH"
       echo $LS_PYTHONPATH
       eval $LS_PYTHONPATH
+      pip freeze
     displayName: Sanity check

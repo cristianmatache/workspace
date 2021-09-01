@@ -6,7 +6,7 @@ steps:
   - task: Cache@2
     displayName: Use cached pip dependencies
     inputs:
-       key: >-
+      key: >-
          3rdparty/py-env-ws/requirements.txt | 3rdparty/py-env-ws/dev-requirements.txt |
          3rdparty/py-env-ws/mypy-requirements.txt | 3rdparty/py-env-ws/nb-requirements.txt
       path: $(PY_ENV_PATH)

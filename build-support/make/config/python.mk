@@ -11,7 +11,6 @@ ISORT_CONFIG=build-support/python/tools-config/pyproject.toml
 BLACK_CONFIG=build-support/python/tools-config/pyproject.toml
 BANDIT_CONFIG=build-support/python/tools-config/.bandit.yml
 PYTEST_CONFIG=build-support/python/tools-config/pyproject.toml
-FLAKE8_NB_CONFIG=build-support/jupyter/tools-config/.flake8_nb
 
 # Tools config
 DEFAULT_PYTEST_MARKS=""

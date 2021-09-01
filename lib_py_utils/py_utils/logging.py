@@ -1,3 +1,4 @@
+# pylint: disable=unused-private-member # pylint bug
 from dataclasses import dataclass
 from datetime import datetime
 from logging import CRITICAL, DEBUG, ERROR, INFO, NOTSET, WARNING, FileHandler, Formatter

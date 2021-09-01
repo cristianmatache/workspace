@@ -70,7 +70,7 @@ stages:
               command -v conda
               make env-sh-default-replicate
             displayName: 'Install sh deps'
-          - script: make lint-sh-default-replicate
+          - script: make lint-sh
             displayName: 'Run shellcheck'
       - job: lint_yaml
         steps:

@@ -105,5 +105,5 @@ stages:
           - template: ../templates/setup_npm.yml
           - script: |
               command -v npm
-              make -j1 env-sh test-sh
+              make -j1 env-sh-default-replicate test-sh
             displayName: 'Test sh'

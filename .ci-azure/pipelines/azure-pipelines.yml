@@ -20,32 +20,13 @@ variables:
   REINSTALL_DEPS: true
 
 stages:
-  - stage: install_deps
-    displayName: 'install deps'
-    jobs:
-      - job: install_python_deps
-        steps:
-          - template: ../templates/setup_py.yml
-          - script: |
-              PIP="python -m pip install --upgrade \
-                   -c 3rdparty/py-env-ws/constraints.txt \
-                   -r 3rdparty/py-env-ws/requirements.txt \
-                   -r 3rdparty/py-env-ws/dev-requirements.txt \
-                   -r 3rdparty/py-env-ws/mypy-requirements.txt \
-                   -r 3rdparty/py-env-ws/nb-requirements.txt \
-                   --target $(PY_ENV_PATH)"
-              echo "> $PIP"
-              eval $PIP
-            displayName: pip install
-            condition: or(eq(variables.CONDA_CACHE_RESTORED, 'false'), eq(variables.REINSTALL_DEPS, 'true'))
-
   - stage: lint
     displayName: 'lint'
-    dependsOn: install_deps
+    dependsOn: [ ]
     jobs:
       - job: lint_py
         steps:
-          - template: ../templates/use_py_deps.yml
+          - script: make env-py-default-replicate
           - script: |
               pwd
               ls -l ..
@@ -78,7 +59,7 @@ stages:
             displayName: 'Run shellcheck'
       - job: lint_yaml
         steps:
-          - template: ../templates/use_py_deps.yml
+          - script: make env-py-default-replicate
           - script: make lint-yml
             displayName: 'Run yamllint'
       - job: lint_markdown
@@ -87,12 +68,12 @@ stages:
             displayName: 'Run markdownlint'
 
   - stage: test_py
-    dependsOn: install_deps
+    dependsOn: [ ]
     displayName: 'test py'
     jobs:
       - job: test_py
         steps:
-          - template: ../templates/use_py_deps.yml
+          - script: make env-default-replicate
           - script: |
               which pytest
             displayName: 'Sanity check pytest'

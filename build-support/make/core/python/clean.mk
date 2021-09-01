@@ -7,3 +7,6 @@ clean-pytest:
 
 clean-mypy:
 	find -rf .mypy_cache
+
+clean-egg-info:
+	find . -name .hypothesis -type d -exec rm -rf {} +

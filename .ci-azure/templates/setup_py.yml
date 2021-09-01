@@ -6,10 +6,8 @@ steps:
   - task: Cache@2
     displayName: Use cached pip dependencies
     inputs:
-      key: cgtm2
+       key: >-
+         3rdparty/py-env-ws/requirements.txt | 3rdparty/py-env-ws/dev-requirements.txt |
+         3rdparty/py-env-ws/mypy-requirements.txt | 3rdparty/py-env-ws/nb-requirements.txt
       path: $(PY_ENV_PATH)
       cacheHitVar: PIP_DEPS_CACHE_RESTORED
-
-#       key: >-
-#         3rdparty/py-env-ws/requirements.txt | 3rdparty/py-env-ws/dev-requirements.txt |
-#         3rdparty/py-env-ws/mypy-requirements.txt | 3rdparty/py-env-ws/nb-requirements.txt

@@ -3,13 +3,12 @@ import time
 from argparse import ArgumentParser
 from dataclasses import dataclass, field
 from threading import Thread
-from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple, TypeVar, cast
+from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple, TypedDict, TypeVar, cast
 
 import dpath.util as dpath
 import requests
 from flask import Flask, render_template
 from pathos.multiprocessing import ProcessPool
-from typing_extensions import TypedDict
 
 F = TypeVar('F', bound=Callable)
 

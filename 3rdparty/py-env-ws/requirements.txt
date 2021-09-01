@@ -3,7 +3,6 @@ flask
 flask_assets
 werkzeug
 pandas
-pandera
 qpython
 colorama
 returns

@@ -111,11 +111,7 @@ over a given file, on the diff between two branches, since we last committed etc
   - `make lint since=--cached` runs all linters on all files that are "git added".
   - all goals that support the "on" syntax also support the "since" syntax
 
-#### Collaterals like Environments, PYTHONPATH
-
-Language specific setup is done in `build-support/make/<langugage>/setup.mk`. For example, to add things to the
-PYTHONPATH (i.e. to mark directories as sources roots) go to `build-support/make/python/setup.mk`. Go to the same place,
-to manage upgrades/replications of 3rd party dependencies (e.g. virtual environments).
+#### Constraints
 
 Different languages may have different goals, for example Python can be packaged hermetically with Shiv, while Bash
 obviously can't.
@@ -130,13 +126,53 @@ for the language they target:
 
 If you want to learn more about the API of a specific goal, check the source code.
 
+#### Common admin actions
+
+- **Change what goal-lang does:** Let's say, for example, you don't want to run `pylint` as part of your python
+linting. You would simply go to the `Makefile` and change the definition of the `lint-py` goal to not include `pylint`.
+- **Adding goals:** The goals that are available out of the box are found in `build-support/make/core/<language>/`.
+You can extend/replace the core goals for new languages and/or tools by writing `.mk` code in
+`build-support/make/extensions/<language>/` following the examples in `build-support/make/core/`.
+- **Update the PYTHONPATH:** The PYTHONPATH is set at the top of the `Makefile`. For example, to add new directories to
+the PYTHONPATH (i.e. to mark them as sources roots) set `PY_SOURCES_ROOTS` at the top of the Makefile.
+- **See/Change tools config:** Let's say you want to change the way `mypy` is configured to exclude some directory from
+checking. Then head to `build-support/make/config/python.mk` check what is the path to the `mypy` config file, go there
+and update it. All other tools work similarly.
+- **Third party environments**
+  - **Exact reproduction of the default environment:** The recipes to fully replicate the default environment
+  (mostly using `pip`, `conda` and `npm`) are found in `build-support/make/core/<langugage>/setup.mk`, where they use
+  dependency files and lock files that can be found in `3rdparty/`. In practice, run `make env-default-replicate` inside
+  a conda environment. Also make sure you also have `npm` installed because `markdownlint` and `bats` bash testing
+  framework come from `npm` (if you don't need them no need to worry about `npm` just exclude the `markdown`
+  environment rule from the pre-requisites of `env-default-replicate`)
+  - **Create/Upgrade/Edit default environment:** If you want to edit the default environment, for example to add,
+  remove, constrain packages edit the `requirements.txt` not the `constraints.txt` file (in `3rdparty/`).
+  The `constraints.txt` is only used for reproducibility. If you just want to upgrade your third party dependencies
+  there is no need to temper with the `requirements.txt` files. Then run `make env-default-upgrade` and check the lock
+  files back into git.
+  - **Add a new environment:** To add a new environment, first add the dependency files (e.g. `requirements.txt`) in
+  `3rdparty/<new-env-name>`, add a new goal in `build-support/make/extensions`. For environment management over time, we
+  strongly encourage maintaining the approach split between creation/upgrade/edit and exact reproduction of
+  environments.
+- **Nested makefiles:** Supposing you want to have another `Makefile` for a specific project in the monorepo, just
+import everything that you need from `build-support/make/core/` and/or `build-support/make/extensions/`. To change the
+Now let's say you want to use a different config file for `mypy`. You would have 2 options, either change the path
+globally `build-support/make/config/python.mk` or, if you just want different settings for your little project use
+your inner `Makefile` to overwrite the value of the corresponding variable (that points to the config file) with the
+different path.
+- **Generate requirements.txt for each sub-project:** Run `make reqs-py`.
+- **Generate setup.py for each sub-project:** Run `build-support/python/packaging/generate_pip_install_files.py`
+
 ### Installation
 
 To add this build system to an existing repo, one needs to simply copy `build-support/` and `3rdparty/` over.
-Run `make env`, as a one-off, to set up the python, markdown and bash environments (mostly pip/npm install-s). It is
-recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support for Prometheus, Alertmanager or
-Grafana. In addition, if renaming directories in `3rdparty` the correspondent paths in
-`build-support/make/<lang>/setup.mk` and/or `build-support/make/<lang>/config.mk` should also be updated.
+Run `make env-default-replicate`, as a one-off, to set up the python, markdown and bash environments
+(mostly pip/npm install-s). It is recommended to copy over `lib_sh_utils/` and `deploy-support/` if you need support
+for Prometheus, Alertmanager or Grafana. In addition, if renaming directories in `3rdparty/` the correspondent paths in
+`build-support/make/config/<lang>.mk` should also be updated.
+
+To upgrade an existing installation if new tools are added or changes are made to the target resolution infrastructure,
+one would simply need to copy over `lib-support/make/core`.
 
 ### Supported tools by language
 

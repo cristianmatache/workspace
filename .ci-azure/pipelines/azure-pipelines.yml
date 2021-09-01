@@ -68,9 +68,9 @@ stages:
           - script: |
               echo "##vso[task.prependpath]$CONDA/bin"
               command -v conda
-              make env-sh
+              make env-sh-default-replicate
             displayName: 'Install sh deps'
-          - script: make lint-sh
+          - script: make lint-sh-default-replicate
             displayName: 'Run shellcheck'
       - job: lint_yaml
         steps:

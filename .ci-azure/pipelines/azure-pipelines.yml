@@ -48,6 +48,8 @@ stages:
           - script: pwd; ls -l ..; rm -rf ../.env .env
           - template: ../templates/use_py_deps.yml
           - script: |
+              pwd
+              ls -l ..
               which python
               which mypy
               which flake8

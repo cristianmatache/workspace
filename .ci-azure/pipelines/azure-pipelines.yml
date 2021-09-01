@@ -45,7 +45,7 @@ stages:
     jobs:
       - job: lint_py
         steps:
-          - script: ls -l; rm -rf .env
+          - script: pwd; ls -l ..; rm -rf ../.env .env
           - template: ../templates/use_py_deps.yml
           - script: |
               which python

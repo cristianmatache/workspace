@@ -3,6 +3,7 @@ MAKEFLAGS += -j4
 
 # PYTHONPATH
 PY_SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
+#export MYPYPATH := $(PYTHONPATH)
 
 # Aliases
 iqor=app_iqor/

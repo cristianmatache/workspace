@@ -3,7 +3,6 @@ ifneq ($(shell uname | egrep -i "mingw|NT-"),)
 else
 	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(PY_SOURCES_ROOTS)"):$(PYTHONPATH)
 endif
-export MYPYPATH := $(PYTHONPATH)
 
 env-py-default-replicate:  # With constraints for full reproducibility
 	python -m pip install --upgrade pip

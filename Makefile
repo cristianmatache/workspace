@@ -29,7 +29,7 @@ PY_LIB_NAMES=$(foreach path,$(utils),$(shell basename $(path)))  # to be able to
 # Because some rules may be long, the Makefile is split in several smaller files (they all belong to the same namespace).
 # It is recommended to keep all "nested" rules in this file if possible.
 
-include build-support/make/core/targets.mk  # Utilities to resolve targets
+include build-support/make/core/resolver.mk  # Utilities to resolve targets
 
 # Bash
 include build-support/make/config/bash.mk
@@ -38,6 +38,7 @@ include build-support/make/core/bash/format.mk
 include build-support/make/core/bash/lint.mk
 include build-support/make/core/bash/test.mk
 
+.PHONY: fmt-sh lint-sh test-sh
 fmt-sh: shfmt
 lint-sh: shellcheck shfmt-check
 test-sh: bats
@@ -57,6 +58,7 @@ include build-support/make/core/python/clean.mk
 include build-support/make/extensions/python/clean.mk
 include build-support/make/core/python/pre-commit.mk
 
+.PHONY: fmt-py fmt-check-py lint-py test-py clean-py
 fmt-py: docformatter isort autoflake black flynt
 fmt-check-py: autoflake-check docformatter-check isort-check black-check flynt-check
 lint-py: mypy flake8 bandit fmt-check-py pylint
@@ -68,6 +70,7 @@ include build-support/make/config/jupyter.mk
 include build-support/make/core/jupyter/format.mk
 include build-support/make/core/jupyter/lint.mk
 
+.PHONY: fmt-nb fmt-check-nb lint-nb
 fmt-nb: nbstripout jblack
 fmt-check-nb: jblack-check
 lint-nb: flake8-nb fmt-check-nb
@@ -76,6 +79,7 @@ lint-nb: flake8-nb fmt-check-nb
 include build-support/make/core/haskell/lint.mk
 include build-support/make/core/haskell/clean.mk
 
+.PHONY: lint-hs clean-hs
 lint-hs: hlint
 clean-hs: clean-hio
 
@@ -88,6 +92,7 @@ include build-support/make/extensions/prometheus/lint.mk
 # Alertmanager YAML
 include build-support/make/extensions/alertmanager/lint.mk
 
+.PHONY: fmt-yml lint-yml lint-prometheus lint-alertmanager
 fmt-yml: dos2unix-yml
 lint-yml: yamllint
 lint-prometheus: promtool-check-rules
@@ -99,10 +104,13 @@ include build-support/make/core/markdown/env.mk
 include build-support/make/core/markdown/format.mk
 include build-support/make/core/markdown/lint.mk
 
+.PHONY: fmt-md lint-md
 fmt-md: markdownlint-fmt
 lint-md: markdownlint
 
 # Cross-language BUILD goals
+.PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean
+
 env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate
 env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade
 
@@ -135,14 +143,18 @@ kill-%:
 
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
+.PHONY: pre-commit install-pre-commit-hook uninstall-pre-commit-hook
+
 # Run as `make pre-commit since=--cached`
 pre-commit: lint pre-commit-tool
 
 install-pre-commit-hook:
 	cp build-support/git-hooks/pre-commit .git/hooks/
+	# python -m pre_commit install  # Uncomment if you are using pre-commit (the tool)
 
 uninstall-pre-commit-hook:
 	rm .git/hooks/pre-commit
+	# python -m pre_commit uninstall  # Uncomment if you are using pre-commit (the tool)
 
 rm-envs:
 	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/

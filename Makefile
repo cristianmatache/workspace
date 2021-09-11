@@ -1,16 +1,19 @@
+#This is an example top-level Makefile, inner Makefile-s would work similarly
 SHELL := /bin/bash
+# By default run multiple tools in parallel, when formatting  you may want to run "make -j1" to ensure formatters
+# run sequentially
 MAKEFLAGS += -j4
 
 # Set PYTHONPATH
 PY_SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
 
-# Aliases
+# Aliases (short names given to one or more paths, can be used to define the default targets,)
 iqor=app_iqor/
 utils=lib_py_utils/py_utils lib_py_utils/test_utils
 gen_script=build-support/python/packaging/generate_pip_install_files.py
 
-# Targets - for formatting, linting, type-checking, testing
-ONPY=algo/ iqor app_paper_plane/ utils lib_bzl_utils/ gen_script
+# Default targets - for formatting, linting, type-checking, testing
+ONPY=algo/ iqor app_paper_plane/ utils lib_bzl_utils/ gen_script  # References actual directories and/or aliases
 ONSH=build-support/ deploy-support/ lib_sh_utils/
 ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/
@@ -134,6 +137,12 @@ kill-%:
 # OTHER ----------------------------------------------------------------------------------------------------------------
 # Run as `make pre-commit since=--cached`
 pre-commit: lint pre-commit-tool
+
+install-pre-commit-hook:
+	cp build-support/git-hooks/pre-commit .git
+
+uninstall-pre-commit-hook:
+	rm build-support/git-hooks/pre-commit
 
 rm-envs:
 	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/

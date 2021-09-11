@@ -5,4 +5,6 @@ DEFAULT_NPM_DEV_MD_DEPS=$(DEFAULT_MD_ENV)/npm-dev-deps.txt
 
 # Binaries
 MARKDOWNLINT_BIN="./3rdparty/md-env-ws/node_modules/.bin/markdownlint"
-MARKDOWNLINT_CONFIG=build-support/markdown/tools-config/markdownlint.yml
+
+# Flags
+MARKDOWNLINT_FLAGS=--config build-support/markdown/tools-config/markdownlint.yml

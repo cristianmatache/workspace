@@ -5,9 +5,8 @@
 # - updating the config files in build-support/make/config/ to configure tools for your own use case
 # - writing a new custom rule, in build-support/make/extensions/<lang>/ and import it in the main Makefile
 
-.PHONY: markdownlint-fmt
-markdownlint-fmt:
-	$(eval targets := $(onmd))
-	$(eval mdlint := $(MARKDOWNLINT_BIN))
-	if $(call lang,$(targets),$(REGEX_MD)); then \
-	$(mdlint) $(MARKDOWNLINT_FLAGS) --fix $(targets); fi;
+ifneq ($(shell $(IS_WINDOWS_GIT_BASH)),)
+	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(PY_SOURCES_ROOTS)" | sed 's/:/;/g');$(PYTHONPATH)
+else
+	export PYTHONPATH := $(shell sed 's/\ //g' <<< "$(PY_SOURCES_ROOTS)"):$(PYTHONPATH)
+endif

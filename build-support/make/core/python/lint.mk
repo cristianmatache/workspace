@@ -1,46 +1,63 @@
-autoflake-check:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m autoflake --in-place --remove-all-unused-imports --check -r $(call solve_on,$(on)); fi
+# !!! Don't edit this file !!!
+# This file is part of AlphaBuild core, don't edit it in a repo other than https://github.com/cristianmatache/workspace
+# Please submit an issue/pull request to the main repo if you need any changes in the core infrastructure.
+# Before doing that, you may wish to consider:
+# - updating the config files in build-support/make/config/ to configure tools for your own use case
+# - writing a new custom rule, in build-support/make/extensions/<lang>/ and import it in the main Makefile
 
+.PHONY: autoflake-check
+autoflake-check:
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m autoflake --in-place $(AUTOFLAKE_FLAGS) --check -r $(targets); fi
+
+.PHONY: docformatter-check
 docformatter-check: docformatter-diff docformatter-actual-check
 
+.PHONY: docformatter-actual-check
 docformatter-actual-check:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) --check -r $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m docformatter $(DOCFORMATTER_FLAGS) --check -r $(targets); fi
 
+.PHONY: docformatter-diff
 docformatter-diff:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m docformatter --wrap-summaries=$(line_len) --wrap-descriptions=$(line_len) -r $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m docformatter $(DOCFORMATTER_FLAGS) -r $(targets); fi
 
+.PHONY: isort-check
 isort-check:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m isort --diff --color --check-only --settings-path $(ISORT_CONFIG) $(line_len) $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m isort --check-only --diff --color $(ISORT_FLAGS) $(targets); fi
 
+.PHONY: black-check
 black-check:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m black -S --check --config $(BLACK_CONFIG) $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m black --check $(BLACK_FLAGS) $(targets); fi
 
+.PHONY: flynt-check
 flynt-check:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m flynt --dry-run --fail-on-change $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m flynt --dry-run --fail-on-change $(FLYNT_FLAGS) $(targets); fi
 
+.PHONY: flake8
 flake8:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m flake8 --config=$(FLAKE8_CONFIG) $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m flake8 $(FLAKE8_FLAGS) $(targets); fi
 
+.PHONY: bandit
 bandit:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m bandit --configfile $(BANDIT_CONFIG) -r $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m bandit $(BANDIT_FLAGS) -r $(targets); fi
 
+.PHONY: pylint
 pylint:
-	$(eval on := $(onpy))
-	if $(call lang,$(on),".*\.pyi?"); then  \
-	python -m pylint --rcfile=$(PYLINT_CONFIG) $(call solve_on,$(on)); fi
+	$(eval targets := $(onpy))
+	if $(call lang,$(targets),$(REGEX_PY)); then  \
+	python -m pylint $(PYLINT_FLAGS) $(targets); fi

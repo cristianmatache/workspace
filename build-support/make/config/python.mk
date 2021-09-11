@@ -16,3 +16,14 @@ PYTEST_CONFIG=build-support/python/tools-config/pyproject.toml
 DEFAULT_PYTEST_MARKS=""
 DEFAULT_THIRD_PARTY_DEPS_FILE=3rdparty/py-env-ws/requirements.txt
 DEFAULT_FIRST_PARTY_DEPS_FILE=build-support/python/packaging/first-party-libs.txt
+
+# Flags
+DOCFORMATTER_FLAGS=--wrap-summaries=120 --wrap-descriptions=120
+ISORT_FLAGS=--settings-path $(ISORT_CONFIG)
+AUTOFLAKE_FLAGS=--remove-all-unused-imports
+BLACK_FLAGS=-S --config $(BLACK_CONFIG)
+FLAKE8_FLAGS=--config=$(FLAKE8_CONFIG)
+BANDIT_FLAGS=--configfile $(BANDIT_CONFIG)
+PYLINT_FLAGS=--rcfile=$(PYLINT_CONFIG)
+PYTEST_FLAGS=-c $(PYTEST_CONFIG)
+MYPY_FLAGS=--config-file $(MYPY_CONFIG)

@@ -5,9 +5,12 @@
 # - updating the config files in build-support/make/config/ to configure tools for your own use case
 # - writing a new custom rule, in build-support/make/extensions/<lang>/ and import it in the main Makefile
 
-.PHONY: markdownlint-fmt
-markdownlint-fmt:
-	$(eval targets := $(onmd))
-	$(eval mdlint := $(MARKDOWNLINT_BIN))
-	if $(call lang,$(targets),$(REGEX_MD)); then \
-	$(mdlint) $(MARKDOWNLINT_FLAGS) --fix $(targets); fi;
+.PHONY: env-sh-default-replicate
+env-sh-default-upgrade:
+	cat $(NPM_DEV_SH_DEPS) | tr -d "\r" | xargs npm --prefix $(DEFAULT_SH_ENV) install --save-dev --registry=https://registry.npmjs.org
+	conda install go-shfmt -c conda-forge -y
+
+.PHONY: env-sh-default-upgrade
+env-sh-default-replicate:
+	npm --prefix $(DEFAULT_SH_ENV) ci  --registry=https://registry.npmjs.org || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"
+	conda install go-shfmt -c conda-forge -y

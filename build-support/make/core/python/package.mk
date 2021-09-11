@@ -1,11 +1,21 @@
+# !!! Don't edit this file !!!
+# This file is part of AlphaBuild core, don't edit it in a repo other than https://github.com/cristianmatache/workspace
+# Please submit an issue/pull request to the main repo if you need any changes in the core infrastructure.
+# Before doing that, you may wish to consider:
+# - updating the config files in build-support/make/config/ to configure tools for your own use case
+# - writing a new custom rule, in build-support/make/extensions/<lang>/ and import it in the main Makefile
+
+.PHONY: pip-install-local
 pip-install-local:
 	pip install --no-deps --upgrade $(PY_LIBS)
 
+.PHONY: pip-uninstall-local
 pip-uninstall-local:
 	pip uninstall -y $(PY_LIB_NAMES)
 
 # Run `make pip-install-local` first if you want to include your first party libraries in the output
 # on=<> **must** always be supplied because this extracts "imports" from any Python file/package
+.PHONY: reqs-py
 reqs-py:
 	$(eval exclude := "dataclasses")
 	$(eval core_3rdparty_reqs_file := $(DEFAULT_THIRD_PARTY_DEPS_FILE))
@@ -17,8 +27,9 @@ reqs-py:
 
 # Merging with existing requirements.txt may need manual adjustment because this never removes existing contents
 # Use reqs-py to investigate what packages need to be removed
+.PHONY: py-libs-reqs-files
 py-libs-reqs-files: pip-install-local
-	$(eval on := $(PY_PROJECTS))
+	$(eval targets := $(PY_PROJECTS))
 	$(eval exclude := "dataclasses")
 	$(eval core_3rdparty_reqs_file := $(DEFAULT_THIRD_PARTY_DEPS_FILE))
 	$(eval core_1stparty_reqs_file := $(DEFAULT_FIRST_PARTY_DEPS_FILE))

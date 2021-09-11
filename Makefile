@@ -1,9 +1,8 @@
 SHELL := /bin/bash
 MAKEFLAGS += -j4
 
-# PYTHONPATH
+# Set PYTHONPATH
 PY_SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
-#export MYPYPATH := $(PYTHONPATH)
 
 # Aliases
 iqor=app_iqor/
@@ -24,14 +23,14 @@ PY_APPS=app_paper_plane/ app_iqor/  # cannot be pip-installed
 PY_PROJECTS=$(PY_LIBS) $(PY_APPS)
 PY_LIB_NAMES=$(foreach path,$(utils),$(shell basename $(path)))  # to be able to pip uninstall
 
-# Because some rules may be long, I decided to separate the Makefile in several smaller files.
-# It is recommended to keep everything "nested" rules in a single file if possible.
+# Because some rules may be long, the Makefile is split in several smaller files (they all belong to the same namespace).
+# It is recommended to keep all "nested" rules in this file if possible.
 
 include build-support/make/core/targets.mk  # Utilities to resolve targets
 
 # Bash
 include build-support/make/config/bash.mk
-include build-support/make/core/bash/setup.mk
+include build-support/make/core/bash/env.mk
 include build-support/make/core/bash/format.mk
 include build-support/make/core/bash/lint.mk
 include build-support/make/core/bash/test.mk
@@ -42,7 +41,9 @@ test-sh: bats
 
 # Python
 include build-support/make/config/python.mk
-include build-support/make/core/python/setup.mk
+include build-support/make/core/python/pythonpath.mk
+#export MYPYPATH := $(PYTHONPATH)  # Uncomment to set MYPYPATH to be the same as PYTHONPATH
+include build-support/make/core/python/env.mk
 include build-support/make/extensions/python/setup.mk
 include build-support/make/core/python/format.mk
 include build-support/make/core/python/lint.mk
@@ -91,7 +92,7 @@ lint-alertmanager: amtool-check-config
 
 # Markdown
 include build-support/make/config/markdown.mk
-include build-support/make/core/markdown/setup.mk
+include build-support/make/core/markdown/env.mk
 include build-support/make/core/markdown/format.mk
 include build-support/make/core/markdown/lint.mk
 

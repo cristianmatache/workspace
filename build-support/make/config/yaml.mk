@@ -1,1 +1,1 @@
-YAMLLINT_CONFIG=build-support/yaml/tools-config/yamllint.yaml
+YAMLLINT_FLAGS=--strict -c build-support/yaml/tools-config/yamllint.yaml

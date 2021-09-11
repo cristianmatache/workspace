@@ -139,10 +139,10 @@ kill-%:
 pre-commit: lint pre-commit-tool
 
 install-pre-commit-hook:
-	cp build-support/git-hooks/pre-commit .git
+	cp build-support/git-hooks/pre-commit .git/hooks/
 
 uninstall-pre-commit-hook:
-	rm build-support/git-hooks/pre-commit
+	rm .git/hooks/pre-commit
 
 rm-envs:
 	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/

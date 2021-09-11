@@ -3,8 +3,10 @@
 A monorepo containing some of my small projects powered by a scalable build system. See individual README.md files for
 more details.
 
+[![powered_by_alpha_build](https://img.shields.io/badge/Powered%20by%20-AlphaBuild-lightblue?style=flat&logo=CMake&logoColor=lightblue)
+](https://github.com/cristianmatache/alpha-build)
 [![Build Status](https://dev.azure.com/cristianmatache/workspace/_apis/build/status/cristianmatache.workspace?branchName=master)](https://dev.azure.com/cristianmatache/workspace/_build/latest?definitionId=1&branchName=master)
-[![Python 3.8+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 ![pylint Score](https://mperlet.github.io/pybadge/badges/10.svg)
 

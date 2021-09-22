@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Linux and WSL only, run from project root
+# Linux and WSL only
 
-. deploy-support/airflow/kill.sh
+CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+source "$CHECKOUT_ROOT/deploy-support/services/airflow/kill.sh"
 
 ENV='/home/cristian/apps/miniconda3/envs/airflow/bin'
 export PATH="$ENV":"$PATH"

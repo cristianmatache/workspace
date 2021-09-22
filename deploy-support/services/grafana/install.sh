@@ -2,10 +2,11 @@
 
 # Linux and WSL
 
-. lib_sh_utils/src/os.sh
+CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+source "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 # Constants
-GRAFANA_HOME="$(dirname"${GRAFANA_HOME:-${HOME}/grafana/bin}")"
+GRAFANA_HOME="$(dirname "${GRAFANA_HOME:-${HOME}/grafana/bin}")"
 VERSION="${GRAFANA_VERSION:-8.0.0}"
 OS="${GRAFANA_OS:-$(get_running_os)}"
 ARCHITECTURE="${GRAFANA_ARCHITECTURE:-amd64}"

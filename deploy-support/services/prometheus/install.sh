@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# Run from repo root
-. lib_sh_utils/src/os.sh
+CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+source "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 # Constants
 PROMETHEUS_HOME="${PROMETHEUS_HOME:-${HOME}/prometheus}"

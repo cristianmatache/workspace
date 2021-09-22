@@ -127,20 +127,21 @@ test: test-py test-sh
 clean: clean-py clean-hs
 
 # DEPLOY tools
-restartall: restart-airflow restart-prometheus restart-grafana restart-alertmanager
-
-killall: kill-airflow kill-prometheus kill-grafana kill-alertmanager
-
 restart-%:
-	$(eval logdir := ./)
+	$(eval logdir := ./mylogs)
 	$(eval servicename := $(subst restart-,,$@))
-	mkdir -p $(logdir)/logs/$(servicename)
-	nohup ./deploy-support/$(servicename)/restart.sh &>> $(logdir)/logs/$(servicename)/$(shell date --iso).txt &
+	. lib_sh_utils/src/background.sh; \
+	run_command_in_background ./deploy-support/services/$(servicename)/restart.sh $(logdir)/logs/$(servicename)
 
 kill-%:
 	$(eval servicename := $(subst kill-,,$@))
-	./deploy-support/$(servicename)/kill.sh
+	./deploy-support/services/$(servicename)/kill.sh
 
+restart_all: restart-airflow restart_monitoring
+restart_monitoring: restart-prometheus restart-grafana restart-alertmanager
+
+kill_all: kill-airflow kill_monitoring
+kill_monitoring: kill-prometheus kill-grafana kill-alertmanager
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 .PHONY: pre-commit install-pre-commit-hook uninstall-pre-commit-hook

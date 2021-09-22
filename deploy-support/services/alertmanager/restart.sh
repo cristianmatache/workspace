@@ -3,7 +3,9 @@
 
 # Imports
 CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+# shellcheck source=lib_sh_utils/src/commands.sh
 source "$CHECKOUT_ROOT/lib_sh_utils/src/commands.sh"
+# shellcheck source=lib_sh_utils/src/os.sh
 source "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 # Constants
@@ -17,6 +19,7 @@ echo "Alertmanager config is: $RESOLVED_CONFIG"
 echo "Alertmanager port is:   $ALERTMANAGER_PORT"
 
 # Kill existing (if any)
+# shellcheck source=deploy-support/services/alertmanager/kill.sh
 source "$CHECKOUT_ROOT/deploy-support/services/alertmanager/kill.sh"
 
 # Run

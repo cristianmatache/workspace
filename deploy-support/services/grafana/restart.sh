@@ -3,6 +3,7 @@
 
 # Imports
 CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+# shellcheck source=lib_sh_utils/src/os.sh
 source "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 # Constants
@@ -15,6 +16,7 @@ echo "Grafana home is:   $RESOLVED_HOME"
 echo "Grafana config is: $RESOLVED_CONFIG"
 
 # Kill existing (if any)
+# shellcheck source=deploy-support/services/grafana/kill.sh
 source "$CHECKOUT_ROOT/deploy-support/services/grafana/kill.sh"
 
 # Run

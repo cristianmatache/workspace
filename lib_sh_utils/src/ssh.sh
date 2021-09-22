@@ -4,6 +4,7 @@ CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../..}"
 . "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 run_through_ssh() {
+	# Similar to: https://linux.die.net/man/1/pssh
 	local username="${3:-${SSH_USER_TO_RUN_COMMAND:-$(whoami)}}"
 	local ssh_private_key="${SSH_PRIVATE_KEY_PATH:-$(get_default_private_ssh_key_path "$username")}"
 	local command_to_run="${1:-${SSH_COMMAND_TO_RUN:-hostname}}"

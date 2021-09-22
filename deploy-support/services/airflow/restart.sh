@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Linux and WSL only
 
-CHECKOUT_ROOT="${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}"
+CHECKOUT_ROOT=$(realpath "${CHECKOUT_ROOT:-$(dirname "${BASH_SOURCE[0]}")/../../..}")
 # shellcheck source=deploy-support/services/airflow/kill.sh
 source "$CHECKOUT_ROOT/deploy-support/services/airflow/kill.sh"
 

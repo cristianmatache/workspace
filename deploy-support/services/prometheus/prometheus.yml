@@ -33,6 +33,10 @@ scrape_configs:
     static_configs:
       - targets: [ 'localhost:7013' ]
 
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: [ 'localhost:7016' ]
+
   - job_name: 'grafana'
     static_configs:
       - targets: [ 'localhost:7020' ]

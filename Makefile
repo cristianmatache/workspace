@@ -140,8 +140,12 @@ kill-%:
 	$(eval servicename := $(subst kill-,,$@))
 	./deploy-support/services/$(servicename)/kill.sh
 
+upgrade-%:
+	$(eval servicename := $(subst upgrade-,,$@))
+	./deploy-support/services/$(servicename)/install.sh
+
 restart_all: restart-airflow restart_monitoring
-restart_monitoring: restart-prometheus restart-grafana restart-alertmanager
+restart_monitoring: restart-prometheus restart-grafana restart-alertmanager restart-node_exporter
 
 kill_all: kill-airflow kill_monitoring
 kill_monitoring: kill-prometheus kill-grafana kill-alertmanager

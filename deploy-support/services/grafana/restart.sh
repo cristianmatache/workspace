@@ -9,7 +9,7 @@ source "$CHECKOUT_ROOT/lib_sh_utils/src/commands.sh"
 source "$CHECKOUT_ROOT/lib_sh_utils/src/os.sh"
 
 # Constants
-RESOLVED_HOME="$(dirname "$(find_command_home grafana-server "$HOME/grafana/bin" GRAFANA_HOME)")"
+RESOLVED_HOME="$(dirname "$(find_command_home grafana-server "$HOME/apps/grafana/bin" GRAFANA_HOME)")"
 RESOLVED_CONFIG="${GRAFANA_CONFIG:-${CHECKOUT_ROOT}/deploy-support/services/grafana/grafana.ini}"
 # The port is specified in the config file
 

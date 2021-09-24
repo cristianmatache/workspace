@@ -8,7 +8,7 @@ find_command_home() {
 	COMMAND="$1"
 	# 2 DEFAULT
 	# if we cannot work out the dir from an environment variable (e.g. PROMETHEUS_HOME), nor from $PATH,
-	# this will be the default (typically something like "$HOME/prometheus")
+	# this will be the default (typically something like "$HOME/apps/prometheus")
 	DEFAULT="$2"
 	# 3 ENV_VAR_NAME
 	# name of environment variable (e.g. PROMETHEUS_HOME)

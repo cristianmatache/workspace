@@ -132,7 +132,9 @@ run_cmd_in_bg=mkdir -p "$2"; nohup "$1" &>> "$2/$$(date --iso)-$$(hostname).txt"
 restart-%:
 	$(eval logdir := ./mylogs)
 	$(eval servicename := $(subst restart-,,$@))
-	$(call run_cmd_in_bg,./deploy-support/services/$(servicename)/restart.sh,$(logdir)/logs/$(servicename))
+	. lib_sh_utils/src/background.sh; \
+	run_command_in_background ./deploy-support/services/$(servicename)/restart.sh $(logdir)/logs/$(servicename)
+	#$(call run_cmd_in_bg,./deploy-support/services/$(servicename)/restart.sh,$(logdir)/logs/$(servicename))
 
 kill-%:
 	$(eval servicename := $(subst kill-,,$@))

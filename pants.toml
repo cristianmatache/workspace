@@ -40,7 +40,7 @@ config = "build-support/.flake8"
 version = "flake8>=3.8.4"
 
 [pylint]
-config = "build-support/.pylintrc"
+config = "build-support/pylintrc"
 version = "pylint>=2.6.0"
 
 

@@ -111,6 +111,10 @@ else
 		onnb=$(call  solve_aliases,$(on))
 		onmd=$(call  solve_aliases,$(on))
 		onyml=$(call solve_aliases,$(on))
+		onjs=$(call solve_aliases,$(on))
+		onts=$(call solve_aliases,$(on))
+		onhtml=$(call solve_aliases,$(on))
+		oncss=$(call solve_aliases,$(on))
 	else
 		# Run over the default targets
 		# (results in different targets for each language)

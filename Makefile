@@ -1,5 +1,5 @@
 #This is an example top-level Makefile, inner Makefile-s would work similarly
-SHELL := /bin/bash
+SHELL := /usr/bin/env bash
 # By default run multiple tools in parallel, when formatting  you may want to run "make -j1" to ensure formatters
 # run sequentially
 MAKEFLAGS += -j4

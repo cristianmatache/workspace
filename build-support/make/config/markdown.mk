@@ -1,6 +1,6 @@
 # Environment
 # - markdownlint comes from npm
-DEFAULT_MD_ENV=3rdparty/md-env-ws
+DEFAULT_MD_ENV=3rdparty/md-env
 DEFAULT_NPM_DEV_MD_DEPS=$(DEFAULT_MD_ENV)/npm-dev-deps.txt
 
 # Binaries

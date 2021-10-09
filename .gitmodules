@@ -1,9 +1,9 @@
-[submodule "3rdparty/sh-env-ws/install/bats"]
-	path = 3rdparty/sh-env-ws/install/bats
+[submodule "3rdparty/sh-env/install/bats"]
+	path = 3rdparty/sh-env/install/bats
 	url = https://github.com/bats-core/bats-core.git
-[submodule "3rdparty/sh-env-ws/install/test_helper/bats-support"]
-	path = 3rdparty/sh-env-ws/install/test_helper/bats-support
+[submodule "3rdparty/sh-env/install/test_helper/bats-support"]
+	path = 3rdparty/sh-env/install/test_helper/bats-support
 	url = https://github.com/bats-core/bats-support.git
-[submodule "3rdparty/sh-env-ws/install/test_helper/bats-assert"]
-	path = 3rdparty/sh-env-ws/install/test_helper/bats-assert
+[submodule "3rdparty/sh-env/install/test_helper/bats-assert"]
+	path = 3rdparty/sh-env/install/test_helper/bats-assert
 	url = https://github.com/bats-core/bats-assert.git

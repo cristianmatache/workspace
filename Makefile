@@ -194,4 +194,4 @@ uninstall-pre-commit-hook:
 	# python -m pre_commit uninstall  # Uncomment if you are using pre-commit (the tool)
 
 rm-envs:
-	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/  3rdparty/prettier-env-ws/node_modules/
+	rm -rf 3rdparty/md-env/node_modules/ 3rdparty/sh-env/node_modules/  3rdparty/prettier-env/node_modules/

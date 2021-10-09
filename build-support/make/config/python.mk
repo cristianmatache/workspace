@@ -1,4 +1,4 @@
-DEFAULT_PYTHON_ENV='3rdparty/py-env-ws'
+DEFAULT_PYTHON_ENV='3rdparty/py-env'
 
 # Config files
 MYPY_CONFIG=build-support/python/tools-config/mypy.ini

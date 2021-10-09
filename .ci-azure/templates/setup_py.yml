@@ -7,7 +7,7 @@ steps:
     displayName: Use cached pip dependencies
     inputs:
       key: >-
-        3rdparty/py-env-ws/requirements.txt | 3rdparty/py-env-ws/dev-requirements.txt |
-        3rdparty/py-env-ws/mypy-requirements.txt | 3rdparty/py-env-ws/nb-requirements.txt
+        3rdparty/py-env/requirements.txt | 3rdparty/py-env/dev-requirements.txt |
+        3rdparty/py-env/mypy-requirements.txt | 3rdparty/py-env/nb-requirements.txt
       path: $(PY_ENV_PATH)
       cacheHitVar: PIP_DEPS_CACHE_RESTORED

@@ -1,8 +1,8 @@
 #!/usr/bin/env bats
 
 setup() {
-  load '3rdparty/sh-env-ws/node_modules/bats-support/load.bash'
-  load '3rdparty/sh-env-ws/node_modules/bats-assert/load.bash'
+  load '3rdparty/sh-env/node_modules/bats-support/load.bash'
+  load '3rdparty/sh-env/node_modules/bats-assert/load.bash'
 
 }
 
@@ -34,5 +34,5 @@ get_from_path() {
 
 @test "find_command_home: get from \$PATH" {
   run get_from_path
-  assert_output "$(pwd)/3rdparty/sh-env-ws/node_modules/bats/libexec/bats-core"
+  assert_output "$(pwd)/3rdparty/sh-env/node_modules/bats/libexec/bats-core"
 }

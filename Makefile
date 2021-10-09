@@ -115,13 +115,19 @@ include build-support/make/core/markdown/lint.mk
 fmt-md: markdownlint-fmt prettier-md
 lint-md: markdownlint prettier-md-check
 
-# HTML/Web
+# HTML/CSS/Web
 include build-support/make/core/html/lint.mk
 include build-support/make/core/html/format.mk
+include build-support/make/core/css/lint.mk
+include build-support/make/core/css/format.mk
 
-.PHONY: fmt-html lint-html
+.PHONY: fmt-html lint-html fmt-css lint-css
 fmt-html: prettier-html
 lint-html: prettier-html-check
+fmt-css: prettier-css
+lint-css: prettier-css-check
+fmt-web: fmt-html fmt-css
+lint-web: lint-html lint-css
 
 # Cross-language BUILD goals
 .PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean
@@ -129,11 +135,11 @@ lint-html: prettier-html-check
 env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate
 env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade
 
-fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh fmt-html
+fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh fmt-html fmt-web
 
 fmt-check: fmt-check-py fmt-check-nb
 
-lint: lint-py lint-sh lint-nb lint-yml lint-md lint-html lint-prometheus lint-alertmanager # lint-hs
+lint: lint-py lint-sh lint-nb lint-yml lint-md lint-html lint-prometheus lint-alertmanager lint-web # lint-hs
 
 type-check: mypy
 

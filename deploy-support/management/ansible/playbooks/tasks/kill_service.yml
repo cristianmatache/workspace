@@ -1,5 +1,4 @@
 ---
-
 - name: "Kill {{ service }}"
   shell: >
     pwd &&

@@ -44,6 +44,11 @@ fmt-sh: shfmt
 lint-sh: shellcheck shfmt-check
 test-sh: bats
 
+# Multi language
+include build-support/make/config/multi.mk
+include build-support/make/core/multi/format.mk
+include build-support/make/core/multi/lint.mk
+
 # Python
 include build-support/make/config/python.mk
 include build-support/make/core/python/pythonpath.mk

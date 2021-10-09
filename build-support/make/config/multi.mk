@@ -1,0 +1,1 @@
+PRETTIER_BIN="./3rdparty/prettier-env-ws/node_modules/.bin/prettier"

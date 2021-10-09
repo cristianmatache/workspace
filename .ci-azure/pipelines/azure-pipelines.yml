@@ -59,13 +59,19 @@ stages:
             displayName: "Run shellcheck"
       - job: lint_yaml
         steps:
-          - script: make env-py-default-replicate
+          - script: make env-py-default-replicate env-prettier-default-replicate
           - script: make lint-yml
             displayName: "Run yamllint"
       - job: lint_markdown
         steps:
-          - script: make -j1 env-md-default-replicate lint-md
-            displayName: "Run markdownlint"
+          - script: make -j1 env-md-default-replicate env-prettier-default-replicate
+          - script: make lint-md
+            displayName: 'Run markdownlint'
+      - job: lint_web
+        steps:
+          - script: make -j1 env-prettier-default-replicate
+          - script: make lint-web
+            displayName: 'Run prettier on HTML and CSS'
 
   - stage: test_py
     dependsOn: []

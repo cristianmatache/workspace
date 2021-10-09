@@ -5,10 +5,10 @@
 # - updating the config files in build-support/make/config/ to configure tools for your own use case
 # - writing a new custom rule, in build-support/make/extensions/<lang>/ and import it in the main Makefile
 
-.PHONY: env-md-default-upgrade
-env-md-default-upgrade:
-	cat $(DEFAULT_NPM_DEV_MD_DEPS) | tr -d "\r" | xargs npm --prefix $(DEFAULT_MD_ENV) install --save-dev  --registry=https://registry.npmjs.org
+.PHONY: env-prettier-default-upgrade
+env-prettier-default-upgrade:
+	npm --prefix $(DEFAULT_PRETTIER_ENV) install --save-dev  --registry=https://registry.npmjs.org
 
-.PHONY: env-md-default-replicate
-env-md-default-replicate:
-	npm --prefix $(DEFAULT_MD_ENV) ci --registry=https://registry.npmjs.org || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"
+.PHONY: env-prettier-default-replicate
+env-prettier-default-replicate:
+	npm --prefix $(DEFAULT_PRETTIER_ENV) ci --save-dev  --registry=https://registry.npmjs.org || echo "Check manually if it passes, since it causes make to fail unexpectedly !!!"

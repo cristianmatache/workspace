@@ -46,6 +46,7 @@ test-sh: bats
 
 # Multi language
 include build-support/make/config/multi.mk
+include build-support/make/core/multi/env.mk
 include build-support/make/core/multi/format.mk
 include build-support/make/core/multi/lint.mk
 
@@ -99,8 +100,8 @@ include build-support/make/extensions/prometheus/lint.mk
 include build-support/make/extensions/alertmanager/lint.mk
 
 .PHONY: fmt-yml lint-yml lint-prometheus lint-alertmanager
-fmt-yml: dos2unix-yml
-lint-yml: yamllint
+fmt-yml: prettier
+lint-yml: yamllint prettier-check
 lint-prometheus: promtool-check-rules
 lint-alertmanager: amtool-check-config
 
@@ -111,8 +112,13 @@ include build-support/make/core/markdown/format.mk
 include build-support/make/core/markdown/lint.mk
 
 .PHONY: fmt-md lint-md
-fmt-md: markdownlint-fmt
-lint-md: markdownlint
+fmt-md: markdownlint-fmt prettier
+lint-md: markdownlint prettier-check
+
+# HTML/Web
+/PHONY: fmt-html lint-html
+fmt-html: prettier
+lint-html: prettier-check
 
 # Cross-language BUILD goals
 .PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean
@@ -120,11 +126,11 @@ lint-md: markdownlint
 env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate
 env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade
 
-fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh
+fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh fmt-html
 
 fmt-check: fmt-check-py fmt-check-nb
 
-lint: lint-py lint-sh lint-nb lint-yml lint-md lint-prometheus lint-alertmanager # lint-hs
+lint: lint-py lint-sh lint-nb lint-yml lint-md lint-html lint-prometheus lint-alertmanager # lint-hs
 
 type-check: mypy
 

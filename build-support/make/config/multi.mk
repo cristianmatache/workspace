@@ -1,1 +1,4 @@
-PRETTIER_BIN="./3rdparty/prettier-env-ws/node_modules/.bin/prettier"
+DEFAULT_PRETTIER_ENV=3rdparty/prettier-env-ws
+
+# Binaries
+PRETTIER_BIN="./$(DEFAULT_PRETTIER_ENV)/node_modules/.bin/prettier"

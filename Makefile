@@ -19,6 +19,7 @@ ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/
 ONMD=*.md app_* lib_* resources/
 ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
+ONHTML=iqor app_paper_plane/
 
 # Targets - for packaging (e.g. generation of requirements.txt files)
 PY_LIBS=lib_py_utils/  # can be pip-install-ed
@@ -114,6 +115,9 @@ fmt-md: markdownlint-fmt prettier-md
 lint-md: markdownlint prettier-md-check
 
 # HTML/Web
+include build-support/make/core/html/lint.mk
+include build-support/make/core/html/format.mk
+
 .PHONY: fmt-html lint-html
 fmt-html: prettier-html
 lint-html: prettier-html-check

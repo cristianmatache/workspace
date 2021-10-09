@@ -1,0 +1,54 @@
+---
+
+- hosts: monitoring
+  connection: local
+  # remote_user: cristian
+
+  vars:
+    checkout_root: /home/cristian/workspace  # must be absolute or relative to playbooks/
+    log_dir: /home/cristian/logs  # must be absolute or relative to playbooks/
+
+  environment:
+    ALERTMANAGER_HOME: /home/cristian/apps/alertmanager
+    PROMETHEUS_HOME: /home/cristian/apps/prometheus
+
+  tasks:
+    - include_tasks: tasks/restart_service.yml
+      vars:
+        - service: prometheus
+      tags:
+        - prometheus
+
+    - debug: var=output.stdout_lines
+      tags:
+        - prometheus
+
+    - include_tasks: tasks/restart_service.yml
+      vars:
+        - service: alertmanager
+      tags:
+        - alertmanager
+
+    - debug: var=output.stdout_lines
+      tags:
+        - alertmanager
+
+    - include_tasks: tasks/restart_service.yml
+      vars:
+        - service: node_exporter
+      tags:
+        - node_exporter
+
+    - debug: var=output.stdout_lines
+      tags:
+        - node_exporter
+
+    - include_tasks: tasks/restart_service.yml
+      vars:
+        - service: grafana
+      tags:
+        - grafana
+
+    - debug: var=output.stdout_lines
+      tags:
+        - grafana

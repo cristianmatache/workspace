@@ -1,0 +1,9 @@
+---
+
+- name: "Kill {{ service }}"
+  shell: >
+    pwd &&
+    {{ checkout_root }}/deploy-support/services/{{ service }}/kill.sh
+  register: "output"
+  tags:
+    - "{{ service }}"

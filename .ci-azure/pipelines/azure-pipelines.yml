@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - '*'
+      - "*"
 
 schedules:
   - cron: "0 0 * * *"
@@ -11,7 +11,7 @@ schedules:
         - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
   PY_VERSION: 3.8
@@ -21,8 +21,8 @@ variables:
 
 stages:
   - stage: lint
-    displayName: 'lint'
-    dependsOn: [ ]
+    displayName: "lint"
+    dependsOn: []
     jobs:
       - job: lint_py
         steps:
@@ -38,15 +38,15 @@ stages:
               which isort
               which docformatter
               which flynt
-            displayName: 'Sanity check py tools'
+            displayName: "Sanity check py tools"
           - script: make clean-py
             displayName: clean-py
           - script: make lint-py
-            displayName: 'Type check and lint py'
+            displayName: "Type check and lint py"
       - job: lint_hs
         steps:
           - script: curl -sSL https://raw.github.com/ndmitchell/hlint/master/misc/run.sh | sh -s tutorials_hs/
-            displayName: 'Run hlint'
+            displayName: "Run hlint"
       - job: lint_sh
         steps:
           - template: ../templates/setup_npm.yml
@@ -54,36 +54,36 @@ stages:
               echo "##vso[task.prependpath]$CONDA/bin"
               command -v conda
               make env-sh-default-replicate
-            displayName: 'Install sh deps'
+            displayName: "Install sh deps"
           - script: make lint-sh
-            displayName: 'Run shellcheck'
+            displayName: "Run shellcheck"
       - job: lint_yaml
         steps:
           - script: make env-py-default-replicate
           - script: make lint-yml
-            displayName: 'Run yamllint'
+            displayName: "Run yamllint"
       - job: lint_markdown
         steps:
           - script: make -j1 env-md-default-replicate lint-md
-            displayName: 'Run markdownlint'
+            displayName: "Run markdownlint"
 
   - stage: test_py
-    dependsOn: [ ]
-    displayName: 'test py'
+    dependsOn: []
+    displayName: "test py"
     jobs:
       - job: test_py
         steps:
           - script: make env-default-replicate
           - script: |
               which pytest
-            displayName: 'Sanity check pytest'
+            displayName: "Sanity check pytest"
 
           - script: make test-py
-            displayName: 'Test py'
+            displayName: "Test py"
 
   - stage: test_sh
-    dependsOn: [ ]
-    displayName: 'test sh'
+    dependsOn: []
+    displayName: "test sh"
     jobs:
       - job: test_sh
         steps:
@@ -91,4 +91,4 @@ stages:
           - script: |
               command -v npm
               make -j1 env-sh-default-replicate test-sh
-            displayName: 'Test sh'
+            displayName: "Test sh"

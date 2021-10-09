@@ -1,55 +1,54 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Prices overview</title>
 
-<head>
-  <meta charset="UTF-8">
-  <title>Prices overview</title>
-  
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
 
-  
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style-table.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/style-table.css') }}"
+    />
+  </head>
 
-  
-</head>
-
-<body>
-
-  <section>
-  <!--for demo wrap-->
-  <h1>Prices overview</h1>
-  <div class="tbl-header">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <thead>
-        <tr>
-          <th>Country</th>
-          <th>Code</th>
-          <th>Price(s)</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="tbl-content">
-    <table cellpadding="0" cellspacing="0" border="0">
-      <tbody>
-        {% for m, market, prices in res %}
+  <body>
+    <section>
+      <!--for demo wrap-->
+      <h1>Prices overview</h1>
+      <div class="tbl-header">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <thead>
             <tr>
-                <td>{{ market }}</td>
-                <td>{{ m }}</td>
-                <td>{{ prices }}</td>
+              <th>Country</th>
+              <th>Code</th>
+              <th>Price(s)</th>
             </tr>
-         {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</section>
+          </thead>
+        </table>
+      </div>
+      <div class="tbl-content">
+        <table cellpadding="0" cellspacing="0" border="0">
+          <tbody>
+            {% for m, market, prices in res %}
+            <tr>
+              <td>{{ market }}</td>
+              <td>{{ m }}</td>
+              <td>{{ prices }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-
-<!-- follow me template -->
-  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-  <script  src="js/index.js"></script>
-  <script src= "{{ url_for('static',filename='js/index.js') }}"></script>
-
-</body>
-
+    <!-- follow me template -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="{{ url_for('static',filename='js/index.js') }}"></script>
+  </body>
 </html>

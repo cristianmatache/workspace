@@ -1,8 +1,7 @@
 ---
-
 yaml-files:
-  - '*.yaml'
-  - '*.yml'
+  - "*.yaml"
+  - "*.yml"
 
 rules:
   braces: enable

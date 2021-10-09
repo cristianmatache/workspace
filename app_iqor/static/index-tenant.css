@@ -9,7 +9,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .wrapper {
@@ -64,7 +64,7 @@ body {
   background-position: center center;
 }
 .front:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -97,7 +97,7 @@ body {
   /* margin-bottom: 0.3em; */
   text-transform: uppercase;
   /* letter-spacing: 3px; */
-  color: 'black';
+  color: "black";
   font-weight: 1000;
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
@@ -132,7 +132,7 @@ body {
   grid-row: 3;
 }
 .back .info:not(:first-of-type):before {
-  content: '';
+  content: "";
   position: absolute;
   left: -0.9em;
   height: 18px;
@@ -248,7 +248,6 @@ body {
   background: #355cc9;
 }
 
-
 .info-front {
   margin: 20px;
   display: flex;
@@ -269,20 +268,19 @@ body {
 }
 
 .page-title {
-    font-size: 75px;
+  font-size: 75px;
 }
 
 .user-name {
-    font-size: 20px;
+  font-size: 20px;
 }
 
-
 .user-button {
-    border: solid 2px black;
-    color: black;
-    font-size: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
+  border: solid 2px black;
+  color: black;
+  font-size: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .user-buttons {
@@ -290,7 +288,7 @@ body {
 }
 
 .header-upcoming {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .button.return.cancel:hover {

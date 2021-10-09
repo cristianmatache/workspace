@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" >
-
-<head>
-
-
+<html lang="en">
+  <head>
     <title>Browsing countries</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style-new.css') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='less/style.less') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style-results.css') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='scss/style.scss') }}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/style-new.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='less/style.less') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='css/style-results.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='scss/style.scss') }}"
+    />
 
-  <script>
+    <script>
       function isPause() {
           var redirect = `/req_id_clicked/${poll_id}`
           window.location.replace(redirect);
@@ -23,43 +39,76 @@
               var redirect = `/req_id/${poll_id}`
               window.location.replace(redirect);
           }, 3000);}
-  </script>
-</head>
-<body style="font-weight: bold;">
-    <h1 class="projTitle" style="margin-left: 15%; margin-right: 15%">Browsing markets:</h1>
-    <div class="heading cf" style="margin-left: 15%; margin-right: 15%;">
-        <h1 style="padding-right: 0.5%; margin-top: 1%; font-family: Montserrat;">From </h1>
-        <h1 style="text-transform: capitalize; padding-right: 0.5%; margin-top: 1%; font-family: Montserrat;">{{src}}</h1>
-        <h1 style="padding-right: 0.5%; margin-top: 1%; font-family: Montserrat;"> to </h1>
-        <h1 style="text-transform: capitalize; padding-right: 0.5%; margin-top: 1%; font-family: Montserrat;">{{dst}}</h1>
-        <h1 style="margin-top: 1%; font-family: Montserrat;"> on {{date_out}}</h1>
-        <a href="#" class="continue" style="font-family: Montserrat; font-size: 15px" onclick="isPause()">Pause searching</a>
+    </script>
+  </head>
+  <body style="font-weight: bold">
+    <h1 class="projTitle" style="margin-left: 15%; margin-right: 15%">
+      Browsing markets:
+    </h1>
+    <div class="heading cf" style="margin-left: 15%; margin-right: 15%">
+      <h1 style="padding-right: 0.5%; margin-top: 1%; font-family: Montserrat">
+        From
+      </h1>
+      <h1
+        style="
+          text-transform: capitalize;
+          padding-right: 0.5%;
+          margin-top: 1%;
+          font-family: Montserrat;
+        "
+      >
+        {{src}}
+      </h1>
+      <h1 style="padding-right: 0.5%; margin-top: 1%; font-family: Montserrat">
+        to
+      </h1>
+      <h1
+        style="
+          text-transform: capitalize;
+          padding-right: 0.5%;
+          margin-top: 1%;
+          font-family: Montserrat;
+        "
+      >
+        {{dst}}
+      </h1>
+      <h1 style="margin-top: 1%; font-family: Montserrat">on {{date_out}}</h1>
+      <a
+        href="#"
+        class="continue"
+        style="font-family: Montserrat; font-size: 15px"
+        onclick="isPause()"
+        >Pause searching</a
+      >
     </div>
     <div>
-        {% for m, market, price, url in sofars %}
-        <div class="listing-card">
-            <div class="card-wrapper">
-                <div class="right-column">
-                    <button class="action-button" onclick="window.open('{{ url }}');">Book</button>
-                </div>
-                <div class="right-column">
-                    <div class="heart-rating">
-                        <span class="__heart"></span>
-                        <span class="__percentage">£{{ price }}</span>
-                        <!--<span class="__votes">19,134 votes</span>-->
-                    </div>
-                </div>
-                <div class="poster">
-                    <img src="{{ url_for('static',filename='flags-normal/' + m + '.png') }}"></img>
-                </div>
-                <div class="movie-info">
-                    <span class="title">{{ market }}</span>
-                    <span class="language">{{ m }}</span>
-                </div>
+      {% for m, market, price, url in sofars %}
+      <div class="listing-card">
+        <div class="card-wrapper">
+          <div class="right-column">
+            <button class="action-button" onclick="window.open('{{ url }}');">
+              Book
+            </button>
+          </div>
+          <div class="right-column">
+            <div class="heart-rating">
+              <span class="__heart"></span>
+              <span class="__percentage">£{{ price }}</span>
+              <!--<span class="__votes">19,134 votes</span>-->
             </div>
+          </div>
+          <div class="poster">
+            <img
+              src="{{ url_for('static',filename='flags-normal/' + m + '.png') }}"
+            />
+          </div>
+          <div class="movie-info">
+            <span class="title">{{ market }}</span>
+            <span class="language">{{ m }}</span>
+          </div>
         </div>
-        {% endfor %}
+      </div>
+      {% endfor %}
     </div>
-</body>
-
+  </body>
 </html>

@@ -132,8 +132,8 @@ lint-web: lint-html lint-css
 # Cross-language BUILD goals
 .PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean
 
-env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate
-env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade
+env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate env-prettier-default-replicate
+env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade env-prettier-default-upgrade
 
 fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh fmt-html fmt-web
 
@@ -194,4 +194,4 @@ uninstall-pre-commit-hook:
 	# python -m pre_commit uninstall  # Uncomment if you are using pre-commit (the tool)
 
 rm-envs:
-	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/
+	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/  3rdparty/prettier-env-ws/node_modules/

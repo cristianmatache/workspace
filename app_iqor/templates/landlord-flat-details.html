@@ -1,481 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>{{ landlord_name }}'s Viewings</title>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat:400,600,700'>
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='landlord-flat-details.css') }}">-->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <!--    <link rel="stylesheet" href="{{ url_for('static', filename='landlord-flat-details.css') }}">-->
 
     {%assets "scss_all" %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='landlord-flat-details.css') }}">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='index-tenant.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='landlord-flat-details.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='index-tenant.css') }}"
+    />
     {% endassets %}
-</head>
+  </head>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script
+    type="text/javascript"
+    src="http://code.jquery.com/jquery-1.7.1.min.js"
+  ></script>
 
-<body>
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="wrapper flat-name page-title">
+      <span>IQOR</span>
+    </div>
+    <div class="wrapper flat-name user-name">
+      <span>{{ landlord_name }}</span>
+    </div>
+    <div class="wrapper flat-name user-buttons">
+      <!--    <div class="button user-button">Bio</div>-->
+      <!--    <div class="button user-button">View</div>-->
+      <div class="button user-button" onclick="redirectHome({{ landlord_id }})">
+        Homepage
+      </div>
+    </div>
 
-<!-- partial:index.partial.html -->
-<div class="wrapper flat-name page-title">
-    <span>IQOR</span>
-</div>
-<div class="wrapper flat-name user-name">
-    <span>{{ landlord_name }}</span>
-</div>
-<div class="wrapper flat-name user-buttons">
-<!--    <div class="button user-button">Bio</div>-->
-<!--    <div class="button user-button">View</div>-->
-    <div class="button user-button" onclick="redirectHome({{ landlord_id }})">Homepage</div>
-</div>
-
-
-
-<div class="wrapper">
-    {% for
-        postcode, bedrooms, bathrooms, area, flatName, rentPricePM, flatImage, totalInterested, totalViewings,
-        nUpInterested, nUpViewings
-    in flat_info %}
-    <div class="card">
-        <input type="checkbox" id=card2{{flatId}} class="more" aria-hidden="true">
+    <div class="wrapper">
+      {% for postcode, bedrooms, bathrooms, area, flatName, rentPricePM,
+      flatImage, totalInterested, totalViewings, nUpInterested, nUpViewings in
+      flat_info %}
+      <div class="card">
+        <input
+          type="checkbox"
+          id="card2{{flatId}}"
+          class="more"
+          aria-hidden="true"
+        />
 
         <div class="content">
-            <div class="front" style="background-image: url({{flatImage}})">
-                <div class="inner">
-
-                    <div class="wrapper">
-                        <div class="info-front">
-                            <span>{{bedrooms}} beds</span>
-                            <div class="icon-front">
-                                <i class="fas fa-bed"></i>
-                            </div>
-                        </div>
-                        <div class="info-front">
-                            <span>{{bathrooms}} baths</span>
-                            <div class="icon-front">
-                                <i class="fas fa-bath"></i>
-                            </div>
-                        </div>
-                        <div class="info-front">
-                            <span>{{rentPricePM}}€ PCM</span>
-                            <div class="icon-front">
-                                <i class="fas fa-money-bill"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flat-name">
-                        <h2>{{flatName}}</h2>
-                        <h2>{{viewingDate}}</h2>
-                    </div>
-
-                    <label for=card2{{flatId}} class="button" aria-hidden="true">
-                        Details
-                    </label>
+          <div class="front" style="background-image: url({{flatImage}})">
+            <div class="inner">
+              <div class="wrapper">
+                <div class="info-front">
+                  <span>{{bedrooms}} beds</span>
+                  <div class="icon-front">
+                    <i class="fas fa-bed"></i>
+                  </div>
                 </div>
-            </div>
-            <div class="back">
-                <div class="inner">
-                    <div class="info">
-                        <span>{{bedrooms+1}}</span>
-                        <div class="icon">
-                            <i class="fas fa-door-open"></i>
-                            <span>rooms</span>
-                        </div>
-                    </div>
-                    <div class="info">
-                        <span>{{bedrooms}}</span>
-                        <div class="icon">
-                            <i class="fas fa-bed"></i>
-                            <span>beds</span>
-                        </div>
-                    </div>
-                    <div class="info">
-                        <span>{{bathrooms}}</span>
-                        <div class="icon">
-                            <i class="fas fa-bath"></i>
-                            <span>baths</span>
-                        </div>
-                    </div>
-                    <div class="info">
-                        <span>{{area}}</span>
-                        <div class="icon">
-                            <i class="fas fa-layer-group"></i>
-                            <span>sqm</span>
-                        </div>
-                    </div>
-                    <div class="description">
-                        <p>{{flatName}}</p>
-                        <p>Active interested: {{nUpInterested}}</p>
-                        <p>Active viewings:  {{nUpViewings}}</p>
-                        <p>Total interested:  {{totalInterested}}</p>
-                        <p>Total viewings:  {{totalViewings}}</p>
-                        <label for=card2{{flatId}} class="button return" onclick="">Edit</label>
-                    </div>
-                    <div class="location">postcode: {{postcode}}</div>
-                    <div class="price">{{rentPricePM}} €/month</div>
-                    <label for=card2{{flatId}} class="button return" aria-hidden="true">
-                        <i class="fas fa-arrow-left"></i>
-                    </label>
+                <div class="info-front">
+                  <span>{{bathrooms}} baths</span>
+                  <div class="icon-front">
+                    <i class="fas fa-bath"></i>
+                  </div>
                 </div>
+                <div class="info-front">
+                  <span>{{rentPricePM}}€ PCM</span>
+                  <div class="icon-front">
+                    <i class="fas fa-money-bill"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flat-name">
+                <h2>{{flatName}}</h2>
+                <h2>{{viewingDate}}</h2>
+              </div>
+
+              <label for="card2{{flatId}}" class="button" aria-hidden="true">
+                Details
+              </label>
             </div>
+          </div>
+          <div class="back">
+            <div class="inner">
+              <div class="info">
+                <span>{{bedrooms+1}}</span>
+                <div class="icon">
+                  <i class="fas fa-door-open"></i>
+                  <span>rooms</span>
+                </div>
+              </div>
+              <div class="info">
+                <span>{{bedrooms}}</span>
+                <div class="icon">
+                  <i class="fas fa-bed"></i>
+                  <span>beds</span>
+                </div>
+              </div>
+              <div class="info">
+                <span>{{bathrooms}}</span>
+                <div class="icon">
+                  <i class="fas fa-bath"></i>
+                  <span>baths</span>
+                </div>
+              </div>
+              <div class="info">
+                <span>{{area}}</span>
+                <div class="icon">
+                  <i class="fas fa-layer-group"></i>
+                  <span>sqm</span>
+                </div>
+              </div>
+              <div class="description">
+                <p>{{flatName}}</p>
+                <p>Active interested: {{nUpInterested}}</p>
+                <p>Active viewings: {{nUpViewings}}</p>
+                <p>Total interested: {{totalInterested}}</p>
+                <p>Total viewings: {{totalViewings}}</p>
+                <label for="card2{{flatId}}" class="button return" onclick=""
+                  >Edit</label
+                >
+              </div>
+              <div class="location">postcode: {{postcode}}</div>
+              <div class="price">{{rentPricePM}} €/month</div>
+              <label
+                for="card2{{flatId}}"
+                class="button return"
+                aria-hidden="true"
+              >
+                <i class="fas fa-arrow-left"></i>
+              </label>
+            </div>
+          </div>
         </div>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
-
-
-
-
-
-
-<div class="wrapper-flat">
-
-    <div class="header-upcoming wrapper">
+    <div class="wrapper-flat">
+      <div class="header-upcoming wrapper">
         <h2>Upcoming Viewings</h2>
-    </div>
+      </div>
 
-{% if upcoming_empty %}
-  <div class="table">
-    <div class="row header green">
-      <div class="cell">
-        Date
-      </div>
-      <div class="cell">
-        Name
-      </div>
-      <div class="cell">
-        E-mail
-      </div>
-      <div class="cell">
-        Phone
-      </div>
-      <div class="cell">
-        Age
-      </div>
-      <div class="cell">
-        Income PA
-      </div>
-      <div class="cell">
-        Job
-      </div>
-      <div class="cell">
-        Cancel Viewing
-      </div>
-    </div>
-
-    {% for
-        flatId, tenantId, viewed, declined, viewingDate, viewingConfirmed, tenantName, tenantEmail, tenantPhone,
-        age, employment, yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area, flatName, rentPricePM,
-        flatImage, landlordName, landlordEmail, landlordPhone, totalInterested, totalViewings, nUpInterested, nUpViewings
-    in upcoming %}
-    <div class="row">
-      <div class="cell" data-title="Date">
-        {{ viewingDate }}
-      </div>
-      <div class="cell" data-title="Name">
-        <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
-      </div>
-      <div class="cell" data-title="Email">
-        {{ tenantEmail }}
-      </div>
-      <div class="cell" data-title="Phone">
-        {{ tenantPhone }}
-      </div>
-      <div class="cell" data-title="Age">
-        {{ age }}
-      </div>
-      <div class="cell" data-title="Income PA">
-        {{ yearlyIncome }}
-      </div>
-      <div class="cell" data-title="Job">
-        {{ job }}
-      </div>
-      <div class="cell" data-title="Cancel Viewing">
-        <div class="wrapper user-buttons">
-            <div class="button return cancel" onclick="cancelViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')">Cancel</div>
+      {% if upcoming_empty %}
+      <div class="table">
+        <div class="row header green">
+          <div class="cell">Date</div>
+          <div class="cell">Name</div>
+          <div class="cell">E-mail</div>
+          <div class="cell">Phone</div>
+          <div class="cell">Age</div>
+          <div class="cell">Income PA</div>
+          <div class="cell">Job</div>
+          <div class="cell">Cancel Viewing</div>
         </div>
+
+        {% for flatId, tenantId, viewed, declined, viewingDate,
+        viewingConfirmed, tenantName, tenantEmail, tenantPhone, age, employment,
+        yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area,
+        flatName, rentPricePM, flatImage, landlordName, landlordEmail,
+        landlordPhone, totalInterested, totalViewings, nUpInterested,
+        nUpViewings in upcoming %}
+        <div class="row">
+          <div class="cell" data-title="Date">{{ viewingDate }}</div>
+          <div class="cell" data-title="Name">
+            <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
+          </div>
+          <div class="cell" data-title="Email">{{ tenantEmail }}</div>
+          <div class="cell" data-title="Phone">{{ tenantPhone }}</div>
+          <div class="cell" data-title="Age">{{ age }}</div>
+          <div class="cell" data-title="Income PA">{{ yearlyIncome }}</div>
+          <div class="cell" data-title="Job">{{ job }}</div>
+          <div class="cell" data-title="Cancel Viewing">
+            <div class="wrapper user-buttons">
+              <div
+                class="button return cancel"
+                onclick="cancelViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')"
+              >
+                Cancel
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       </div>
-    </div>
-       {% endfor %}
-  </div>
-{% else %}
-    <div class="wrapper">
+      {% else %}
+      <div class="wrapper">
         <h3>No upcoming viewings.</h3>
-    </div>
-{% endif %}
+      </div>
+      {% endif %}
 
-
-
-    <div class="header-upcoming wrapper">
+      <div class="header-upcoming wrapper">
         <h2>Not Confirmed Viewings</h2>
-    </div>
+      </div>
 
-{% if not_conf_empty %}
-    <div class="table">
+      {% if not_conf_empty %}
+      <div class="table">
+        <div class="row header blue">
+          <div class="cell">Date</div>
+          <div class="cell">Name</div>
+          <div class="cell">E-mail</div>
+          <div class="cell">Phone</div>
+          <div class="cell">Age</div>
+          <div class="cell">Income PA</div>
+          <div class="cell">Job</div>
+          <div class="cell">Confirm Viewing</div>
+          <div class="cell">Decline Viewing</div>
+        </div>
 
-    <div class="row header blue">
-      <div class="cell">
-        Date
+        {% for flatId, tenantId, viewed, declined, viewingDate,
+        viewingConfirmed, tenantName, tenantEmail, tenantPhone, age, employment,
+        yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area,
+        flatName, rentPricePM, flatImage, landlordName, landlordEmail,
+        landlordPhone, totalInterested, totalViewings, nUpInterested,
+        nUpViewings in not_confirmed %}
+        <div class="row">
+          <div class="cell" data-title="Date">{{ viewingDate }}</div>
+          <div class="cell" data-title="Name">
+            <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
+          </div>
+          <div class="cell" data-title="Email">{{ tenantEmail }}</div>
+          <div class="cell" data-title="Phone">{{ tenantPhone }}</div>
+          <div class="cell" data-title="Age">{{ age }}</div>
+          <div class="cell" data-title="Income PA">{{ yearlyIncome }}</div>
+          <div class="cell" data-title="Job">{{ job }}</div>
+          <div class="cell" data-title="Confirm Viewing">
+            <div
+              class="button return confirm"
+              onclick="confirmViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')"
+            >
+              Confirm
+            </div>
+          </div>
+          <div class="cell" data-title="Cancel Viewing">
+            <div
+              class="button return cancel"
+              onclick="declineViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')"
+            >
+              Decline
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       </div>
-      <div class="cell">
-        Name
-      </div>
-      <div class="cell">
-        E-mail
-      </div>
-      <div class="cell">
-        Phone
-      </div>
-      <div class="cell">
-        Age
-      </div>
-      <div class="cell">
-        Income PA
-      </div>
-      <div class="cell">
-        Job
-      </div>
-      <div class="cell">
-        Confirm Viewing
-      </div>
-      <div class="cell">
-        Decline Viewing
-      </div>
-    </div>
-
-    {% for
-        flatId, tenantId, viewed, declined, viewingDate, viewingConfirmed, tenantName, tenantEmail, tenantPhone,
-        age, employment, yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area, flatName, rentPricePM,
-        flatImage, landlordName, landlordEmail, landlordPhone, totalInterested, totalViewings, nUpInterested, nUpViewings
-    in not_confirmed %}
-    <div class="row">
-      <div class="cell" data-title="Date">
-        {{ viewingDate }}
-      </div>
-      <div class="cell" data-title="Name">
-        <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
-      </div>
-      <div class="cell" data-title="Email">
-        {{ tenantEmail }}
-      </div>
-      <div class="cell" data-title="Phone">
-        {{ tenantPhone }}
-      </div>
-      <div class="cell" data-title="Age">
-        {{ age }}
-      </div>
-      <div class="cell" data-title="Income PA">
-        {{ yearlyIncome }}
-      </div>
-      <div class="cell" data-title="Job">
-        {{ job }}
-      </div>
-      <div class="cell" data-title="Confirm Viewing">
-        <div class="button return confirm" onclick="confirmViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')">Confirm</div>
-      </div>
-      <div class="cell" data-title="Cancel Viewing">
-        <div class="button return cancel" onclick="declineViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')">Decline</div>
-      </div>
-    </div>
-       {% endfor %}
-  </div>
-{% else %}
-    <div class="wrapper">
+      {% else %}
+      <div class="wrapper">
         <h3>No viewings proposed for approval.</h3>
-    </div>
-{% endif %}
+      </div>
+      {% endif %}
 
-
-    <div class="header-upcoming wrapper">
+      <div class="header-upcoming wrapper">
         <h2>Viewed Flats</h2>
-    </div>
+      </div>
 
-{% if viewed_empty %}
-    <div class="table">
+      {% if viewed_empty %}
+      <div class="table">
+        <div class="row header yellow">
+          <div class="cell">Date</div>
+          <div class="cell">Name</div>
+          <div class="cell">E-mail</div>
+          <div class="cell">Phone</div>
+          <div class="cell">Age</div>
+          <div class="cell">Income PA</div>
+          <div class="cell">Job</div>
+          <div class="cell">Accept Tenant</div>
+          <div class="cell">Decline Tenant</div>
+        </div>
 
-    <div class="row header yellow">
-      <div class="cell">
-        Date
+        {% for flatId, tenantId, viewed, declined, viewingDate,
+        viewingConfirmed, tenantName, tenantEmail, tenantPhone, age, employment,
+        yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area,
+        flatName, rentPricePM, flatImage, landlordName, landlordEmail,
+        landlordPhone, totalInterested, totalViewings, nUpInterested,
+        nUpViewings in viewed %}
+        <div class="row">
+          <div class="cell" data-title="Date">{{ viewingDate }}</div>
+          <div class="cell" data-title="Name">
+            <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
+          </div>
+          <div class="cell" data-title="Email">{{ tenantEmail }}</div>
+          <div class="cell" data-title="Phone">{{ tenantPhone }}</div>
+          <div class="cell" data-title="Age">{{ age }}</div>
+          <div class="cell" data-title="Income PA">{{ yearlyIncome }}</div>
+          <div class="cell" data-title="Job">{{ job }}</div>
+          <div class="cell">
+            <div class="button return confirm" onclick="">Accept</div>
+          </div>
+          <div class="cell">
+            <div
+              class="button return cancel"
+              onclick="declineViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')"
+            >
+              Decline
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       </div>
-      <div class="cell">
-        Name
-      </div>
-      <div class="cell">
-        E-mail
-      </div>
-      <div class="cell">
-        Phone
-      </div>
-      <div class="cell">
-        Age
-      </div>
-      <div class="cell">
-        Income PA
-      </div>
-      <div class="cell">
-        Job
-      </div>
-      <div class="cell">
-        Accept Tenant
-      </div>
-      <div class="cell">
-        Decline Tenant
-      </div>
-    </div>
-
-    {% for
-        flatId, tenantId, viewed, declined, viewingDate, viewingConfirmed, tenantName, tenantEmail, tenantPhone,
-        age, employment, yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area, flatName, rentPricePM,
-        flatImage, landlordName, landlordEmail, landlordPhone, totalInterested, totalViewings, nUpInterested, nUpViewings
-    in viewed %}
-    <div class="row">
-      <div class="cell" data-title="Date">
-        {{ viewingDate }}
-      </div>
-      <div class="cell" data-title="Name">
-        <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
-      </div>
-      <div class="cell" data-title="Email">
-        {{ tenantEmail }}
-      </div>
-      <div class="cell" data-title="Phone">
-        {{ tenantPhone }}
-      </div>
-      <div class="cell" data-title="Age">
-        {{ age }}
-      </div>
-      <div class="cell" data-title="Income PA">
-        {{ yearlyIncome }}
-      </div>
-      <div class="cell" data-title="Job">
-        {{ job }}
-      </div>
-      <div class="cell">
-        <div class="button return confirm" onclick="">Accept</div>
-      </div>
-      <div class="cell">
-        <div class="button return cancel" onclick="declineViewing({{ flatId }}, {{ tenantId }}, '{{ viewingDate }}')">Decline</div>
-      </div>
-    </div>
-       {% endfor %}
-  </div>
-{% else %}
-    <div class="wrapper">
+      {% else %}
+      <div class="wrapper">
         <h3>No viewed flats.</h3>
-    </div>
-{% endif %}
+      </div>
+      {% endif %}
 
-
-    <div class="header-upcoming wrapper">
+      <div class="header-upcoming wrapper">
         <h2>Declined Flats</h2>
-    </div>
-
-{% if declined_empty %}
-    <div class="table">
-
-    <div class="row header">
-      <div class="cell">
-        Date
-      </div>
-      <div class="cell">
-        Name
-      </div>
-      <div class="cell">
-        E-mail
-      </div>
-      <div class="cell">
-        Phone
-      </div>
-      <div class="cell">
-        Age
-      </div>
-      <div class="cell">
-        Income PA
-      </div>
-      <div class="cell">
-        Job
       </div>
 
-    </div>
+      {% if declined_empty %}
+      <div class="table">
+        <div class="row header">
+          <div class="cell">Date</div>
+          <div class="cell">Name</div>
+          <div class="cell">E-mail</div>
+          <div class="cell">Phone</div>
+          <div class="cell">Age</div>
+          <div class="cell">Income PA</div>
+          <div class="cell">Job</div>
+        </div>
 
-    {% for
-        flatId, tenantId, viewed, declined, viewingDate, viewingConfirmed, tenantName, tenantEmail, tenantPhone,
-        age, employment, yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area, flatName, rentPricePM,
-        flatImage, landlordName, landlordEmail, landlordPhone, totalInterested, totalViewings, nUpInterested, nUpViewings
-    in declined %}
-    <div class="row">
-      <div class="cell" data-title="Date">
-        {{ viewingDate }}
+        {% for flatId, tenantId, viewed, declined, viewingDate,
+        viewingConfirmed, tenantName, tenantEmail, tenantPhone, age, employment,
+        yearlyIncome, job, landlordId, postcode, bedrooms, bathrooms, area,
+        flatName, rentPricePM, flatImage, landlordName, landlordEmail,
+        landlordPhone, totalInterested, totalViewings, nUpInterested,
+        nUpViewings in declined %}
+        <div class="row">
+          <div class="cell" data-title="Date">{{ viewingDate }}</div>
+          <div class="cell" data-title="Name">
+            <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
+          </div>
+          <div class="cell" data-title="Email">{{ tenantEmail }}</div>
+          <div class="cell" data-title="Phone">{{ tenantPhone }}</div>
+          <div class="cell" data-title="Age">{{ age }}</div>
+          <div class="cell" data-title="Income PA">{{ yearlyIncome }}</div>
+          <div class="cell" data-title="Job">{{ job }}</div>
+        </div>
+        {% endfor %}
       </div>
-      <div class="cell" data-title="Name">
-        <a href="/tenant-bio/{{tenantId}}">{{ tenantName }}</a>
-      </div>
-      <div class="cell" data-title="Email">
-        {{ tenantEmail }}
-      </div>
-      <div class="cell" data-title="Phone">
-        {{ tenantPhone }}
-      </div>
-      <div class="cell" data-title="Age">
-        {{ age }}
-      </div>
-      <div class="cell" data-title="Income PA">
-        {{ yearlyIncome }}
-      </div>
-      <div class="cell" data-title="Job">
-        {{ job }}
-      </div>
-    </div>
-       {% endfor %}
-  </div>
-{% else %}
-    <div class="wrapper">
+      {% else %}
+      <div class="wrapper">
         <h3>No declined flats.</h3>
+      </div>
+      {% endif %}
     </div>
-{% endif %}
 
-</div>
+    <!-- partial -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  </body>
 
-
-
-
-
-<!-- partial -->
- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-</body>
-
-<script>
+  <script>
     function redirectHome(landlordId) {
-        var redirect = `/get-homepage-landlord/${landlordId}`;
-        $.get(redirect, function() {
-            window.location(redirect);
-        });
+      var redirect = `/get-homepage-landlord/${landlordId}`;
+      $.get(redirect, function () {
+        window.location(redirect);
+      });
     }
 
     function cancelViewing(flatId, tenantId, viewingDate) {
-        var redirect = `/cancel-viewing-landlord/${flatId}/${tenantId}/${viewingDate}`;
-        $.get(redirect, function() {
-            window.location(redirect);
-        });
+      var redirect = `/cancel-viewing-landlord/${flatId}/${tenantId}/${viewingDate}`;
+      $.get(redirect, function () {
+        window.location(redirect);
+      });
     }
 
     function declineViewing(flatId, tenantId) {
-        var redirect = `/decline-tenant/${flatId}/${tenantId}`;
-        $.get(redirect, function() {
-            window.location(redirect);
-        });
+      var redirect = `/decline-tenant/${flatId}/${tenantId}`;
+      $.get(redirect, function () {
+        window.location(redirect);
+      });
     }
 
     function confirmViewing(flatId, tenantId, viewingDate) {
-        var redirect = `/confirm-viewing-landlord/${flatId}/${tenantId}/${viewingDate}`;
-        $.get(redirect, function() {
-            window.location(redirect);
-        });
+      var redirect = `/confirm-viewing-landlord/${flatId}/${tenantId}/${viewingDate}`;
+      $.get(redirect, function () {
+        window.location(redirect);
+      });
     }
-</script>
-
+  </script>
 </html>

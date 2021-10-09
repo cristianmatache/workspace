@@ -30,6 +30,7 @@ PY_LIB_NAMES=$(foreach path,$(utils),$(shell basename $(path)))  # to be able to
 # It is recommended to keep all "nested" rules in this file if possible.
 
 include build-support/make/core/resolver.mk  # Utilities to resolve targets
+include build-support/make/core/helpers.mk
 
 # Bash
 include build-support/make/config/bash.mk
@@ -127,7 +128,9 @@ test: test-py test-sh
 clean: clean-py clean-hs
 
 # DEPLOY tools
-run_cmd_in_bg=mkdir -p "$2"; nohup "$1" &>> "$2/$$(date --iso)-$$(hostname).txt" &
+ansible-cfg:
+	$(eval ansible-bin := /home/cristian/apps/miniconda3/envs/ansible/bin)
+	$(eval inventory := deploy-support/management/ansible/hosts.ini)
 
 restart-%:
 	$(eval logdir := ./mylogs)
@@ -146,9 +149,15 @@ upgrade-%:
 
 restart_all: restart-airflow restart_monitoring
 restart_monitoring: restart-prometheus restart-grafana restart-alertmanager restart-node_exporter
+restart_monitoring2: ansible-cfg
+	$(eval playbook := deploy-support/management/ansible/playbooks/restart_monitoring.yml)
+	"$(ansible-bin)/ansible-playbook" -i "$(inventory)" "$(playbook)" $(shell if [ ! -z "$(tags)" ]; then echo "--tags $(tags)"; fi)
 
 kill_all: kill-airflow kill_monitoring
 kill_monitoring: kill-prometheus kill-grafana kill-alertmanager
+kill_monitoring2: ansible-cfg
+	$(eval playbook := deploy-support/management/ansible/playbooks/kill_monitoring.yml)
+	"$(ansible-bin)/ansible-playbook" -i "$(inventory)" "$(playbook)" $(shell if [ ! -z "$(tags)" ]; then echo "--tags $(tags)"; fi)
 
 # OTHER ----------------------------------------------------------------------------------------------------------------
 .PHONY: pre-commit install-pre-commit-hook uninstall-pre-commit-hook

@@ -5,10 +5,9 @@
   # remote_user: cristian
   vars:
     checkout_root: /home/cristian/workspace  # must be absolute or relative to playbooks/
-    log_dir: /home/cristian/logs  # must be absolute or relative to playbooks/
 
   tasks:
-    - include_tasks: tasks/restart_service.yml
+    - include_tasks: tasks/kill_service.yml
       vars:
         - service: prometheus
       tags:
@@ -18,7 +17,7 @@
       tags:
         - prometheus
 
-    - include_tasks: tasks/restart_service.yml
+    - include_tasks: tasks/kill_service.yml
       vars:
         - service: alertmanager
       tags:
@@ -28,7 +27,7 @@
       tags:
         - alertmanager
 
-    - include_tasks: tasks/restart_service.yml
+    - include_tasks: tasks/kill_service.yml
       vars:
         - service: node_exporter
       tags:
@@ -38,7 +37,7 @@
       tags:
         - node_exporter
 
-    - include_tasks: tasks/restart_service.yml
+    - include_tasks: tasks/kill_service.yml
       vars:
         - service: grafana
       tags:

@@ -1,12 +1,9 @@
 ---
 
-- name: "Restart {{ service }}"
+- name: "Kill {{ service }}"
   shell: >
     pwd &&
-    . "{{ checkout_root }}/lib_sh_utils/src/background.sh" &&
-    {{ service }}_restart_script="{{ checkout_root }}/deploy-support/services/{{ service }}/restart.sh" &&
-
-    run_command_in_background "${{ service }}_restart_script" "{{ log_dir }}/{{ service }}"
+    {{ checkout_root }}/deploy-support/services/{{ service }}/kill.sh
   register: "output"
   tags:
     - "{{ service }}"

@@ -1,17 +1,85 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic|Montserrat:400,700);
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,7 +92,8 @@ html {
   line-height: 1;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
@@ -33,16 +102,22 @@ table {
   border-spacing: 0;
 }
 
-caption, th, td {
+caption,
+th,
+td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-q, blockquote {
+q,
+blockquote {
   quotes: none;
 }
-q:before, q:after, blockquote:before, blockquote:after {
+q:before,
+q:after,
+blockquote:before,
+blockquote:after {
   content: "";
   content: none;
 }
@@ -51,7 +126,19 @@ a img {
   border: none;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
   display: block;
 }
 
@@ -69,7 +156,8 @@ img {
   max-width: 100%;
 }
 
-.cf:before, .cf:after {
+.cf:before,
+.cf:after {
   content: " ";
   display: table;
 }
@@ -111,7 +199,7 @@ img {
 
 .heading {
   padding: 1em 0;
-  border-bottom: 1px solid #D0D0D0;
+  border-bottom: 1px solid #d0d0d0;
 }
 .heading h1 {
   font-family: "Droid Serif", serif;
@@ -119,11 +207,12 @@ img {
   float: left;
 }
 
-.heading a.continue:link, .heading a.continue:visited {
+.heading a.continue:link,
+.heading a.continue:visited {
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
-  letter-spacing: -.015em;
-  font-size: .75em;
+  letter-spacing: -0.015em;
+  font-size: 0.75em;
   padding: 1em;
   color: #fff;
   background: #82ca9c;
@@ -139,7 +228,7 @@ img {
 }
 .heading a.continue:after {
   content: "\276f";
-  padding: .5em;
+  padding: 0.5em;
   position: relative;
   right: 0;
   -webkit-transition: all 0.15s linear;
@@ -148,10 +237,14 @@ img {
   -o-transition: all 0.15s linear;
   transition: all 0.15s linear;
 }
-.heading a.continue:hover, .heading a.continue:focus, .heading a.continue:active {
+.heading a.continue:hover,
+.heading a.continue:focus,
+.heading a.continue:active {
   background: #f69679;
 }
-.heading a.continue:hover:after, .heading a.continue:focus:after, .heading a.continue:active:after {
+.heading a.continue:hover:after,
+.heading a.continue:focus:after,
+.heading a.continue:active:after {
   right: -10px;
 }
 
@@ -159,7 +252,7 @@ img {
   display: table;
   width: 100%;
   font-family: "Montserrat", sans-serif;
-  font-size: .75em;
+  font-size: 0.75em;
 }
 .tableHead li {
   display: table-cell;
@@ -192,20 +285,20 @@ img {
   vertical-align: middle;
 }
 .cart .items .cartSection .itemNumber {
-  font-size: .75em;
+  font-size: 0.75em;
   color: #777;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
 }
 .cart .items .cartSection h3 {
   font-size: 1em;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: .025em;
+  letter-spacing: 0.025em;
 }
 .cart .items .cartSection p {
   display: inline-block;
-  font-size: .85em;
+  font-size: 0.85em;
   color: #777777;
   font-family: "Montserrat", sans-serif;
 }
@@ -214,22 +307,24 @@ img {
   color: #333;
 }
 .cart .items .cartSection p.stockStatus {
-  color: #82CA9C;
+  color: #82ca9c;
   font-weight: bold;
-  padding: .5em 0 0 1em;
+  padding: 0.5em 0 0 1em;
   text-transform: uppercase;
 }
 .cart .items .cartSection p.stockStatus.out {
-  color: #F69679;
+  color: #f69679;
 }
 .cart .items .cartSection .itemImg {
   width: 4em;
   float: left;
 }
-.cart .items .cartSection.qtyWrap, .cart .items .cartSection.prodTotal {
+.cart .items .cartSection.qtyWrap,
+.cart .items .cartSection.prodTotal {
   text-align: center;
 }
-.cart .items .cartSection.qtyWrap p, .cart .items .cartSection.prodTotal p {
+.cart .items .cartSection.qtyWrap p,
+.cart .items .cartSection.prodTotal p {
   font-weight: bold;
   font-size: 1.25em;
 }
@@ -237,8 +332,8 @@ img {
   width: 2em;
   text-align: center;
   font-size: 1em;
-  padding: .25em;
-  margin: 1em .5em 0 0;
+  padding: 0.25em;
+  margin: 1em 0.5em 0 0;
 }
 .cart .items .cartSection .itemImg {
   width: 8em;
@@ -253,7 +348,7 @@ img {
 .special .specialContent {
   padding: 1em 1em 0;
   display: block;
-  margin-top: .5em;
+  margin-top: 0.5em;
   border-top: 1px solid #dadada;
 }
 .special .specialContent:before {
@@ -270,11 +365,11 @@ a.remove {
   color: #ffffff;
   font-weight: bold;
   background: #e0e0e0;
-  padding: .5em;
-  font-size: .75em;
+  padding: 0.5em;
+  font-size: 0.75em;
   display: inline-block;
   border-radius: 100%;
-  line-height: .85;
+  line-height: 0.85;
   -webkit-transition: all 0.25s linear;
   -moz-transition: all 0.25s linear;
   -ms-transition: all 0.25s linear;
@@ -296,23 +391,24 @@ a.remove:hover {
   width: 100%;
   font-style: italic;
   font-size: 1.15em;
-  margin-bottom: .5em;
-  letter-spacing: -.025em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.025em;
 }
 .promoCode input {
   width: 85%;
   font-size: 1em;
-  padding: .5em;
+  padding: 0.5em;
   float: left;
   border: 1px solid #dadada;
 }
-.promoCode input:active, .promoCode input:focus {
+.promoCode input:active,
+.promoCode input:focus {
   outline: 0;
 }
 .promoCode a.btn {
   float: left;
   width: 15%;
-  padding: .75em 0;
+  padding: 0.75em 0;
   border-radius: 0 1em 1em 0;
   text-align: center;
   border: 1px solid #82ca9c;
@@ -322,10 +418,11 @@ a.remove:hover {
   background: #f69679;
 }
 
-.btn:link, .btn:visited {
+.btn:link,
+.btn:visited {
   text-decoration: none;
   font-family: "Montserrat", sans-serif;
-  letter-spacing: -.015em;
+  letter-spacing: -0.015em;
   font-size: 1em;
   padding: 1em 3em;
   color: #fff;
@@ -342,7 +439,7 @@ a.remove:hover {
 }
 .btn:after {
   content: "\276f";
-  padding: .5em;
+  padding: 0.5em;
   position: relative;
   right: 0;
   -webkit-transition: all 0.15s linear;
@@ -351,15 +448,19 @@ a.remove:hover {
   -o-transition: all 0.15s linear;
   transition: all 0.15s linear;
 }
-.btn:hover, .btn:focus, .btn:active {
+.btn:hover,
+.btn:focus,
+.btn:active {
   background: #f69679;
 }
-.btn:hover:after, .btn:focus:after, .btn:active:after {
+.btn:hover:after,
+.btn:focus:after,
+.btn:active:after {
   right: -10px;
 }
 .promoCode .btn {
-  font-size: .85em;
-  paddding: .5em 2em;
+  font-size: 0.85em;
+  paddding: 0.5em 2em;
 }
 
 /* TOTAL AND CHECKOUT  */
@@ -368,7 +469,7 @@ a.remove:hover {
   width: 35%;
 }
 .subtotal .totalRow {
-  padding: .5em;
+  padding: 0.5em;
   text-align: right;
 }
 .subtotal .totalRow.final {
@@ -382,12 +483,12 @@ a.remove:hover {
 }
 .subtotal .totalRow .label {
   font-family: "Montserrat", sans-serif;
-  font-size: .85em;
+  font-size: 0.85em;
   text-transform: uppercase;
   color: #777;
 }
 .subtotal .totalRow .value {
-  letter-spacing: -.025em;
+  letter-spacing: -0.025em;
   width: 35%;
 }
 
@@ -415,24 +516,26 @@ a.remove:hover {
   .cart .items .cartSection.qtyWrap {
     width: 10%;
     text-align: center;
-    padding: .5em 0;
+    padding: 0.5em 0;
     float: right;
   }
   .cart .items .cartSection.qtyWrap:before {
     content: "QTY";
     display: block;
     font-family: "Montserrat", sans-serif;
-    padding: .25em;
-    font-size: .75em;
+    padding: 0.25em;
+    font-size: 0.75em;
   }
-  .cart .items .cartSection.prodTotal, .cart .items .cartSection.removeWrap {
+  .cart .items .cartSection.prodTotal,
+  .cart .items .cartSection.removeWrap {
     display: none;
   }
   .cart .items .cartSection .itemImg {
     width: 25%;
   }
 
-  .promoCode, .subtotal {
+  .promoCode,
+  .subtotal {
     width: 100%;
   }
 

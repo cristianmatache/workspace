@@ -1,12 +1,11 @@
 ---
-
 - hosts: monitoring
   connection: local
   # remote_user: cristian
 
   vars:
-    checkout_root: /home/cristian/workspace  # must be absolute or relative to playbooks/
-    log_dir: /home/cristian/logs  # must be absolute or relative to playbooks/
+    checkout_root: /home/cristian/workspace # must be absolute or relative to playbooks/
+    log_dir: /home/cristian/logs # must be absolute or relative to playbooks/
 
   environment:
     ALERTMANAGER_HOME: /home/cristian/apps/alertmanager

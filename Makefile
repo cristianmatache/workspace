@@ -47,8 +47,6 @@ test-sh: bats
 # Multi language
 include build-support/make/config/multi.mk
 include build-support/make/core/multi/env.mk
-include build-support/make/core/multi/format.mk
-include build-support/make/core/multi/lint.mk
 
 # Python
 include build-support/make/config/python.mk
@@ -100,8 +98,8 @@ include build-support/make/extensions/prometheus/lint.mk
 include build-support/make/extensions/alertmanager/lint.mk
 
 .PHONY: fmt-yml lint-yml lint-prometheus lint-alertmanager
-fmt-yml: prettier
-lint-yml: yamllint prettier-check
+fmt-yml: prettier-yml
+lint-yml: yamllint prettier-yml-check
 lint-prometheus: promtool-check-rules
 lint-alertmanager: amtool-check-config
 
@@ -112,13 +110,13 @@ include build-support/make/core/markdown/format.mk
 include build-support/make/core/markdown/lint.mk
 
 .PHONY: fmt-md lint-md
-fmt-md: markdownlint-fmt prettier
-lint-md: markdownlint prettier-check
+fmt-md: markdownlint-fmt prettier-md
+lint-md: markdownlint prettier-md-check
 
 # HTML/Web
-/PHONY: fmt-html lint-html
-fmt-html: prettier
-lint-html: prettier-check
+.PHONY: fmt-html lint-html
+fmt-html: prettier-html
+lint-html: prettier-html-check
 
 # Cross-language BUILD goals
 .PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean

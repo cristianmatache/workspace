@@ -127,11 +127,6 @@ else
 	endif
 endif
 
-# Deduplicate
-# Args:
-#	- $1: list to remove duplicates from
-uniq = $(eval seen :=) $(foreach _,$1,$(if $(filter $_,${seen}),,$(eval seen += $_))) ${seen}
-
 
 # !!! Example goal implementation explained !!!
 #

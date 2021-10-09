@@ -19,6 +19,8 @@ ONHS=tutorials_hs/scheme_interpreter
 ONNB=notebooks/
 ONMD=*.md app_* lib_* resources/
 ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
+ONHTML=iqor app_paper_plane/
+ONCSS=$(ONHTML)
 
 # Targets - for packaging (e.g. generation of requirements.txt files)
 PY_LIBS=lib_py_utils/  # can be pip-install-ed
@@ -43,6 +45,10 @@ include build-support/make/core/bash/test.mk
 fmt-sh: shfmt
 lint-sh: shellcheck shfmt-check
 test-sh: bats
+
+# Multi language
+include build-support/make/config/multi.mk
+include build-support/make/core/multi/env.mk
 
 # Python
 include build-support/make/config/python.mk
@@ -94,8 +100,8 @@ include build-support/make/extensions/prometheus/lint.mk
 include build-support/make/extensions/alertmanager/lint.mk
 
 .PHONY: fmt-yml lint-yml lint-prometheus lint-alertmanager
-fmt-yml: dos2unix-yml
-lint-yml: yamllint
+fmt-yml: prettier-yml
+lint-yml: yamllint prettier-yml-check
 lint-prometheus: promtool-check-rules
 lint-alertmanager: amtool-check-config
 
@@ -106,20 +112,34 @@ include build-support/make/core/markdown/format.mk
 include build-support/make/core/markdown/lint.mk
 
 .PHONY: fmt-md lint-md
-fmt-md: markdownlint-fmt
-lint-md: markdownlint
+fmt-md: markdownlint-fmt prettier-md
+lint-md: markdownlint prettier-md-check
+
+# HTML/CSS/Web
+include build-support/make/core/html/lint.mk
+include build-support/make/core/html/format.mk
+include build-support/make/core/css/lint.mk
+include build-support/make/core/css/format.mk
+
+.PHONY: fmt-html lint-html fmt-css lint-css
+fmt-html: prettier-html
+lint-html: prettier-html-check
+fmt-css: prettier-css
+lint-css: prettier-css-check
+fmt-web: fmt-html fmt-css
+lint-web: lint-html lint-css
 
 # Cross-language BUILD goals
 .PHONY: env-default-replicate env-default-upgrade fmt lint type-check test clean
 
-env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate
-env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade
+env-default-replicate: env-py-default-replicate env-sh-default-replicate env-md-default-replicate env-prettier-default-replicate
+env-default-upgrade: env-py-default-upgrade env-sh-default-upgrade env-md-default-upgrade env-prettier-default-upgrade
 
-fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh
+fmt: fmt-py fmt-nb fmt-yml fmt-md fmt-sh fmt-html fmt-web
 
 fmt-check: fmt-check-py fmt-check-nb
 
-lint: lint-py lint-sh lint-nb lint-yml lint-md lint-prometheus lint-alertmanager # lint-hs
+lint: lint-py lint-sh lint-nb lint-yml lint-md lint-html lint-prometheus lint-alertmanager lint-web # lint-hs
 
 type-check: mypy
 
@@ -174,4 +194,4 @@ uninstall-pre-commit-hook:
 	# python -m pre_commit uninstall  # Uncomment if you are using pre-commit (the tool)
 
 rm-envs:
-	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/
+	rm -rf 3rdparty/md-env-ws/node_modules/ 3rdparty/sh-env-ws/node_modules/  3rdparty/prettier-env-ws/node_modules/

@@ -1,10 +1,9 @@
 ---
-
 - hosts: monitoring
   connection: local
   # remote_user: cristian
   vars:
-    checkout_root: /home/cristian/workspace  # must be absolute or relative to playbooks/
+    checkout_root: /home/cristian/workspace # must be absolute or relative to playbooks/
 
   tasks:
     - include_tasks: tasks/kill_service.yml

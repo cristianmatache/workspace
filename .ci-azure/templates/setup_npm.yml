@@ -4,4 +4,4 @@ steps:
       mkdir -p $(NODE_INSTALL_PATH)
       tar -xvf node-v16.3.0-linux-x64.tar.xz --directory $(NODE_INSTALL_PATH)
       echo "##vso[task.prependpath]$(NODE_INSTALL_PATH)/node-v16.3.0-linux-x64/bin"
-    displayName: 'Download, untar and append npm to path'
+    displayName: "Download, untar and append npm to path"

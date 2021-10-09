@@ -20,6 +20,7 @@ ONNB=notebooks/
 ONMD=*.md app_* lib_* resources/
 ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 ONHTML=iqor app_paper_plane/
+ONCSS=$(ONHTML)
 
 # Targets - for packaging (e.g. generation of requirements.txt files)
 PY_LIBS=lib_py_utils/  # can be pip-install-ed

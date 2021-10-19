@@ -44,7 +44,7 @@ KDB_FILE_PATH = (Path(__file__).parent / 'database.q').as_posix()
 KDB_SERVER = {
     'oana': KDBServer('localhost', 5000, 'oana', '123'),
     'Cristian Matache': KDBServer('localhost', 5000, 'crm', 'crm'),
-}[getuser()]
+}.get(getuser(), KDBServer('localhost', 5000, 'crm', 'crm'))
 FLASK_SERVER = Server('localhost', 6000)
 
 COLUMNS_TO_CONVERT = (

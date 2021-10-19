@@ -15,6 +15,7 @@ flake8
 flake8-markdown
 #flake8-bugbear
 flake8-nb
+#darglint
 pylint
 bandit
 shellcheck-py

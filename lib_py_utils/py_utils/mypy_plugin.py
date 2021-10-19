@@ -36,6 +36,7 @@ class CristianPlugin(Plugin):
         So, we return a function handler for them.
 
         Otherwise, we return ``None``.
+        >>> assert 1 == 1  # Test doctest (used to be 1 == 2)
         """
         return self._function_hook_plugins.get(fullname)
 

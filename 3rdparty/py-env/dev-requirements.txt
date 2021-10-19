@@ -19,6 +19,7 @@ pylint
 bandit
 shellcheck-py
 yamllint
+darglint
 
 # test
 pytest

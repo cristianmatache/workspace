@@ -13,8 +13,9 @@ more details.
 
 ## Contents
 
-- **build-support:** Makefile library inspired by Pants/Bazel to run linters, formatters, test frameworks, type
-  checkers, packers etc. on a variety of languages (Python, Jupyter Notebooks, Bash, Haskell, YAML, Markdown) → make
+- **build-support:** AlphaBuild home - Makefile library inspired by Pants/Bazel to run linters, formatters, test
+  frameworks, type checkers, packers etc. on a variety of languages (Python, Jupyter Notebooks, Bash, Haskell, YAML,
+  Markdown) → make
 - **app_iqor:** IQOR = I Quit Ordinary Renting (HackZurich 2019) → Q/KDB+Python
 - **app_paper_plane:** Paper Plane = find same flight but cheaper by changing country on Skyscanner (LauzHack 2018) →
   Python

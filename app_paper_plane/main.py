@@ -211,7 +211,7 @@ class MarketsSweeper:
 
     @duration
     def sweep_real_time(self, req_id: int, encoding: str = 'utf-8') -> None:
-        global REQUESTS  # pylint: disable=global-statement  # TODO: use a proper database
+        global REQUESTS  # pylint: disable=global-statement,global-variable-not-assigned  # TODO: use a proper database
         print(f'> Starting to sweep markets for request: {req_id}')
         markets = self.get_markets()
         for market in markets:

@@ -14,7 +14,7 @@ pool:
   vmImage: "ubuntu-latest"
 
 variables:
-  PY_VERSION: 3.8
+  PY_VERSION: 3.9
   PY_ENV_PATH: $(Pipeline.Workspace)/env
   NODE_INSTALL_PATH: $(Pipeline.Workspace)/node_home
   REINSTALL_DEPS: true
@@ -53,7 +53,7 @@ stages:
           - script: |
               echo "##vso[task.prependpath]$CONDA/bin"
               command -v conda
-              make env-sh-default-replicate
+              make env-sh-default-replicate env-py-default-replicate
             displayName: "Install sh deps"
           - script: make lint-sh
             displayName: "Run shellcheck"

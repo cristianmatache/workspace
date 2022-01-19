@@ -1,11 +1,14 @@
 # Inner Makefile example
 SHELL := /bin/bash
 
-# Targets - for formatting, linting, type-checking, testing
-ONPY=py_utils/ test_utils/
+include ../build-support/make/core/resolver.mk
 
-include ../build-support/make/core/resolver.mk  # Utilities to resolve targets
+dir=$(shell basename $(shell pwd))
+this=py_utils/ test_utils/
 
-include ../build-support/make/core/python/setup.mk
-MYPY_CONFIG="invalid"
-include ../build-support/make/core/python/type-check.mk
+alias1=py_utils/logging.py
+
+# Forward to root Makefile
+%:
+	$(eval on := $(this))
+	"$(MAKE)" -C .. $@ on="$(foreach item,$(call solve_aliases,$(on)),$(dir)/${item})" $(if $(since),since=$(since))

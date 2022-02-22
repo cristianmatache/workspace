@@ -1,11 +1,21 @@
 #This is an example top-level Makefile, inner Makefile-s would work similarly
 SHELL := /usr/bin/env bash
-# By default run multiple tools in parallel, when formatting  you may want to run "make -j1" to ensure formatters
+# By default run multiple tools sequentially, when formatting  you may want to run "make -j1" to ensure formatters
 # run sequentially
-MAKEFLAGS += -j4
+MAKEFLAGS += -j1
+
+# resolver.mk and helpers.mk contain the AlphaBuild core logic
+# Because some rules may be long, the Makefile is split in several smaller files (they all belong to the same namespace).
+# It is recommended to keep all "nested" rules in this file if possible.
+include build-support/alpha-build/core/resolver.mk  # Utilities to resolve targets
+include build-support/alpha-build/core/helpers.mk
 
 # Set PYTHONPATH
 PY_SOURCES_ROOTS=app_iqor:app_paper_plane:lib_py_utils
+include build-support/alpha-build/core/python/pythonpath.mk  # Let AlphaBuild set PYTHONPATH based on PY_SOURCES_ROOTS
+
+plm:
+	echo "$$PYTHONPATH"
 
 # Aliases (short names given to one or more paths, can be used to define the default targets,)
 iqor=app_iqor/
@@ -22,24 +32,25 @@ ONYML=.ci-azure/ build-support/ deploy-support/ .pre-commit-config.yaml
 ONHTML=iqor app_paper_plane/
 ONCSS=$(ONHTML)
 
+# Config files (i.e., mostly <TOOL>_FLAGS variables, which contain the flags for tools like pytest, mypy etc.)
+include build-support/alpha-build/config/bash.mk
+include build-support/alpha-build/config/multi.mk
+include build-support/alpha-build/config/python.mk
+include build-support/alpha-build/config/yaml.mk
+include build-support/alpha-build/config/jupyter.mk
+include build-support/alpha-build/config/markdown.mk
+
 # Targets - for packaging (e.g. generation of requirements.txt files)
 PY_LIBS=lib_py_utils/  # can be pip-install-ed
 PY_APPS=app_paper_plane/ app_iqor/  # cannot be pip-installed
 PY_PROJECTS=$(PY_LIBS) $(PY_APPS)
-PY_LIB_NAMES=$(foreach path,$(utils),$(shell basename $(path)))  # to be able to pip uninstall
-
-# Because some rules may be long, the Makefile is split in several smaller files (they all belong to the same namespace).
-# It is recommended to keep all "nested" rules in this file if possible.
-
-include build-support/make/core/resolver.mk  # Utilities to resolve targets
-include build-support/make/core/helpers.mk
+PY_LIB_NAMES=$(foreach path,$(PY_PROJECTS),$(shell basename $(path)))  # to be able to pip uninstall
 
 # Bash
-include build-support/make/config/bash.mk
-include build-support/make/core/bash/env.mk
-include build-support/make/core/bash/format.mk
-include build-support/make/core/bash/lint.mk
-include build-support/make/core/bash/test.mk
+include build-support/alpha-build/core/bash/env.mk
+include build-support/alpha-build/core/bash/format.mk
+include build-support/alpha-build/core/bash/lint.mk
+include build-support/alpha-build/core/bash/test.mk
 
 .PHONY: fmt-sh lint-sh test-sh
 fmt-sh: shfmt
@@ -47,23 +58,20 @@ lint-sh: shellcheck shfmt-check
 test-sh: bats
 
 # Multi language
-include build-support/make/config/multi.mk
-include build-support/make/core/multi/env.mk
+include build-support/alpha-build/core/multi/env.mk
 
 # Python
-include build-support/make/config/python.mk
-include build-support/make/core/python/pythonpath.mk
 #export MYPYPATH := $(PYTHONPATH)  # Uncomment to set MYPYPATH to be the same as PYTHONPATH
-include build-support/make/core/python/env.mk
-include build-support/make/extensions/python/setup.mk
-include build-support/make/core/python/format.mk
-include build-support/make/core/python/lint.mk
-include build-support/make/core/python/type-check.mk
-include build-support/make/core/python/test.mk
-include build-support/make/core/python/package.mk
-include build-support/make/core/python/clean.mk
-include build-support/make/extensions/python/clean.mk
-include build-support/make/core/python/pre-commit.mk
+include build-support/alpha-build/core/python/env.mk
+include build-support/alpha-build/extensions/python/setup.mk
+include build-support/alpha-build/core/python/format.mk
+include build-support/alpha-build/core/python/lint.mk
+include build-support/alpha-build/core/python/type-check.mk
+include build-support/alpha-build/core/python/test.mk
+include build-support/alpha-build/core/python/package.mk
+include build-support/alpha-build/core/python/clean.mk
+include build-support/alpha-build/extensions/python/clean.mk
+include build-support/alpha-build/core/python/pre-commit.mk
 
 .PHONY: fmt-py fmt-check-py lint-py test-py clean-py
 fmt-py: docformatter isort autoflake black flynt
@@ -73,9 +81,8 @@ test-py: pytest
 clean-py: clean-pyc clean-mypy clean-pytest clean-egg-info clean-build-utils
 
 # Notebooks
-include build-support/make/config/jupyter.mk
-include build-support/make/core/jupyter/format.mk
-include build-support/make/core/jupyter/lint.mk
+include build-support/alpha-build/core/jupyter/format.mk
+include build-support/alpha-build/core/jupyter/lint.mk
 
 .PHONY: fmt-nb fmt-check-nb lint-nb
 fmt-nb: nbstripout jblack
@@ -83,21 +90,20 @@ fmt-check-nb: jblack-check
 lint-nb: flake8-nb fmt-check-nb
 
 # Haskell
-include build-support/make/core/haskell/lint.mk
-include build-support/make/core/haskell/clean.mk
+include build-support/alpha-build/core/haskell/lint.mk
+include build-support/alpha-build/core/haskell/clean.mk
 
 .PHONY: lint-hs clean-hs
 lint-hs: hlint
 clean-hs: clean-hio
 
 # YAML
-include build-support/make/config/yaml.mk
-include build-support/make/core/yaml/format.mk
-include build-support/make/core/yaml/lint.mk
+include build-support/alpha-build/core/yaml/format.mk
+include build-support/alpha-build/core/yaml/lint.mk
 # Prometheus YAML
-include build-support/make/extensions/prometheus/lint.mk
+include build-support/alpha-build/extensions/prometheus/lint.mk
 # Alertmanager YAML
-include build-support/make/extensions/alertmanager/lint.mk
+include build-support/alpha-build/extensions/alertmanager/lint.mk
 
 .PHONY: fmt-yml lint-yml lint-prometheus lint-alertmanager
 fmt-yml: prettier-yml
@@ -106,20 +112,19 @@ lint-prometheus: promtool-check-rules
 lint-alertmanager: amtool-check-config
 
 # Markdown
-include build-support/make/config/markdown.mk
-include build-support/make/core/markdown/env.mk
-include build-support/make/core/markdown/format.mk
-include build-support/make/core/markdown/lint.mk
+include build-support/alpha-build/core/markdown/env.mk
+include build-support/alpha-build/core/markdown/format.mk
+include build-support/alpha-build/core/markdown/lint.mk
 
 .PHONY: fmt-md lint-md
 fmt-md: markdownlint-fmt prettier-md
 lint-md: markdownlint prettier-md-check
 
 # HTML/CSS/Web
-include build-support/make/core/html/lint.mk
-include build-support/make/core/html/format.mk
-include build-support/make/core/css/lint.mk
-include build-support/make/core/css/format.mk
+include build-support/alpha-build/core/html/lint.mk
+include build-support/alpha-build/core/html/format.mk
+include build-support/alpha-build/core/css/lint.mk
+include build-support/alpha-build/core/css/format.mk
 
 .PHONY: fmt-html lint-html fmt-css lint-css
 fmt-html: prettier-html

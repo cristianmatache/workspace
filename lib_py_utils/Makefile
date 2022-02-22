@@ -1,7 +1,7 @@
 # Inner Makefile example
 SHELL := /bin/bash
 
-include ../build-support/make/core/resolver.mk
+include ../build-support/alpha-build/core/resolver.mk
 
 dir=$(shell basename $(shell pwd))
 this=py_utils/ test_utils/

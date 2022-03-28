@@ -7,8 +7,7 @@ parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 # export PS1="\[\033[38;5;9m\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h \[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\033[38;5;10m\]\$(parse_git_branch)\[\033[00m\]"$'\n$ '
-export PS1="\033[38;5;9m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h \[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\033[38;5;10m\$(parse_git_branch)\[\033[00m\]"$'\n$ '
-
+export PS1="\033[38;5;9m\u\[$(tput sgr0)\]\[\033[38;5;15m\]@\h \[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]\[$(tput sgr0)\]\033[38;5;10m\$(parse_git_branch)\[\033[00m\]"$'\n$ '
 
 # grep
 alias grep="grep --color=auto"

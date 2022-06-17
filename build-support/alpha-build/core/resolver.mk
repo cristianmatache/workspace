@@ -25,7 +25,7 @@ REGEX_KT=".*.\.kt"
 IS_WINDOWS_CMD=uname | egrep -i "msys"            # Non-empty if is windows cmd
 IS_WINDOWS_GIT_BASH=uname | egrep -i "mingw|NT-"  # Non-empty if is windows git bash
 IS_MAC=uname | egrep -i "darwin"                  # Non-empty if is mac
-IS_LINUX=uname | egrep -i "linux"                  # Non-empty if is linux
+IS_LINUX=uname | egrep -i "linux"                 # Non-empty if is linux
 
 # By default use "python" to call python, but sometimes one may need to invoke tools differently
 python=python
@@ -105,18 +105,22 @@ intersect_files = $(call intersect_paths,$(call solve_aliases,$1),$2)
 #         - ensure the target files exist (git diff --name-only also reports files that were deleted)
 #         - ensure we only run the checks over the targets listed in the global $(ON<lang>) not across any changed <lang> file
 
+ifndef _DEFAULT_TARGETS
+	_DEFAULT_TARGETS=.
+endif
+
 ifneq ($(since),)
 	resolve_since=$(shell git diff --name-only $(since) | grep -E $1)
 	ifneq ($(on),)
 		# Run over all the files change since=... that appear in on=...
 		# (results in different targets for each language)
 		resolve_targets=$(call intersect_files,$(call solve_aliases,$(on)),$(call $3,$(call resolve_since,$1)))
-		resolve_pre_commit_targets=--files $(call resolve_targets,$1,$2,$3)
+		resolve_pre_commit_targets=--files $(call resolve_targets,$1,$(or $2,$(_DEFAULT_TARGETS)),$3)
 	else
 		# Run over all the files change since=... that appear in the defaults (i.e. in the ON<LANG> variables)
 		# (results in different targets for each language)
-		resolve_targets=$(call intersect_files,$(call solve_aliases,$2),$(call $3,$(call resolve_since,$1)))
-		resolve_pre_commit_targets=--files $(call resolve_targets,$1,$2,$3)
+		resolve_targets=$(call intersect_files,$(call solve_aliases,$(or $2,$(_DEFAULT_TARGETS))),$(call $3,$(call resolve_since,$1)))
+		resolve_pre_commit_targets=--files $(call resolve_targets,$1,$(or $2,$(_DEFAULT_TARGETS)),$3)
 	endif
 else
 	ifneq ($(on),)
@@ -128,7 +132,7 @@ else
 	else
 		# Run over the default targets
 		# (results in different targets for each language)
-		resolve_targets=$(call $3,$(call solve_aliases,$2))
+		resolve_targets=$(call $3,$(call solve_aliases,$(or $2,$(_DEFAULT_TARGETS))))
 		resolve_pre_commit_targets=--all-files
 	endif
 endif
